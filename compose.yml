@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  ts:
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile-tailscale
+    image: tailscale/tailscale:latest
+    container_name: ts
+    hostname: blaze
+    env_file:
+      - stack.env
+    environment:
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_SERVE_CONFIG=/config/django-proxy.json
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - ts-lib:/var/lib/tailscale
+      - blaze_ts_config:/config
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+  django:
+    container_name: django
+    build:
+      context: .
+      dockerfile: Dockerfile-django
+    command: >
+      sh -c "
+      python manage.py collectstatic --noinput &&
+      python manage.py migrate &&
+      gunicorn config.wsgi:application --bind :8000 --workers 2
+      "
+    volumes:
+      - db:/code/db
+    env_file:
+      - stack.env
+    network_mode: service:ts
+    depends_on:
+      - ts
+volumes:
+  db:
+    # A separate volume for the persistent SQLite database
+    external: true
+  blaze_ts_config:
+    external: true
+  ts-lib:
+    driver: local

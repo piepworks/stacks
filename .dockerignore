@@ -1,0 +1,6 @@
+.git/
+*.sqlite*
+.env
+node_modules/
+.venv/
+static/css/

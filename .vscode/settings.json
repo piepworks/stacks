@@ -1,0 +1,16 @@
+{
+  "editor.formatOnSave": true,
+  "[django-html]": {
+    "editor.tabSize": 2
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.stylelint": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.associations": {
+    "*.py-tpl": "python",
+    "*.html": "django-html",
+    "*.js": "javascript",
+    "*.svg": "django-html"
+  }
+}

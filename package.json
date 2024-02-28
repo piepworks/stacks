@@ -1,0 +1,29 @@
+{
+  "name": "placeholder-name",
+  "version": "1.0.0",
+  "author": "Your Name <you@example.com>",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "dj": "python manage.py runserver",
+    "build:postcss": "NODE_ENV=production postcss static_src/css/main.css -o static/css/main.css",
+    "watch:postcss": "postcss static_src/css/main.css -o static/css/main.css --watch --verbose",
+    "dev": "npm-run-all --parallel watch:postcss dj",
+    "build": "npm-run-all build:*"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.36.0",
+    "autoprefixer": "^10.4.14",
+    "cssnano": "^6.0.1",
+    "dotenv": "^16.3.1",
+    "eslint": "^8.41.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.4.24",
+    "postcss-cli": "^11.0.0",
+    "postcss-import": "^16.0.0",
+    "postcss-nesting": "^12.0.0",
+    "prettier": "^3.0.2",
+    "stylelint": "^16.0.1",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}

@@ -1,0 +1,59 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, authenticate
+from django.conf import settings
+from django.urls import reverse
+from django.http import FileResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+from django.views.decorators.cache import cache_control
+from django.views.decorators.http import require_GET
+from .forms import RegisterForm
+from .utils import send_email_to_admin
+
+
+def placeholder(request):
+    context = {}
+    return render(request, "placeholder.html", context)
+
+
+@login_required
+def private_page(request):
+    context = {}
+    return render(request, "private.html", context)
+
+
+@require_GET
+@cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # One day
+def favicon(request):
+    file = (settings.BASE_DIR / "static" / "img" / "seahorse-64x64.png").open("rb")
+    return FileResponse(file)
+
+
+def register(request):
+    if request.method == "POST":
+        form = RegisterForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            # Automatically log in
+            email = form.cleaned_data.get("email")
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(email=email, password=raw_password)
+            login(request, user)
+
+            send_email_to_admin(
+                subject="New portainer_stack user!",
+                message=f"""{email} signed up!\n
+                    https://{get_current_site(request)}{reverse('admin:core_user_changelist')}
+                """,
+            )
+
+            return redirect("index")
+    else:
+        if request.user.is_authenticated:
+            return redirect(reverse("index"))
+
+        form = RegisterForm()
+
+    return render(request, "registration/register.html", {"form": form})

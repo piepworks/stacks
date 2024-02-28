@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}
+  Private Page
+{% endblock title %}
+
+{% block content %}
+  <h1>Private page!</h1>
+
+  <p>Logged in as {{ request.user }}</p>
+  <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button>Log out</button>
+  </form>
+{% endblock content %}

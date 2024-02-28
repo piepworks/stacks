@@ -1,0 +1,55 @@
+default_language_version:
+  python: python3.11
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-yaml
+      - id: end-of-file-fixer
+        exclude: ^static/js/vendor/
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      - id: flake8
+  - repo: https://github.com/Riverside-Healthcare/djLint
+    rev: v1.30.2
+    hooks:
+      - id: djlint-reformat-django
+      - id: djlint-django
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: 'v3.0.0-alpha.9-for-vscode'
+    hooks:
+      - id: prettier
+  - repo: local
+    hooks:
+      - id: pending-migrations
+        name: Check for pending migrations
+        language: system
+        entry: .venv/bin/python manage.py makemigrations --check --dry-run
+        types: [python]
+        pass_filenames: false
+      - id: eslint
+        name: Run ESLint
+        language: system
+        entry: npx eslint --ext .js ./templates/js
+        types: [javascript]
+        pass_filenames: false
+      - id: stylelint
+        name: Run Stylelint
+        language: system
+        entry: npx stylelint "static_src/css/*.css"
+        types: [css]
+        pass_filenames: false
+      - id: playwright
+        name: Run Playwright
+        language: system
+        entry: npx playwright test
+        files: \.(css|html|js)$
+        pass_filenames: false
