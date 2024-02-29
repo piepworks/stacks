@@ -7,7 +7,7 @@ from config.settings import ALLOWED_HOSTS
 from core import views
 
 urlpatterns = [
-    path("", views.placeholder, name="index"),
+    path("", views.home, name="index"),
     path("private-page", views.private_page, name="private-page"),
     path("favicon.ico", views.favicon),
     path("register/", views.register, name="register"),

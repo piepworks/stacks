@@ -11,9 +11,9 @@ from .forms import RegisterForm
 from .utils import send_email_to_admin
 
 
-def placeholder(request):
+def home(request):
     context = {}
-    return render(request, "placeholder.html", context)
+    return render(request, "home.html", context)
 
 
 @login_required
