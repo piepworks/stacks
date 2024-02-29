@@ -11,16 +11,25 @@
   </header>
 
   <div class="grid">
-    {% for book in books %}<div>{{ book }}</div>{% endfor %}
+    {% for book in books %}
+      <div>
+        {% for cover in book.covers.all %}
+          <div>
+            <img width="500"
+                 height="auto"
+                 src="{{ cover.image.url }}"
+                 alt="{{ book.title }} cover">
+          </div>
+        {% endfor %}
+        {{ book }}
+      </div>
+    {% endfor %}
   </div>
 
   <hr>
 
   {% if request.user.is_authenticated %}
     <p>You’re logged in as {{ request.user }}!</p>
-    <p>
-      Now you can see <a href="{% url 'private-page' %}">the private page</a>.
-    </p>
     <form method="post" action="{% url 'logout' %}">
       {% csrf_token %}
       <button>Log out</button>
