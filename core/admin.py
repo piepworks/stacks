@@ -46,9 +46,15 @@ class BookAuthorInline(admin.TabularInline):
 
 
 class BookAdmin(admin.ModelAdmin):
+    list_display = ("title", "authors_list")
     inlines = [BookAuthorInline]
     exclude = ("author",)
     prepopulated_fields = {"slug": ("title",)}
+
+    def authors_list(self, obj):
+        return ", ".join([author.name for author in obj.author.all()])
+
+    authors_list.short_description = "Authors"
 
 
 class AuthorAdmin(admin.ModelAdmin):
