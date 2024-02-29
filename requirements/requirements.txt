@@ -115,6 +115,8 @@ pathspec==0.12.1
     #   djlint
 pexpect==4.9.0
     # via ipython
+pillow==10.2.0
+    # via -r requirements/requirements.in
 pip-lock==2.11.0
     # via -r requirements/requirements.in
 pip-tools==7.4.0

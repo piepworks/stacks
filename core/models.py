@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class UserManager(BaseUserManager):
@@ -48,3 +49,89 @@ class User(AbstractUser):
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=100)
+    bio = models.TextField()
+    date_of_birth = models.DateField()
+    date_of_death = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    author = models.ManyToManyField(Author)
+    published_year = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+class BookExperience(models.Model):
+    """A user's experience with a book in any or multiple formats"""
+
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ("backlog", "Backlog"),
+            ("to-read", "To Read"),
+            ("reading", "Reading"),
+            ("finished", "Finished"),
+            ("dnf", "Did Not Finish"),
+        ],
+    )
+    on_hand = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username}’s experience with {self.book.title}"
+
+
+class BookCover(models.Model):
+    image = models.ImageField(upload_to="covers/")
+    book = models.ForeignKey(
+        BookExperience, on_delete=models.CASCADE, related_name="covers"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Cover of {self.book.book}"
+
+
+class BookReading(models.Model):
+    book = models.ForeignKey(
+        BookExperience, on_delete=models.CASCADE, related_name="readings"
+    )
+    start_date = models.DateField()
+    end_date = models.DateField(null=True, blank=True)
+    finished = models.BooleanField(default=False)
+    rating = models.IntegerField(
+        null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
+    format = models.CharField(
+        max_length=20,
+        choices=[
+            ("physical", "Physical"),
+            ("digital", "Digital"),
+            ("audio", "Audio"),
+        ],
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ["book", "start_date"]
+
+    def __str__(self):
+        return f"{self.book.user.username}’s reading of {self.book.book} starting on {self.start_date}"
