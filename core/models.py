@@ -106,7 +106,7 @@ class BookCover(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Cover of {self.book.book}"
+        return f"Cover of {self.book}"
 
 
 class BookReading(models.Model):

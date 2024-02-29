@@ -17,3 +17,4 @@ htmlcov/
 /playwright-report/
 /playwright/.cache/
 /playwright/.auth/
+/media
