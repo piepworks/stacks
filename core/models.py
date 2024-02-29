@@ -54,8 +54,8 @@ class User(AbstractUser):
 class Author(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
-    bio = models.TextField()
-    date_of_birth = models.DateField()
+    bio = models.TextField(blank=True)
+    date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

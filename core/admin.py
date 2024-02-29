@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group
-from .models import User, Book
+from .models import User, Book, Author
 
 
 @admin.register(User)
@@ -40,5 +40,21 @@ class UserAdmin(DjangoUserAdmin):
     ordering = ("email",)
 
 
+class BookAuthorInline(admin.TabularInline):
+    verbose_name = "Author"
+    model = Book.author.through
+
+
+class BookAdmin(admin.ModelAdmin):
+    inlines = [BookAuthorInline]
+    exclude = ("author",)
+    prepopulated_fields = {"slug": ("title",)}
+
+
+class AuthorAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+
+
 admin.site.unregister(Group)
-admin.site.register(Book)
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(Book, BookAdmin)
