@@ -53,6 +53,7 @@ class User(AbstractUser):
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
     bio = models.TextField()
     date_of_birth = models.DateField()
     date_of_death = models.DateField(null=True, blank=True)
@@ -65,6 +66,7 @@ class Author(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
     author = models.ManyToManyField(Author)
     published_year = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)

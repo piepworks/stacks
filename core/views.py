@@ -9,10 +9,11 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from .forms import RegisterForm
 from .utils import send_email_to_admin
+from .models import Book
 
 
 def home(request):
-    context = {}
+    context = {"books": Book.objects.all()}
     return render(request, "home.html", context)
 
 

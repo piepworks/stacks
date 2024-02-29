@@ -10,6 +10,12 @@
     <h1>Stacks</h1>
   </header>
 
+  <div class="grid">
+    {% for book in books %}<div>{{ book }}</div>{% endfor %}
+  </div>
+
+  <hr>
+
   {% if request.user.is_authenticated %}
     <p>You’re logged in as {{ request.user }}!</p>
     <p>
