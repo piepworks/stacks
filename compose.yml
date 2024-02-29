@@ -2,7 +2,6 @@ version: '3.9'
 services:
   ts:
     image: tailscale/tailscale:latest
-    container_name: ts
     hostname: stacks
     env_file:
       - stack.env
@@ -19,10 +18,9 @@ services:
       - sys_module
     restart: unless-stopped
   django:
-    container_name: django
     build:
       context: .
-      dockerfile: Dockerfile-django
+      dockerfile: Dockerfile
     command: >
       sh -c "
       python manage.py collectstatic --noinput &&
@@ -36,6 +34,7 @@ services:
     network_mode: service:ts
     depends_on:
       - ts
+    restart: unless-stopped
   # TODO
   # nginx:
 
