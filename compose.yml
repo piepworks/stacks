@@ -42,7 +42,7 @@ services:
     container_name: stacks_caddy
     image: caddy:latest
     volumes:
-      - ts_config/stacks_Caddyfile:/etc/caddy/Caddyfile
+      - ./Caddyfile:/etc/caddy/Caddyfile
       - caddy_data:/data
       - caddy_config:/config
     env_file:
