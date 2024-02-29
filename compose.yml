@@ -1,6 +1,7 @@
 version: '3.9'
 services:
   ts:
+    container_name: stacks_ts
     image: tailscale/tailscale:latest
     hostname: stacks
     env_file:
@@ -18,6 +19,7 @@ services:
       - sys_module
     restart: unless-stopped
   django:
+    container_name: stacks_django
     build:
       context: .
       dockerfile: Dockerfile
@@ -35,16 +37,25 @@ services:
     depends_on:
       - ts
     restart: unless-stopped
-  # TODO
-  # nginx:
+  caddy:
+    container_name: stacks_caddy
+    image: caddy:latest
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    env_file:
+      - stack.env
+    network_mode: service:ts
+    depends_on:
+      - ts
+      - django
+    restart: unless-stopped
 
 volumes:
   db:
-    # A separate volume for the persistent SQLite database
-    external: true
-  # TODO
-  # media:
+  caddy_data:
+  caddy_config:
+  ts_lib:
   ts_config:
     external: true
-  ts_lib:
-    driver: local
