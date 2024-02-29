@@ -11,7 +11,7 @@ bootstrap: setup-venv
   pre-commit install
 
 update-venv:
-  pip-compile --resolver=backtracking
+  .venv/bin/pip-compile --resolver=backtracking requirements/requirements.in
   .venv/bin/python -m pip install -r requirements/requirements.txt
 
 shell:
@@ -26,12 +26,12 @@ playwright:
 
 # Update all Python packages
 update-packages:
-  pip-compile --upgrade --resolver=backtracking
+  .venv/bin/pip-compile --upgrade --resolver=backtracking
   .venv/bin/python -m pip install -r requirements/requirements.txt
 
 # Update a single package
 update-a-package package:
-  pip-compile -P {{ package }} --resolver=backtracking
+  .venv/bin/pip-compile -P {{ package }} --resolver=backtracking
   .venv/bin/python -m pip install -r requirements/requirements.txt
 
 build-static-files:
