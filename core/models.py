@@ -94,14 +94,12 @@ class BookExperience(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user.username}’s experience with {self.book.title}"
+        return f"{self.user.username}’s experience with {self.book}"
 
 
 class BookCover(models.Model):
     image = models.ImageField(upload_to="covers/")
-    book = models.ForeignKey(
-        BookExperience, on_delete=models.CASCADE, related_name="covers"
-    )
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
