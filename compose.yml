@@ -1,5 +1,6 @@
 version: '3.9'
 services:
+  # TODO: remove `ts` entirely and rely on Caddy for the reverse proxy?
   ts:
     container_name: stacks_ts
     image: tailscale/tailscale:latest
@@ -37,20 +38,20 @@ services:
     depends_on:
       - ts
     restart: unless-stopped
-  # caddy:
-  #   container_name: stacks_caddy
-  #   image: caddy:latest
-  #   volumes:
-  #     - ./caddy/Caddyfile:/etc/caddy/Caddyfile
-  #     - caddy_data:/data
-  #     - caddy_config:/config
-  #   env_file:
-  #     - stack.env
-  #   network_mode: service:ts
-  #   depends_on:
-  #     - ts
-  #     - django
-  #   restart: unless-stopped
+  caddy:
+    container_name: stacks_caddy
+    image: caddy:latest
+    volumes:
+      - ts_config/stacks_Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    env_file:
+      - stack.env
+    network_mode: service:ts
+    depends_on:
+      - ts
+      - django
+    restart: unless-stopped
 
 volumes:
   db:
