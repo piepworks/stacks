@@ -1,12 +1,9 @@
 version: '3.9'
 services:
   ts:
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile-tailscale
     image: tailscale/tailscale:latest
     container_name: ts
-    hostname: blaze
+    hostname: stacks
     env_file:
       - stack.env
     environment:
@@ -14,8 +11,8 @@ services:
       - TS_SERVE_CONFIG=/config/django-proxy.json
       - TS_STATE_DIR=/var/lib/tailscale
     volumes:
-      - ts-lib:/var/lib/tailscale
-      - blaze_ts_config:/config
+      - ts_lib:/var/lib/tailscale
+      - ts_config:/config
       - /dev/net/tun:/dev/net/tun
     cap_add:
       - net_admin
@@ -39,11 +36,16 @@ services:
     network_mode: service:ts
     depends_on:
       - ts
+  # TODO
+  # nginx:
+
 volumes:
   db:
     # A separate volume for the persistent SQLite database
     external: true
-  blaze_ts_config:
+  # TODO
+  # media:
+  ts_config:
     external: true
-  ts-lib:
+  ts_lib:
     driver: local
