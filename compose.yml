@@ -43,6 +43,10 @@ services:
   caddy:
     container_name: stacks_caddy
     image: caddy:latest
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
     volumes:
       - ts_config:/etc/caddy
       - caddy_data:/data
