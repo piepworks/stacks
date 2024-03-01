@@ -168,10 +168,10 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
 EMAIL_PORT = env("EMAIL_PORT", default=587)
 EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="email@example.com")
-SERVER_EMAIL = env("DEFAULT_FROM_EMAIL", default="email@example.com")
-ADMIN_EMAIL_FROM = env("ADMIN_EMAIL_FROM", default="email@example.com")
-ADMIN_EMAIL_TO = env("ADMIN_EMAIL_TO", default="email@example.com")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="trey@treypiepmeier.com")
+SERVER_EMAIL = env("DEFAULT_FROM_EMAIL", default="trey@treypiepmeier.com")
+ADMIN_EMAIL_FROM = env("ADMIN_EMAIL_FROM", default="trey@treypiepmeier.com")
+ADMIN_EMAIL_TO = env("ADMIN_EMAIL_TO", default="trey@treypiepmeier.com")
 
 # django-storages
 AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
