@@ -25,4 +25,5 @@ if settings.DEBUG:
         path("__reload__/", include("django_browser_reload.urls")),
         path("404", TemplateView.as_view(template_name="404.html")),
     ] + urlpatterns
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
