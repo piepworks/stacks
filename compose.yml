@@ -29,6 +29,8 @@ services:
       python manage.py migrate &&
       gunicorn config.wsgi:application --bind :8000 --workers 2
       "
+    expose:
+      - 8000
     volumes:
       - db:/code/db
     env_file:
@@ -36,6 +38,13 @@ services:
     network_mode: service:ts
     depends_on:
       - ts
+    restart: unless-stopped
+  nginx:
+    container_name: stacks_nginx
+    build: ./nginx
+    depends_on:
+      - ts
+      - django
     restart: unless-stopped
 volumes:
   db:
