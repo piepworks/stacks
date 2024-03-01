@@ -37,6 +37,20 @@ services:
     depends_on:
       - ts
     restart: unless-stopped
+  caddy:
+    container_name: stacks_caddy
+    image: caddy:latest
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ts_config:/etc/caddy
+      - caddy_data:/data
+      - caddy_config:/config
+    env_file:
+      - stack.env
+    network_mode: service:ts
 volumes:
   db:
   caddy_data:
