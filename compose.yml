@@ -1,24 +1,23 @@
 version: '3.9'
 services:
-  # TODO: remove `ts` entirely and rely on Caddy for the reverse proxy?
-  # ts:
-  #   container_name: stacks_ts
-  #   image: tailscale/tailscale:latest
-  #   hostname: stacks
-  #   env_file:
-  #     - stack.env
-  #   environment:
-  #     - TS_EXTRA_ARGS=--advertise-tags=tag:container
-  #     - TS_SERVE_CONFIG=/config/django-proxy.json
-  #     - TS_STATE_DIR=/var/lib/tailscale
-  #   volumes:
-  #     - ts_lib:/var/lib/tailscale
-  #     - ts_config:/config
-  #     - /dev/net/tun:/dev/net/tun
-  #   cap_add:
-  #     - net_admin
-  #     - sys_module
-  #   restart: unless-stopped
+  ts:
+    container_name: stacks_ts
+    image: tailscale/tailscale:latest
+    hostname: stacks
+    env_file:
+      - stack.env
+    environment:
+      - TS_EXTRA_ARGS=--advertise-tags=tag:container
+      - TS_SERVE_CONFIG=/config/django-proxy.json
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - ts_lib:/var/lib/tailscale
+      - ts_config:/config
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
   django:
     container_name: stacks_django
     build:
@@ -30,35 +29,14 @@ services:
       python manage.py migrate &&
       gunicorn config.wsgi:application --bind :8000 --workers 2
       "
-    expose:
-      - 8000
     volumes:
       - db:/code/db
     env_file:
       - stack.env
-    # network_mode: service:ts
-    # depends_on:
-    #   - ts
-    restart: unless-stopped
-  caddy:
-    container_name: stacks_caddy
-    image: caddy:latest
-    ports:
-      - '80:80'
-      - '443:443'
-      - '443:443/udp'
-    volumes:
-      - ts_config:/etc/caddy
-      - caddy_data:/data
-      - caddy_config:/config
-    env_file:
-      - stack.env
-    # network_mode: service:ts
+    network_mode: service:ts
     depends_on:
-      # - ts
-      - django
+      - ts
     restart: unless-stopped
-
 volumes:
   db:
   caddy_data:
