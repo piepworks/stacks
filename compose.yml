@@ -37,13 +37,6 @@ services:
     depends_on:
       - ts
     restart: unless-stopped
-  nginx:
-    container_name: stacks_nginx
-    build: ./nginx
-    depends_on:
-      - ts
-      - django
-    restart: unless-stopped
 volumes:
   db:
   ts_lib:
