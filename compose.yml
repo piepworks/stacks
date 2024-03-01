@@ -30,8 +30,8 @@ services:
       python manage.py migrate &&
       gunicorn config.wsgi:application --bind :8000 --workers 2
       "
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     volumes:
       - db:/code/db
     env_file:
