@@ -149,15 +149,13 @@ if not DEBUG:
     WHITENOISE_MAX_AGE = 60 * 60 * 24  # One day
 
 STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+    },
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
-if DEBUG:
-    # Use the default file system storage for media files in development
-    STORAGES["default"] = {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    }
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -174,6 +172,13 @@ DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="email@example.com")
 SERVER_EMAIL = env("DEFAULT_FROM_EMAIL", default="email@example.com")
 ADMIN_EMAIL_FROM = env("ADMIN_EMAIL_FROM", default="email@example.com")
 ADMIN_EMAIL_TO = env("ADMIN_EMAIL_TO", default="email@example.com")
+
+# django-storages
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = env("AWS_S3_REGION_NAME")
+AWS_S3_ENDPOINT_URL = env("AWS_S3_ENDPOINT_URL")
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 
 # Django Debug Toolbar
 if DEBUG:

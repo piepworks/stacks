@@ -1,4 +1,5 @@
 black
+boto3
 coverage
 dj-database-url
 Django
@@ -6,6 +7,7 @@ django-browser-reload
 django-debug-toolbar
 django-extensions
 django-htmx
+django-storages
 djlint
 environs[django]
 flake8
