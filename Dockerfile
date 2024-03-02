@@ -6,7 +6,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /code
 
-# install Git and Node
+# Install Git and Node
 RUN apt-get update && \
     apt-get install -y git && \
     apt-get remove nodejs npm && \
@@ -17,6 +17,9 @@ RUN apt-get update && \
     echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list && \
     apt-get update && \
     apt-get install -y nodejs
+
+# Install SQLite for running backups
+RUN apt-get install sqlite3
 
 COPY ./requirements/requirements.txt /tmp/requirements.txt
 
