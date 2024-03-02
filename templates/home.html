@@ -15,10 +15,10 @@
       <div>
         {% for cover in book.covers.all %}
           <div>
-            <img width="500"
+            <img width="100"
                  height="auto"
                  src="{{ cover.image.url }}"
-                 alt="{{ book.title }} cover">
+                 alt="{{ cover }}">
           </div>
         {% endfor %}
         {{ book }}
