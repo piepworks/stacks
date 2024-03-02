@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils.text import slugify
+import uuid
 
 
 class UserManager(BaseUserManager):
@@ -102,9 +103,9 @@ class BookExperience(models.Model):
 
 def rename_image(instance, filename):
     extension = filename.split(".")[-1]
-    new_filename = slugify(instance.title)
+    new_filename = slugify(instance.book.title)
 
-    return f"stacks/covers/{instance.id}-{new_filename}.{extension}"
+    return f"stacks/covers/{new_filename}-{uuid.uuid4()}.{extension}"
 
 
 class BookCover(models.Model):
