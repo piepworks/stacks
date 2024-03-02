@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.text import slugify
 
 
 class UserManager(BaseUserManager):
@@ -99,8 +100,15 @@ class BookExperience(models.Model):
         return f"{self.user.username}’s experience with {self.book}"
 
 
+def rename_image(instance, filename):
+    extension = filename.split(".")[-1]
+    new_filename = slugify(instance.title)
+
+    return f"stacks/covers/{instance.id}-{new_filename}.{extension}"
+
+
 class BookCover(models.Model):
-    image = models.ImageField(upload_to="covers/")
+    image = models.ImageField(upload_to=rename_image, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
