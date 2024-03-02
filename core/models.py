@@ -105,7 +105,7 @@ def rename_image(instance, filename):
     extension = filename.split(".")[-1]
     new_filename = slugify(instance.book.title)
 
-    return f"stacks/covers/{new_filename}-{uuid.uuid4()}.{extension}"
+    return f"stacks/covers/{new_filename}_{uuid.uuid4()}.{extension}"
 
 
 class BookCover(models.Model):
