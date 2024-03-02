@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group
-from .models import User, Book, Author, BookCover
+from .models import User, Book, Author, BookCover, BookExperience
 
 
 @admin.register(User)
@@ -70,3 +70,4 @@ class AuthorAdmin(admin.ModelAdmin):
 admin.site.unregister(Group)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Book, BookAdmin)
+admin.site.register(BookExperience)

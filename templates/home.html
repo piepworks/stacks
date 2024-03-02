@@ -10,25 +10,25 @@
     <h1>Stacks</h1>
   </header>
 
-  <div class="grid">
-    {% for book in books %}
-      <div>
-        {% for cover in book.covers.all %}
-          <div>
-            <img width="100"
-                 height="auto"
-                 src="{{ cover.image.url }}"
-                 alt="{{ cover }}">
-          </div>
-        {% endfor %}
-        {{ book }}
-      </div>
-    {% endfor %}
-  </div>
-
-  <hr>
-
   {% if request.user.is_authenticated %}
+    <div class="grid">
+      {% for book in books %}
+        <div>
+          {% for cover in book.book.covers.all %}
+            <div>
+              <img width="100"
+                   height="auto"
+                   src="{{ cover.image.url }}"
+                   alt="{{ cover }}">
+            </div>
+          {% endfor %}
+          {{ book }}
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr>
+
     <p>You’re logged in as {{ request.user }}!</p>
     <form method="post" action="{% url 'logout' %}">
       {% csrf_token %}

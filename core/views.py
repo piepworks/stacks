@@ -9,11 +9,14 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from .forms import RegisterForm
 from .utils import send_email_to_admin
-from .models import Book
+from .models import BookExperience
 
 
 def home(request):
-    context = {"books": Book.objects.all()}
+    context = {}
+    if request.user.is_authenticated:
+        context = {"books": BookExperience.objects.filter(user=request.user)}
+
     return render(request, "home.html", context)
 
 
