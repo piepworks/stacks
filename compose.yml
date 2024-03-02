@@ -42,3 +42,6 @@ volumes:
   ts_lib:
   ts_config:
     external: true
+# ------------------------------#
+# Please update, Portainer! WTF #
+# ------------------------------#
