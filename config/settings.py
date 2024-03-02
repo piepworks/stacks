@@ -13,11 +13,27 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 from environs import Env
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 from warnings import filterwarnings
 
 env = Env()
 # Read .env into os.environ
 env.read_env()
+
+sentry_sdk.init(
+    dsn=env("SENTRY_DSN", default=None),
+    integrations=[
+        DjangoIntegration(),
+    ],
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=env("SENTRY_SAMPLE_RATE"),
+    # If you wish to associate users to errors (assuming you are using
+    # django.contrib.auth) you may enable sending PII data.
+    send_default_pii=True,
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
