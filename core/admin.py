@@ -42,11 +42,13 @@ class UserAdmin(DjangoUserAdmin):
 
 class BookCoverInline(admin.TabularInline):
     model = BookCover
+    extra = 1
 
 
 class BookAuthorInline(admin.TabularInline):
     verbose_name = "Author"
     model = Book.author.through
+    extra = 1
 
 
 class BookAdmin(admin.ModelAdmin):
