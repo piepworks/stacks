@@ -20,9 +20,8 @@ services:
     restart: unless-stopped
   django:
     container_name: stacks_django
-    build:
-      context: .
-      dockerfile: Dockerfile
+    build: .
+    image: stacks_django:0.1
     command: >
       sh -c "
       python manage.py collectstatic --noinput &&
