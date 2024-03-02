@@ -28,7 +28,7 @@ services:
       gunicorn config.wsgi:application --bind :8000 --workers 2
       "
     volumes:
-      - db:/code/db
+      - stacks_db:/code/db
     env_file:
       - stack.env
     network_mode: service:ts
@@ -36,7 +36,8 @@ services:
       - ts
     restart: unless-stopped
 volumes:
-  db:
+  stacks_db:
+    external: true
   ts_lib:
   ts_config:
     external: true
