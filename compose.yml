@@ -21,7 +21,7 @@ services:
   django:
     container_name: stacks_django
     build: .
-    image: stacks_django:0.1
+    image: reading-django:0.1
     command: >
       sh -c "
       python manage.py collectstatic --noinput &&
