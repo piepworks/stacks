@@ -3,6 +3,7 @@ __pycache__/
 .pytest_cache/
 .venv/
 .env
+.env-dietpi
 playwright.env
 !example*.env
 *.sqlite*
