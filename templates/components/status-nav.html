@@ -5,7 +5,7 @@
     {% for s in statuses %}
       <li {% if s.0 == status.slug %}class="active"{% endif %}>
         <a href="{% url 'status' status=s.0 %}">{{ s.1 }}</a>
-        {% if status_counts|get_item:s.0 != 0 %}({{ status_counts|get_item:s.0 }}){% endif %}
+        {% if status_counts|get_item:s.0 != None %}({{ status_counts|get_item:s.0 }}){% endif %}
       </li>
     {% endfor %}
   </ol>
