@@ -1,0 +1,9 @@
+<nav>
+  <ol>
+    {% for s in statuses %}
+      <li {% if s.0 == status.slug %}class="active"{% endif %}>
+        <a href="{% url 'status' status=s.0 %}">{{ s.1 }}</a>
+      </li>
+    {% endfor %}
+  </ol>
+</nav>

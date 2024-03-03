@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  {% include "components/status-nav.html" %}
+
+  <h1>{{ status.name }}</h1>
+
+  <ul class="grid">
+    {% for book in books %}
+      <li>
+        <a href="{{ book.id }}">
+          {% with book.book.covers.all|first as cover %}
+            <img src="{{ cover.image.url }}"
+                 alt="{{ cover }}"
+                 width="100"
+                 height="auto"
+                 title="{{ book.book }}">
+          {% endwith %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+
+{% endblock content %}

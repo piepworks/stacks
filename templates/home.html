@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}
   Stacks
@@ -11,6 +10,8 @@
   </header>
 
   {% if request.user.is_authenticated %}
+    {% include "components/status-nav.html" %}
+
     {% regroup books by status_display as books_grouped %}
 
     {% for status_group in books_grouped %}
