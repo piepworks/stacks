@@ -1,9 +1,19 @@
 @import url('vendor/pico-2.0.3.min.css');
 
 nav ol {
-  display: flex;
+  margin-bottom: 2rem;
 
-  .active a {
-    text-decoration: underline;
+  a {
+    border-radius: 0;
+
+    small {
+      opacity: 0.5;
+    }
+  }
+
+  .active a,
+  a:hover {
+    border-bottom: 2px solid var(--pico-muted-color);
+    text-decoration: none;
   }
 }

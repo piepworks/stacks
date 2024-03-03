@@ -4,8 +4,10 @@
   <ol>
     {% for s in statuses %}
       <li {% if s.0 == status.slug %}class="active"{% endif %}>
-        <a href="{% url 'status' status=s.0 %}">{{ s.1 }}</a>
-        {% if status_counts|get_item:s.0 != None %}({{ status_counts|get_item:s.0 }}){% endif %}
+        <a href="{% url 'status' status=s.0 %}">
+          {{ s.1 }}
+          {% if status_counts|get_item:s.0 != None %}<small>({{ status_counts|get_item:s.0 }})</small>{% endif %}
+        </a>
       </li>
     {% endfor %}
   </ol>
