@@ -8,7 +8,7 @@ from core import views
 
 urlpatterns = [
     path("", views.home, name="index"),
-    path("status/<slug:status>/", views.status, name="status"),
+    path("status/<slug:status>", views.status, name="status"),
     path("favicon.ico", views.favicon),
     path("register/", views.register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
