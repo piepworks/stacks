@@ -17,12 +17,7 @@ def home(request):
     context = {}
 
     if request.user.is_authenticated:
-        context = {
-            "statuses": BookExperience._meta.get_field("status").choices,
-            "books": BookExperience.objects.filter(user=request.user).order_by(
-                "status"
-            ),
-        }
+        return redirect("status", status="backlog")
 
     return render(request, "home.html", context)
 

@@ -9,40 +9,7 @@
     <h1>Stacks</h1>
   </header>
 
-  {% if request.user.is_authenticated %}
-    {% include "components/status-nav.html" %}
-
-    {% regroup books by status_display as books_grouped %}
-
-    {% for status_group in books_grouped %}
-      <h2>{{ status_group.grouper }}</h2>
-      <ul class="grid">
-        {% for experience in status_group.list %}
-          <li>
-            <a href="{{ experience.id }}">
-              {% with experience.book.covers.all|first as cover %}
-                <img src="{{ cover.image.url }}"
-                     alt="{{ cover }}"
-                     width="100"
-                     height="auto"
-                     title="{{ experience.book }}">
-              {% endwith %}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    {% endfor %}
-
-    <hr>
-
-    <p>You’re logged in as {{ request.user }}!</p>
-    <form method="post" action="{% url 'logout' %}">
-      {% csrf_token %}
-      <button>Log out</button>
-    </form>
-  {% else %}
-    <p>
-      <a href="{% url 'login' %}">Log in</a>
-    </p>
-  {% endif %}
+  <div>
+    <a href="{% url 'login' %}">Log in</a>
+  </div>
 {% endblock content %}
