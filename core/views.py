@@ -29,8 +29,6 @@ def home(request):
 @login_required
 def status(request, status):
     books = BookExperience.objects.filter(user=request.user, status=status)
-    # go through every status and count the number of bookexperiences for the current user
-    # for each status
     status_counts = {
         status: BookExperience.objects.filter(user=request.user, status=status).count()
         for status, _ in BookExperience._meta.get_field("status").choices
@@ -38,8 +36,8 @@ def status(request, status):
 
     context = {
         "statuses": BookExperience._meta.get_field("status").choices,
-        "books": books,
         "status_counts": status_counts,
+        "books": books,
         "status": {
             "slug": status,
             "name": BookExperience(status=status).get_status_display(),
