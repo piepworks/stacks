@@ -14,8 +14,13 @@ from .models import BookExperience
 
 def home(request):
     context = {}
+
     if request.user.is_authenticated:
-        context = {"books": BookExperience.objects.filter(user=request.user)}
+        context = {
+            "books": BookExperience.objects.filter(user=request.user).order_by(
+                "status"
+            ),
+        }
 
     return render(request, "home.html", context)
 

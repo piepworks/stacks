@@ -100,6 +100,10 @@ class BookExperience(models.Model):
     def __str__(self):
         return f"{self.user}’s experience with {self.book}"
 
+    @property
+    def status_display(self):
+        return self.get_status_display()
+
 
 def rename_image(instance, filename):
     extension = filename.split(".")[-1]

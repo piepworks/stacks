@@ -11,21 +11,26 @@
   </header>
 
   {% if request.user.is_authenticated %}
-    <div class="grid">
-      {% for book in books %}
-        <div>
-          {% for cover in book.book.covers.all %}
-            <div>
-              <img width="100"
-                   height="auto"
-                   src="{{ cover.image.url }}"
-                   alt="{{ cover }}">
-            </div>
-          {% endfor %}
-          {{ book }}
-        </div>
-      {% endfor %}
-    </div>
+    {% regroup books by status_display as books_grouped %}
+
+    {% for status_group in books_grouped %}
+      <h2>{{ status_group.grouper }}</h2>
+      <ul class="grid">
+        {% for experience in status_group.list %}
+          <li>
+            <a href="{{ experience.id }}">
+              {% with experience.book.covers.all|first as cover %}
+                <img src="{{ cover.image.url }}"
+                     alt="{{ cover }}"
+                     width="100"
+                     height="auto"
+                     title="{{ experience.book }}">
+              {% endwith %}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endfor %}
 
     <hr>
 
