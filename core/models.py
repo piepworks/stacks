@@ -78,9 +78,7 @@ class Book(models.Model):
         return self.title
 
 
-class BookExperience(models.Model):
-    """A user's experience with a book in any or multiple formats"""
-
+class UserBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(
@@ -98,7 +96,7 @@ class BookExperience(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user}’s experience with {self.book}"
+        return f"{self.user}’s interaction with {self.book}"
 
     @property
     def status_display(self):
@@ -124,7 +122,7 @@ class BookCover(models.Model):
 
 class BookReading(models.Model):
     book = models.ForeignKey(
-        BookExperience, on_delete=models.CASCADE, related_name="readings"
+        UserBook, on_delete=models.CASCADE, related_name="readings"
     )
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)

@@ -9,7 +9,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from .forms import RegisterForm
 from .utils import send_email_to_admin
-from .models import BookExperience
+from .models import UserBook
 from django.db import models
 
 
@@ -25,21 +25,21 @@ def home(request):
 @login_required
 def status(request, status):
     status_counts = (
-        BookExperience.objects.filter(user=request.user)
+        UserBook.objects.filter(user=request.user)
         .values("status")
         .annotate(count=models.Count("status"))
     )
-    books = BookExperience.objects.filter(user=request.user, status=status)
+    books = UserBook.objects.filter(user=request.user, status=status)
 
     context = {
-        "statuses": BookExperience._meta.get_field("status").choices,
+        "statuses": UserBook._meta.get_field("status").choices,
         "status_counts": {
             status["status"]: status["count"] for status in status_counts
         },
         "books": books,
         "status": {
             "slug": status,
-            "name": BookExperience(status=status).get_status_display(),
+            "name": UserBook(status=status).get_status_display(),
         },
     }
 
