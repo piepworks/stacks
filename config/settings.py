@@ -183,11 +183,12 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 if DEBUG:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST", default="localhost")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD", default="")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER", default="")
-EMAIL_PORT = env("EMAIL_PORT", default=587)
-EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
+else:
+    EMAIL_HOST = env("EMAIL_HOST")
+    EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+    EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+    EMAIL_PORT = env("EMAIL_PORT")
+    EMAIL_USE_TLS = env.bool("EMAIL_USE_TLS", default=True)
 
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default="trey@treypiepmeier.com")
 SERVER_EMAIL = env("DEFAULT_FROM_EMAIL", default="trey@treypiepmeier.com")
