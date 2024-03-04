@@ -118,7 +118,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": env.dj_db_url("DATABASE_URL", default="sqlite:///db.sqlite"),
+    "default": env.dj_db_url("DATABASE_URL", default="sqlite:///db.sqlite3"),
 }
 
 AUTH_USER_MODEL = "core.User"

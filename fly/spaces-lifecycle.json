@@ -1,0 +1,14 @@
+{
+  "Rules": [
+    {
+      "ID": "Delete older daily backups",
+      "Filter": {
+        "Prefix": "daily-backups/"
+      },
+      "Status": "Enabled",
+      "Expiration": {
+        "Days": 30
+      }
+    }
+  ]
+}

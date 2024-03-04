@@ -20,8 +20,8 @@ RUN apt-get update && \
     apt-get install -y nodejs
 
 # Install Litestream
-RUN wget https://github.com/benbjohnson/litestream/releases/download/v0.3.11/litestream-v0.3.11-linux-amd64.deb \
-    && dpkg -i litestream-v0.3.11-linux-amd64.deb
+RUN wget https://github.com/benbjohnson/litestream/releases/download/v0.3.13/litestream-v0.3.13-linux-amd64.deb \
+    && dpkg -i litestream-v0.3.13-linux-amd64.deb
 
 # Install cron and SQLite
 RUN apt-get install -y cron && \
