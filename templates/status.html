@@ -12,7 +12,7 @@
   <ul class="grid">
     {% for book in books %}
       <li>
-        <a href="{{ book.id }}">
+        <a href="#{{ book.id }}">
           {% with book.book.covers.all|first as cover %}
             <img src="{{ cover.image.url }}"
                  alt="{{ cover }}"

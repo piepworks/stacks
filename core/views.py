@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.conf import settings
 from django.urls import reverse
-from django.http import FileResponse
+from django.http import FileResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.views.decorators.cache import cache_control
@@ -24,6 +24,9 @@ def home(request):
 
 @login_required
 def status(request, status):
+    if status not in dict(UserBook._meta.get_field("status").choices):
+        raise Http404()
+
     status_counts = (
         UserBook.objects.filter(user=request.user)
         .values("status")
