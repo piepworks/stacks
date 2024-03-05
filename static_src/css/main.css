@@ -2,6 +2,12 @@
 
 nav ol {
   margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  @media (min-width: 576px) {
+    display: flex;
+  }
 
   a {
     border-radius: 0;
