@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+
+{% block body_tag %}
+  class="status"
+{% endblock body_tag %}
+
 {% block title %}
   {{ status.name }}
 {% endblock title %}

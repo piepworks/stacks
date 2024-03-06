@@ -25,3 +25,14 @@ nav ol {
     text-decoration: none;
   }
 }
+
+.status main {
+  ul,
+  ol {
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
+}
