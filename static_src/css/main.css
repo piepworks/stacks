@@ -21,7 +21,7 @@ nav ol {
 
   .active a,
   a:hover {
-    border-bottom: 2px solid var(--pico-muted-color);
+    border-bottom: 2px solid var(--pico-primary-background);
     text-decoration: none;
   }
 }
