@@ -1,0 +1,122 @@
+[
+  {
+    "model": "core.book",
+    "pk": 6,
+    "fields": {
+      "title": "Book Title 3",
+      "slug": "book-title-3",
+      "author": [4, 5],
+      "published_year": 2024,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 7,
+    "fields": {
+      "title": "Book Title 4",
+      "slug": "book-title-4",
+      "author": [6],
+      "published_year": 2025,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 8,
+    "fields": {
+      "title": "Book Title 5",
+      "slug": "book-title-5",
+      "author": [7, 8],
+      "published_year": 2026,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 9,
+    "fields": {
+      "title": "Book Title 6",
+      "slug": "book-title-6",
+      "author": [9],
+      "published_year": 2027,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 10,
+    "fields": {
+      "title": "Book Title 7",
+      "slug": "book-title-7",
+      "author": [10, 11],
+      "published_year": 2028,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 11,
+    "fields": {
+      "title": "Book Title 8",
+      "slug": "book-title-8",
+      "author": [12],
+      "published_year": 2029,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 12,
+    "fields": {
+      "title": "Book Title 9",
+      "slug": "book-title-9",
+      "author": [13, 14],
+      "published_year": 2030,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 13,
+    "fields": {
+      "title": "Book Title 10",
+      "slug": "book-title-10",
+      "author": [15],
+      "published_year": 2031,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 14,
+    "fields": {
+      "title": "Book Title 11",
+      "slug": "book-title-11",
+      "author": [16, 17],
+      "published_year": 2032,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.book",
+    "pk": 15,
+    "fields": {
+      "title": "Book Title 12",
+      "slug": "book-title-12",
+      "author": [18],
+      "published_year": 2033,
+      "created_at": "2022-10-01T10:00:00Z",
+      "updated_at": "2022-10-01T10:00:00Z"
+    }
+  }
+]
