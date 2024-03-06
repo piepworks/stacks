@@ -2,4 +2,4 @@
 # */1 * * * * /code/fly/backup.sh >> /var/log/cron.log 2>&1
 
 # 5am Eastern US time every day
-0 9 * * * /code/fly/backup.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/b70c4b59-3b57-4aa4-b76a-e626d309726b
+0 9 * * * /code/fly/backup.sh && curl -fsS -m 10 --retry 5 -o /dev/null https://hc-ping.com/1122d9dd-4c6b-4c42-954d-10e5788dd753
