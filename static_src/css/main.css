@@ -1,16 +1,18 @@
 @import url('vendor/pico.min.css');
 
 nav ol {
-  margin-bottom: 2rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
   @media (min-width: 576px) {
     display: flex;
+    gap: 1rem;
   }
 
   a {
     border-radius: 0;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
 
     small {
       opacity: 0.5;
