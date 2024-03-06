@@ -3,10 +3,11 @@
   {{ status.name }}
 {% endblock title %}
 
-{% block content %}
-
+{% block header %}
   {% include "components/status-nav.html" %}
+{% endblock header %}
 
+{% block content %}
   <h1>{{ status.name }}</h1>
 
   <ul class="grid">

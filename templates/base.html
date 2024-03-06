@@ -18,11 +18,17 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
   </head>
   <body>
+    <header class="container">
+      {% block header %}
+      {% endblock header %}
+    </header>
     <main class="container">
       {% block content %}
       {% endblock content %}
     </main>
     <footer class="container">
+      {% block footer %}
+      {% endblock footer %}
     </footer>
     <script src="{% static 'js/vendor/htmx-1.9.10.min.js' %}" defer></script>
     {% django_htmx_script %}
