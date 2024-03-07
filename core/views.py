@@ -9,9 +9,9 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from .forms import RegisterForm, UserBookForm
+from .forms import RegisterForm, BookForm
 from .utils import send_email_to_admin
-from .models import UserBook
+from .models import Book
 from django.db import models
 
 
@@ -26,27 +26,23 @@ def home(request):
 
 @login_required
 def status(request, status):
-    if status not in dict(UserBook._meta.get_field("status").choices):
+    if status not in dict(Book._meta.get_field("status").choices):
         raise Http404()
 
     status_counts = (
-        UserBook.objects.filter(user=request.user)
-        .values("status")
-        .annotate(count=models.Count("status"))
+        Book.objects.all().values("status").annotate(count=models.Count("status"))
     )
-    books = UserBook.objects.filter(user=request.user, status=status).order_by(
-        "-updated_at"
-    )
+    books = Book.objects.filter(status=status).order_by("-updated_at")
 
     context = {
-        "statuses": UserBook._meta.get_field("status").choices,
+        "statuses": Book._meta.get_field("status").choices,
         "status_counts": {
             status["status"]: status["count"] for status in status_counts
         },
         "books": books,
         "status": {
             "slug": status,
-            "name": UserBook(status=status).get_status_display(),
+            "name": Book(status=status).get_status_display(),
         },
     }
 
@@ -54,53 +50,52 @@ def status(request, status):
 
 
 @login_required
-def userbook_new(request):
+def book_new(request):
     if request.method == "POST":
-        form = UserBookForm(request.POST)
+        form = BookForm(request.POST)
 
         if form.is_valid():
             book = form.save(commit=False)
-            book.user = request.user
             book.save()
-            return redirect("userbook_detail", pk=book.pk)
+            return redirect("book_detail", pk=book.pk)
     else:
-        form = UserBookForm()
+        form = BookForm()
 
-    return render(request, "userbook_form.html", {"form": form})
-
-
-@login_required
-def userbook_detail(request, pk):
-    book = UserBook.objects.get(pk=pk, user=request.user)
-    return render(request, "userbook_detail.html", {"book": book})
+    return render(request, "book_form.html", {"form": form})
 
 
 @login_required
-def userbook_update(request, pk):
-    book = UserBook.objects.get(pk=pk, user=request.user)
-    statuses = UserBook._meta.get_field("status").choices
+def book_detail(request, pk):
+    book = Book.objects.get(pk=pk)
+    return render(request, "book_detail.html", {"book": book})
+
+
+@login_required
+def book_update(request, pk):
+    book = Book.objects.get(pk=pk)
+    statuses = Book._meta.get_field("status").choices
     old_status = book.status
 
     if request.method == "POST":
-        form = UserBookForm(request.POST, instance=book)
+        form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
             messages.success(
                 request,
-                f"{book.book} updated from {dict(statuses).get(old_status)} to {dict(statuses).get(book.status)}",
+                f"{book} updated from {dict(statuses).get(old_status)} to {dict(statuses).get(book.status)}",
             )
 
             return redirect("status", status=book.status)
     else:
-        form = UserBookForm(instance=book)
+        form = BookForm(instance=book)
 
-    return render(request, "userbook_form.html", {"form": form})
+    return render(request, "book_form.html", {"form": form})
 
 
 @require_POST
 @login_required
-def userbook_delete(request, pk):
-    book = get_object_or_404(UserBook, pk=pk, user=request.user)
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     book.delete()
     return redirect("status", status="backlog")
 

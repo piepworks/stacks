@@ -68,16 +68,6 @@ class Book(models.Model):
     slug = models.SlugField(unique=True)
     author = models.ManyToManyField(Author)
     published_year = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.title
-
-
-class UserBook(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     status = models.CharField(
         max_length=20,
         choices=[
@@ -93,7 +83,7 @@ class UserBook(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.user}’s interaction with {self.book}"
+        return self.title
 
     @property
     def status_display(self):
@@ -112,14 +102,13 @@ class BookCover(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        if self.image:
+        # Resize and optimize new images
+        if self.image and self._state.adding:
             self.image = resize_and_optimize_image(self, self.image.name)
 
 
 class BookReading(models.Model):
-    book = models.ForeignKey(
-        UserBook, on_delete=models.CASCADE, related_name="readings"
-    )
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="readings")
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
     finished = models.BooleanField(default=False)
@@ -141,4 +130,4 @@ class BookReading(models.Model):
         unique_together = ["book", "start_date"]
 
     def __str__(self):
-        return f"{self.book.user.username}’s reading of {self.book.book} starting on {self.start_date}"
+        return f"Reading of {self.book} starting on {self.start_date}"

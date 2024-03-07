@@ -5,13 +5,12 @@
               rel="prev"
               onclick="document.querySelector('#book-{{ book.id }}').close('Boooop')"></button>
       <p>
-        <b>Adjust status for <i>{{ book.book.title }}</i></b>
+        <b>Adjust status for <i>{{ book.title }}</i></b>
       </p>
     </header>
-    <form method="post" action="{% url 'userbook_update' book.id %}">
+    <form method="post" action="{% url 'book_update' book.id %}">
       {% csrf_token %}
       <fieldset>
-        <input type="hidden" name="book" value="{{ book.book.id }}">
         <div class="grid">
           {% for status in statuses %}
             <label>

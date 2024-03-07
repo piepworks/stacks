@@ -59,14 +59,3 @@ class Command(BaseCommand):
             urllib.request.urlretrieve(image_url, f"media/{image_name_final}")
             cover.image = image_name_final
             cover.save()
-
-        # For every Book, create a UserBook record for User with id of 1
-        for book in Book.objects.all():
-            book.userbook_set.create(
-                user_id=1,
-                book_id=book.id,
-                status=fake.random_element(
-                    elements=("backlog", "to-read", "reading", "finished", "dnf")
-                ),
-                on_hand=fake.boolean(chance_of_getting_true=50),
-            )
