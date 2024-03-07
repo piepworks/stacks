@@ -13,6 +13,7 @@ from .forms import RegisterForm, BookForm
 from .utils import send_email_to_admin
 from .models import Book
 from django.db import models
+from django.utils.safestring import mark_safe
 
 
 def home(request):
@@ -82,7 +83,12 @@ def book_update(request, pk):
             form.save()
             messages.success(
                 request,
-                f"{book} updated from {dict(statuses).get(old_status)} to {dict(statuses).get(book.status)}",
+                mark_safe(
+                    f"""
+                    <u>{book}</u> updated from <u>{dict(statuses).get(old_status)}</u>
+                    to <u>{dict(statuses).get(book.status)}</u>
+                    """
+                ),
             )
 
             return redirect("status", status=book.status)
