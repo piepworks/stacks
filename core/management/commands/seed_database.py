@@ -15,6 +15,7 @@ class Command(BaseCommand):
         Author.objects.all().delete()
         Book.objects.all().delete()
 
+        # Create Books and Authors
         for _ in range(10):
             author_name = fake.unique.name()
             author_slug = author_name.replace(" ", "-").lower()
@@ -33,6 +34,7 @@ class Command(BaseCommand):
             author = Author.objects.order_by("?").first()
             book.author.add(author)
 
+        # Delete all BookCover records and their associated images
         for cover in BookCover.objects.all():
             cover.image.delete()
         BookCover.objects.all().delete()
@@ -45,12 +47,12 @@ class Command(BaseCommand):
             # Get file name from `image_url` and remove any query parameters
             image_name = image_url.split("/")[-1].split("?")[0]
             image_name_final = f"{rename_image(cover, image_name)}.jpg"
-
+            # Download the image to the media folder
             urllib.request.urlretrieve(image_url, f"media/{image_name_final}")
             cover.image = image_name_final
             cover.save()
 
-        # For every Book, create a UserBook record for user pk 1
+        # For every Book, create a UserBook record for User with pk of 1
         for book in Book.objects.all():
             book.userbook_set.create(
                 user_id=1,

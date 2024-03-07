@@ -15,5 +15,6 @@
     "*.html": "django-html",
     "*.js": "javascript",
     "*.svg": "django-html"
-  }
+  },
+  "cSpell.words": ["userbook"]
 }
