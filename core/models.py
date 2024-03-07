@@ -2,8 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.utils.text import slugify
-import uuid
+from core.image_helpers import rename_image, resize_and_optimize_image
 
 
 class UserManager(BaseUserManager):
@@ -101,13 +100,6 @@ class UserBook(models.Model):
         return self.get_status_display()
 
 
-def rename_image(instance, filename):
-    extension = filename.split(".")[-1]
-    new_filename = slugify(instance.book.title.replace("/", ""))
-
-    return f"stacks/covers/{new_filename}_{uuid.uuid4()}.{extension}"
-
-
 class BookCover(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
@@ -116,6 +108,12 @@ class BookCover(models.Model):
 
     def __str__(self):
         return f"Cover of {self.book}"
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if self.image:
+            self.image = resize_and_optimize_image(self, self.image.name)
 
 
 class BookReading(models.Model):

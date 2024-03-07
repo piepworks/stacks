@@ -20,6 +20,11 @@ class Command(BaseCommand):
         fake = Faker()
         num_books_authors = kwargs["num"]
 
+        # Delete all BookCover records and their associated images
+        for cover in BookCover.objects.all():
+            cover.image.delete()
+        BookCover.objects.all().delete()
+
         Author.objects.all().delete()
         Book.objects.all().delete()
 
@@ -41,11 +46,6 @@ class Command(BaseCommand):
         for book in Book.objects.all():
             author = Author.objects.order_by("?").first()
             book.author.add(author)
-
-        # Delete all BookCover records and their associated images
-        for cover in BookCover.objects.all():
-            cover.image.delete()
-        BookCover.objects.all().delete()
 
         # Download a Cover for every Book
         for book in Book.objects.all():
