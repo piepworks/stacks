@@ -1,6 +1,5 @@
 import requests
 import urllib
-
 from django.core.management.base import BaseCommand
 from faker import Faker
 from core.models import Author, Book, BookCover, rename_image
@@ -9,14 +8,23 @@ from core.models import Author, Book, BookCover, rename_image
 class Command(BaseCommand):
     help = "Create random stuff to seed the database"
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--num",
+            type=int,
+            default=10,
+            help="Number of books and authors to create (default: 10)",
+        )
+
     def handle(self, *args, **kwargs):
         fake = Faker()
+        num_books_authors = kwargs["num"]
 
         Author.objects.all().delete()
         Book.objects.all().delete()
 
         # Create Books and Authors
-        for _ in range(10):
+        for _ in range(num_books_authors):
             author_name = fake.unique.name()
             author_slug = author_name.replace(" ", "-").lower()
             Author.objects.create(name=author_name, slug=author_slug, bio=fake.text())
@@ -52,7 +60,7 @@ class Command(BaseCommand):
             cover.image = image_name_final
             cover.save()
 
-        # For every Book, create a UserBook record for User with pk of 1
+        # For every Book, create a UserBook record for User with id of 1
         for book in Book.objects.all():
             book.userbook_set.create(
                 user_id=1,
