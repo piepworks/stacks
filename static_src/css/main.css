@@ -30,6 +30,9 @@ nav ol {
   ul,
   ol {
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
   }
 
   li {
