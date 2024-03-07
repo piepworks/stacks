@@ -103,7 +103,7 @@ class UserBook(models.Model):
 
 def rename_image(instance, filename):
     extension = filename.split(".")[-1]
-    new_filename = slugify(instance.book.title)
+    new_filename = slugify(instance.book.title.replace("/", ""))
 
     return f"stacks/covers/{new_filename}_{uuid.uuid4()}.{extension}"
 

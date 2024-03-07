@@ -10,6 +10,7 @@ django-htmx
 django-storages
 djlint
 environs[django]
+Faker
 flake8
 gunicorn
 ipython
@@ -18,5 +19,6 @@ pip-lock
 pip-tools
 pre-commit
 pytest-django
+requests
 sentry-sdk
 whitenoise
