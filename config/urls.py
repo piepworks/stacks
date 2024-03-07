@@ -9,6 +9,14 @@ from core import views
 urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
+    # UserBook
+    # --------
+    path("book/new", views.userbook_new, name="userbook_new"),  # C
+    path("book/<int:pk>", views.userbook_detail, name="userbook_detail"),  # R
+    path("book/<int:pk>/update", views.userbook_update, name="userbook_update"),  # U
+    path("book/<int:pk>/delete", views.userbook_delete, name="userbook_delete"),  # D
+    # Boilerplate
+    # -----------
     path("favicon.ico", views.favicon),
     path("register/", views.register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),

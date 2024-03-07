@@ -8,23 +8,23 @@
         <b>Adjust status for <i>{{ book.book.title }}</i></b>
       </p>
     </header>
-    <main>
-      <form action="#">
-        <fieldset>
-          <div class="grid">
-            {% for status in statuses %}
-              <label>
-                <input type="radio"
-                       name="status"
-                       value="{{ status.0 }}"
-                       {% if status.0 == book.status %}checked{% endif %}>
-                {{ status.1 }}
-              </label>
-            {% endfor %}
-          </div>
-        </fieldset>
-        <input type="submit" value="Save">
-      </form>
-    </main>
+    <form method="post" action="{% url 'userbook_update' book.id %}">
+      {% csrf_token %}
+      <fieldset>
+        <input type="hidden" name="book" value="{{ book.book.id }}">
+        <div class="grid">
+          {% for status in statuses %}
+            <label>
+              <input type="radio"
+                     name="status"
+                     value="{{ status.0 }}"
+                     {% if status.0 == book.status %}checked{% endif %}>
+              {{ status.1 }}
+            </label>
+          {% endfor %}
+        </div>
+      </fieldset>
+      <input type="submit" value="Save">
+    </form>
   </article>
 </dialog>
