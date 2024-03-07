@@ -1,0 +1,30 @@
+<dialog id="book-{{ book.id }}">
+  <article>
+    <header>
+      <button aria-label="Close"
+              rel="prev"
+              onclick="document.querySelector('#book-{{ book.id }}').close('Boooop')"></button>
+      <p>
+        <b>Adjust status for <i>{{ book.book.title }}</i></b>
+      </p>
+    </header>
+    <main>
+      <form action="#">
+        <fieldset>
+          <div class="grid">
+            {% for status in statuses %}
+              <label>
+                <input type="radio"
+                       name="status"
+                       value="{{ status.0 }}"
+                       {% if status.0 == book.status %}checked{% endif %}>
+                {{ status.1 }}
+              </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <input type="submit" value="Save">
+      </form>
+    </main>
+  </article>
+</dialog>

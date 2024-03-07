@@ -18,7 +18,8 @@
   <ul>
     {% for book in books %}
       <li>
-        <a href="#{{ book.id }}">
+        <a href="#{{ book.id }}"
+           onclick="document.querySelector('#book-{{ book.id }}').showModal()">
           {% with book.book.covers.all|first as cover %}
             <img src="{{ cover.image.url }}"
                  alt="{{ cover }}"
@@ -27,6 +28,7 @@
                  title="{{ book.book }}">
           {% endwith %}
         </a>
+        {% include "components/status-modal.html" %}
       </li>
     {% endfor %}
   </ul>
