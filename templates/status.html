@@ -31,7 +31,7 @@
   <ul>
     {% for book in books %}
       <li>
-        <a hx-boost="true" href="{% url 'book_detail' book.id %}">
+        <a href="{% url 'book_detail' book.id %}">
           {% with book.covers.all|first as cover %}
             <img src="{{ cover.image.url }}"
                  alt="{{ cover }}"
