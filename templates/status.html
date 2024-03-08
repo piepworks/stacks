@@ -15,10 +15,18 @@
 {% block content %}
   <h1>{{ status.name }}</h1>
 
-  <div style="background: dodgerblue;
-              color: yellow;
-              padding: 2rem;
-              margin-bottom: 2rem">{{ finished_counts }}</div>
+  {% if finished_counts %}
+    <dl class="finished-counts">
+      {% for count in finished_counts reversed %}
+        <div>
+          <dt>{{ count.readings__end_date__year }}</dt>
+          <dd>
+            {{ count.count }}
+          </dd>
+        </div>
+      {% endfor %}
+    </dl>
+  {% endif %}
 
   <ul>
     {% for book in books %}
