@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}Edit {{ book }}{% endblock title %}
+
+{% block body_tag %}class="form-page"{% endblock body_tag %}
+
 {% block content %}
   <h1>Editing <u>{{ book }}</u></h1>
 
@@ -11,8 +15,7 @@
     <hr>
 
     {{ form }}
-    <div>
-      <button>Save</button>
-    </div>
+
+    <button>Save</button>
   </form>
 {% endblock content %}

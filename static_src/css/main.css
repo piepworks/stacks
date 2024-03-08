@@ -116,3 +116,9 @@ button.link {
     color: var(--pico-primary-hover);
   }
 }
+
+.form-page {
+  form button {
+    width: 100%;
+  }
+}
