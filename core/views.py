@@ -119,6 +119,7 @@ def book_update(request, pk):
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
+    messages.success(request, mark_safe(f"<u>{book}</u> deleted"))
     return redirect("status", status="backlog")
 
 

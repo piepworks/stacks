@@ -107,12 +107,12 @@ dialog .grid {
 button.link {
   background: none;
   border: none;
-  color: var(--pico-primary-background);
+  color: var(--pico-primary);
   text-decoration: underline;
   cursor: pointer;
+  padding: 0;
 
   &:hover {
-    text-decoration: none;
-    color: var(--pico-primary-foreground);
+    color: var(--pico-primary-hover);
   }
 }

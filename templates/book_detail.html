@@ -8,9 +8,15 @@
 {% block content %}
   <h1>{{ book }}</h1>
 
-  <div>
-    <a href="{% url 'book_update' book.id %}">Edit</a>
-  </div>
+  <ul>
+    <li><a href="{% url 'book_update' book.id %}">Edit</a></li>
+    <li>
+      <form onclick="return confirm('Are you sure?')" action="{% url 'book_delete' book.id %}" method="post">
+        {% csrf_token %}
+        <button class="link">Delete</button>
+      </form>
+    </li>
+  </ul>
 
   <div>
     {% for cover in book.covers.all %}

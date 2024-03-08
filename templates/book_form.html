@@ -1,10 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>{{ book }}</h1>
+  <h1>Editing <u>{{ book }}</u></h1>
 
   <form method="post">
     {% csrf_token %}
+    <div>
+      To do: Cover images, add/edit authors
+    </div>
+    <hr>
+
     {{ form }}
     <div>
       <button>Save</button>
