@@ -95,6 +95,8 @@ def book_update(request, pk):
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
+
+            # TODO: customize message based on what was actually updated
             messages.success(
                 request,
                 mark_safe(
@@ -109,7 +111,7 @@ def book_update(request, pk):
     else:
         form = BookForm(instance=book)
 
-    return render(request, "book_form.html", {"form": form})
+    return render(request, "book_form.html", {"book": book, "form": form})
 
 
 @require_POST

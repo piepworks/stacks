@@ -67,7 +67,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     author = models.ManyToManyField(Author)
-    published_year = models.IntegerField()
+    published_year = models.IntegerField(blank=True, null=True)
     status = models.CharField(
         max_length=20,
         choices=[

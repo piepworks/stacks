@@ -1,7 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Book Form</h1>
+  <h1>{{ book }}</h1>
 
-  {{ form }}
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <div>
+      <button>Save</button>
+    </div>
+  </form>
 {% endblock content %}

@@ -9,11 +9,25 @@
   <h1>{{ book }}</h1>
 
   <div>
+    <a href="{% url 'book_update' book.id %}">Edit</a>
+  </div>
+
+  <div>
     {% for cover in book.covers.all %}
       <img width="300"
            height="auto"
            alt="{{ cover }}"
            src="{{ cover.image.url }}">
     {% endfor %}
+  </div>
+
+  <div>
+    <p>Authors:</p>
+    <ul>
+      {% for author in book.author.all %}<li>{{ author }}</li>{% endfor %}
+    </ul>
+    <p>Published Year: {{ book.published_year }}</p>
+    <p>Status: {{ book.status }}</p>
+    <p>On Hand: {{ book.on_hand }}</p>
   </div>
 {% endblock content %}
