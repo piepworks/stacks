@@ -101,9 +101,7 @@ class BookCover(models.Model):
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-
-        # Resize and optimize new images
-        if self.image and self._state.adding:
+        if self.image and self.image.width > 600:
             self.image = resize_and_optimize_image(self, self.image.name)
 
 
