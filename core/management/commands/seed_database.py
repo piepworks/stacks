@@ -2,7 +2,8 @@ import requests
 import urllib
 from django.core.management.base import BaseCommand
 from faker import Faker
-from core.models import Author, Book, BookCover, rename_image
+from core.models import Author, Book, BookCover, BookReading, rename_image
+from random import randint
 
 
 class Command(BaseCommand):
@@ -62,3 +63,24 @@ class Command(BaseCommand):
             urllib.request.urlretrieve(image_url, f"media/{image_name_final}")
             cover.image = image_name_final
             cover.save()
+
+        # Create BookReadings for every Book
+        for book in Book.objects.all():
+            start_date = fake.date_between(start_date="-1y", end_date="today")
+            end_date = None
+            if randint(0, 1):
+                end_date = fake.date_between(start_date=start_date, end_date="today")
+            finished = bool(randint(0, 1))
+            rating = None
+            if finished:
+                rating = randint(1, 5)
+            format_choices = ["physical", "digital", "audio"]
+            format = format_choices[randint(0, 2)]
+            BookReading.objects.create(
+                book=book,
+                start_date=start_date,
+                end_date=end_date,
+                finished=finished,
+                rating=rating,
+                format=format,
+            )
