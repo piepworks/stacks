@@ -83,7 +83,7 @@ dialog .grid {
 
   > div {
     padding: 0.25rem 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0.3rem;
     background: rgb(0 0 0 / 10%);
 
     @media (prefers-color-scheme: dark) {
