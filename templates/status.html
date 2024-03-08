@@ -15,6 +15,11 @@
 {% block content %}
   <h1>{{ status.name }}</h1>
 
+  <div style="background: dodgerblue;
+              color: yellow;
+              padding: 2rem;
+              margin-bottom: 2rem">{{ finished_counts }}</div>
+
   <ul>
     {% for book in books %}
       <li>

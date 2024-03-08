@@ -35,11 +35,21 @@ def status(request, status):
     )
     books = Book.objects.filter(status=status).order_by("-updated_at")
 
+    # If status is `finished`` get counts of how many (unique?) Books have
+    # associated BookReadings that were completed in each year
+    if status == "finished":
+        finished_counts = (
+            Book.objects.filter(readings__end_date__isnull=False)
+            .values("readings__end_date__year")
+            .annotate(count=models.Count("readings__end_date__year"))
+        )
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
         "status_counts": {
             status["status"]: status["count"] for status in status_counts
         },
+        "finished_counts": finished_counts if status == "finished" else None,
         "books": books,
         "status": {
             "slug": status,
