@@ -37,6 +37,8 @@ nav ol {
 
   li {
     list-style: none;
+    display: flex;
+    flex-direction: column;
   }
 }
 
@@ -99,5 +101,18 @@ dialog .grid {
   dd {
     margin: 0;
     opacity: 0.75;
+  }
+}
+
+button.link {
+  background: none;
+  border: none;
+  color: var(--pico-primary-background);
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+    color: var(--pico-primary-foreground);
   }
 }

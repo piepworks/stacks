@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+  {{ book }}
+{% endblock title %}
+
+{% block content %}
+  <h1>{{ book }}</h1>
+
+  <div>
+    {% for cover in book.covers.all %}
+      <img width="300"
+           height="auto"
+           alt="{{ cover }}"
+           src="{{ cover.image.url }}">
+    {% endfor %}
+  </div>
+{% endblock content %}
