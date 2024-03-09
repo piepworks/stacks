@@ -9,13 +9,13 @@
 
   <form method="post">
     {% csrf_token %}
-    <div>
-      To do: Cover images, add/edit authors
-    </div>
-    <hr>
-
-    {{ form }}
-
-    <button>Save</button>
+    <fieldset>
+      <div>
+        To do: Cover images, add/edit authors
+      </div>
+      <hr>
+      {{ form }}
+      <input type="submit" value="Save">
+    </fieldset>
   </form>
 {% endblock content %}

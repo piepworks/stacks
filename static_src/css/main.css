@@ -116,9 +116,3 @@ button.link {
     text-decoration: underline;
   }
 }
-
-.form-page {
-  form button {
-    width: 100%;
-  }
-}
