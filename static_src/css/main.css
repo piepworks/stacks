@@ -173,3 +173,18 @@ button.link {
     text-decoration: underline;
   }
 }
+
+.header-actions {
+  gap: 1rem;
+  margin: 1rem 0;
+
+  @media (min-width: 1024px) {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  a,
+  button {
+    padding: 0.25rem 1rem;
+  }
+}

@@ -6,15 +6,14 @@
 {% endblock title %}
 
 {% block content %}
-  <h1>{{ book }}</h1>
-
-  <form action="{% url 'book_delete' book.id %}" method="post">
-    <div role="group">
+  <div class="header-actions">
+    <h1>{{ book }}</h1>
+    <form action="{% url 'book_delete' book.id %}" method="post">
+      {% csrf_token %}
       <a role="button" href="{% url 'book_update' book.id %}">Edit</a>
-        {% csrf_token %}
-        <button class="contrast" onclick="return confirm('Are you sure?')">Delete</button>
-      </div>
+      <button class="contrast" onclick="return confirm('Are you sure?')">Delete</button>
     </form>
+  </div>
 
   <div>
     {% for cover in book.covers.all %}
