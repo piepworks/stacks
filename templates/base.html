@@ -19,6 +19,28 @@
   </head>
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
+      <nav>
+        <ul>
+          <li><strong>📚 Stacks</strong></li>
+        </ul>
+        <ul>
+          <li>
+            {% if '/status/' in request.path %}
+              Books
+            {% else %}
+              <a class="current" href="{% url 'status' status="backlog" %}">Books</a>
+            {% endif %}
+          </li>
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button class="link" onclick="return confirm('Do you want to log out?')">
+                  <span>Log out</span>
+              </button>
+          </form>
+          </li>
+        </ul>
+      </nav>
       {% block header %}
       {% endblock header %}
 

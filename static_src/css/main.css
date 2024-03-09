@@ -108,12 +108,12 @@ button.link {
   background: none;
   border: none;
   color: var(--pico-primary);
-  text-decoration: underline;
   cursor: pointer;
   padding: 0;
 
   &:hover {
     color: var(--pico-primary-hover);
+    text-decoration: underline;
   }
 }
 
