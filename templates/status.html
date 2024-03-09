@@ -1,4 +1,6 @@
 {% extends "base.html" %}
+{% load get_next_status %}
+{% load get_previous_status %}
 
 {% block body_tag %}
   class="status"
@@ -30,7 +32,7 @@
 
   <ul>
     {% for book in books %}
-      <li>
+      <li class="book">
         <a href="{% url 'book_detail' book.id %}">
           {% with book.covers.all|first as cover %}
             <img src="{{ cover.image.url }}"
@@ -40,8 +42,32 @@
                  title="{{ book }}">
           {% endwith %}
         </a>
-        <button class="link"
-                onclick="document.querySelector('#book-{{ book.id }}').showModal()">Adjust status</button>
+        <div class="title" title="{{ book }}">{{ book }}</div>
+        <div class="actions">
+          {% if book.status|get_previous_status != None %}
+          <form action="{% url 'book_update' book.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
+            <button class="previous-status">Previous status</button>
+          </form>
+          {% else %}
+          <span>&nbsp;</span>
+          {% endif %}
+
+          <button class="adjust-status" onclick="document.querySelector('#book-{{ book.id }}').showModal()">
+            Adjust status
+          </button>
+
+          {% if book.status|get_next_status != None %}
+          <form action="{% url 'book_update' book.id %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
+            <button class="next-status">Next status</button>
+          </form>
+          {% else %}
+          <span>&nbsp;</span>
+          {% endif %}
+        </div>
         {% include "components/status-modal.html" %}
       </li>
     {% endfor %}

@@ -39,6 +39,59 @@ nav ol {
     list-style: none;
     display: flex;
     flex-direction: column;
+    width: 150px;
+    text-overflow: ellipsis;
+
+    .title {
+      overflow: hidden;
+      width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      padding: 0.5rem 0;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      form {
+        display: flex;
+      }
+
+      button {
+        font-size: 0;
+        padding: 0.75rem;
+        background-color: var(--pico-primary);
+
+        &:hover {
+          background-color: var(--pico-primary-hover);
+        }
+      }
+    }
+
+    .previous-status {
+      /* https://remixicon.com/icon/skip-left-line */
+      mask: 0 0
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M13.9142 12L18.7071 16.7929L17.2929 18.2071L11.0858 12L17.2929 5.79291L18.7071 7.20712L13.9142 12ZM7 6.00002L7 18H5L5 6.00002L7 6.00002Z'%3E%3C/path%3E%3C/svg%3E")
+        no-repeat;
+    }
+
+    .next-status {
+      /* https://remixicon.com/icon/skip-right-line */
+      mask: 0 0
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M10.0858 12L5.29291 16.7929L6.70712 18.2071L12.9142 12L6.70712 5.79291L5.29291 7.20712L10.0858 12ZM17 6.00002L17 18H15L15 6.00002L17 6.00002Z'%3E%3C/path%3E%3C/svg%3E")
+        no-repeat;
+    }
+
+    button.adjust-status {
+      /* https://remixicon.com/icon/settings-6-line */
+      padding: 0.6rem;
+      mask: 0 0
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M17.5 2.47363L23 11.9999L17.5 21.5262H6.5L1 11.9999L6.5 2.47363H17.5ZM16.3453 4.47363H7.6547L3.3094 11.9999L7.6547 19.5262H16.3453L20.6906 11.9999L16.3453 4.47363ZM8.63398 8.16979L10.366 7.16979L15.366 15.83L13.634 16.83L8.63398 8.16979Z'%3E%3C/path%3E%3C/svg%3E")
+        no-repeat;
+    }
   }
 }
 
