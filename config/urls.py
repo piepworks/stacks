@@ -6,6 +6,11 @@ from django.views.generic.base import TemplateView
 from config.settings import ALLOWED_HOSTS
 from core import views
 
+admin.site.site_header = "Stacks Admin"
+admin.site.site_title = "Stacks Admin"
+admin.site.index_title = "Stacks innards"
+
+
 urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
