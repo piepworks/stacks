@@ -88,8 +88,8 @@ def book_detail(request, pk):
 @login_required
 def book_update(request, pk):
     book = Book.objects.get(pk=pk)
-    statuses = Book._meta.get_field("status").choices
-    old_status = book.status
+    # statuses = Book._meta.get_field("status").choices
+    # old_status = book.status
 
     if request.method == "POST":
         form = BookForm(request.POST, instance=book)
@@ -99,12 +99,7 @@ def book_update(request, pk):
             # TODO: customize message based on what was actually updated
             messages.success(
                 request,
-                mark_safe(
-                    f"""
-                    <u>{book}</u> updated from <u>{dict(statuses).get(old_status)}</u>
-                    to <u>{dict(statuses).get(book.status)}</u>
-                    """
-                ),
+                f"{book} updated",
             )
 
             return redirect("status", status=book.status)
