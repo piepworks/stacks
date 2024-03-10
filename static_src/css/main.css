@@ -1,4 +1,5 @@
 @import url('vendor/pico.min.css');
+@import url('includes/tom-select.css');
 
 nav ol {
   display: grid;

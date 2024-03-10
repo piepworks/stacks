@@ -1,0 +1,35 @@
+.ts-control,
+.ts-dropdown {
+  background: var(--pico-form-element-background-color) !important;
+  border-color: var(--pico-form-element-border-color) !important;
+  border-radius: var(--pico-border-radius) !important;
+
+  &,
+  input {
+    color: var(--pico-form-element-color) !important;
+    font-size: 1rem !important;
+    line-height: var(--pico-line-height) !important;
+  }
+
+  .item,
+  .option.active {
+    color: white !important;
+    border-radius: var(--pico-border-radius) !important;
+    background-color: var(--pico-primary) !important;
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+
+    @media (prefers-color-scheme: dark) {
+      color: black !important;
+    }
+  }
+
+  input {
+    height: auto;
+    width: auto;
+  }
+}
+
+.ts-dropdown {
+  border-top: 1px solid var(--pico-form-element-border-color) !important;
+}

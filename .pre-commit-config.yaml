@@ -7,7 +7,7 @@ repos:
     hooks:
       - id: check-yaml
       - id: end-of-file-fixer
-        exclude: ^static/js/vendor/|^static_src/css/vendor/
+        exclude: ^static/js/vendor/|^static/css/vendor/|^static_src/css/vendor/
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
   - repo: https://github.com/psf/black
