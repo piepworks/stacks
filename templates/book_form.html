@@ -20,7 +20,10 @@
             </label>
           {% else %}
             <label>
-              {{ field.label_tag }}
+              {{ field.label }}
+              {% if field.name == 'author' %}
+                <a href="#add">add another</a>
+              {% endif %}
               {{ field }}
             </label>
           {% endif %}
