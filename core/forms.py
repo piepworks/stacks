@@ -15,6 +15,7 @@ class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
         self.fields["author"].required = False
+        self.fields["author"].label = "Author(s)"
 
     class Meta:
         model = Book

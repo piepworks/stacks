@@ -13,15 +13,11 @@
 
   .item,
   .option.active {
-    color: white !important;
+    color: var(--pico-background-color) !important;
     border-radius: var(--pico-border-radius) !important;
     background-color: var(--pico-primary) !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
-
-    @media (prefers-color-scheme: dark) {
-      color: black !important;
-    }
   }
 
   input {
