@@ -9,8 +9,7 @@ playwright.env
 *.sqlite*
 node_modules/
 staticfiles/
-static/css/*.css
-static/css/*.map
+static/css/main.css
 htmlcov/
 .coverage
 .test_project/
