@@ -189,3 +189,12 @@ button.link {
     padding: 0.25rem 1rem;
   }
 }
+
+fieldset > div + div {
+  margin-top: 2rem;
+}
+
+fieldset > .checkbox,
+fieldset > .radio {
+  margin-top: 1rem;
+}

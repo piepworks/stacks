@@ -10,11 +10,23 @@
   <form method="post">
     {% csrf_token %}
     <fieldset>
-      <div>
-        To do: Cover images, add/edit authors
-      </div>
-      <hr>
-      {{ form }}
+      {% for field in form %}
+        <div{% if field.name == "on_hand" %} class="checkbox"{% endif %}>
+          {{ field.errors }}
+          {% if field.name == "on_hand" %}
+            <label>
+              {{ field }}
+              {{ field.label }}
+            </label>
+          {% else %}
+            <label>
+              {{ field.label_tag }}
+              {{ field }}
+            </label>
+          {% endif %}
+        </div>
+      {% endfor %}
+
       <input type="submit" value="Save">
     </fieldset>
   </form>
