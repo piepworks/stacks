@@ -22,7 +22,7 @@
             <label>
               {{ field.label }}
               {% if field.name == 'author' %}
-                <a href="#add" onclick="document.querySelector('#author-new').showModal()">add another</a>
+                <a href="{% url 'admin:core_author_add' %}" onclick="event.preventDefault(); document.querySelector('#author-new').showModal()">add another</a>
               {% endif %}
               {{ field }}
             </label>
