@@ -80,6 +80,11 @@ def book_new(request):
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
 
+        if "new_author" in request.GET:
+            # Append the new author
+            new_authors = request.GET.getlist("new_author")
+            form.fields["author"].initial = new_authors
+
     return render(
         request,
         "book_form.html",
@@ -156,8 +161,8 @@ def author_new(request):
     )
     messages.success(request, f"Author {author['name']} added")
     referer = request.META.get("HTTP_REFERER", "index")
-    if "new_author" in referer:
-        # append the new author to the list of authors
+    if "?" in referer:
+        # append the new author to the existing querystring
         return redirect(referer + f"&new_author={a.pk}")
     else:
         return redirect(referer + f"?new_author={a.pk}")
