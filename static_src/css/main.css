@@ -209,3 +209,20 @@ fieldset > .checkbox,
 fieldset > .radio {
   margin-top: 1rem;
 }
+
+.covers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 2rem;
+
+  img {
+    border: 0.25rem solid rgb(0 0 0 / 20%);
+    border-radius: 0.5rem;
+
+    @media (prefers-color-scheme: dark) {
+      border-color: rgb(255 255 255 / 20%);
+    }
+  }
+}

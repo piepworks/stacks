@@ -98,7 +98,18 @@ def book_new(request):
 @login_required
 def book_detail(request, pk):
     book = Book.objects.get(pk=pk)
-    return render(request, "book_detail.html", {"book": book})
+
+    return render(
+        request,
+        "book_detail.html",
+        {
+            "book": book,
+            "status": {
+                "slug": book.status,
+                "name": book.get_status_display(),
+            },
+        },
+    )
 
 
 @login_required

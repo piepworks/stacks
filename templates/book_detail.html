@@ -6,31 +6,50 @@
 {% endblock title %}
 
 {% block content %}
-  <div class="header-actions">
+  <section class="header-actions">
     <h1>{{ book }}</h1>
     <form action="{% url 'book_delete' book.id %}" method="post">
       {% csrf_token %}
       <a role="button" href="{% url 'book_update' book.id %}">Edit</a>
       <button class="contrast" onclick="return confirm('Are you sure?')">Delete</button>
     </form>
-  </div>
+  </section>
 
-  <div>
+  <section class="covers">
     {% for cover in book.covers.all %}
       <img width="300"
            height="auto"
            alt="{{ cover }}"
            src="{{ cover.image.url }}">
     {% endfor %}
-  </div>
+  </section>
 
-  <div>
-    <p>Authors:</p>
-    <ul>
-      {% for author in book.author.all %}<li>{{ author }}</li>{% endfor %}
-    </ul>
-    <p>Published Year: {{ book.published_year }}</p>
-    <p>Status: {{ book.status }}</p>
-    <p>On Hand: {{ book.on_hand }}</p>
-  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
+        <th>Published Year</th>
+        <th>Status</th>
+        <th>On Hand</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          {% if book.author.all.count > 1 %}
+            <ul>
+              {% for author in book.author.all %}
+                <li>{{ author }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            {{ book.author.first }}
+          {% endif %}
+        </td>
+        <td>{{ book.published_year }}</td>
+        <td><a href="{% url 'status' book.status %}">{{ status.name }}</a></td>
+        <td>{{ book.on_hand }}</td>
+      </tr>
+    </tbody>
+  </table>
 {% endblock content %}
