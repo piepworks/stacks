@@ -31,16 +31,9 @@
     <header class="container">
       <nav>
         <ul>
-          <li><strong>📚 Stacks</strong></li>
+          <li><strong>📚 <a href="{% url 'status' 'backlog' %}">Stacks</a></strong></li>
         </ul>
         <ul>
-          <li>
-            {% if '/status/' in request.path %}
-              Books
-            {% else %}
-              <a class="current" href="{% url 'status' status="backlog" %}">Books</a>
-            {% endif %}
-          </li>
           <li>
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
