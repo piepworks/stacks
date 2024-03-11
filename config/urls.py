@@ -23,6 +23,21 @@ urlpatterns = [
     # Authors
     # -------
     path("author/new", views.author_new, name="author_new"),
+    # Book Covers
+    # -----------
+    path("book/<int:pk>/covers", views.covers, name="covers"),
+    path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),
+    path("book/<int:pk>/cover/<int:cover_pk>", views.cover_detail, name="cover_detail"),
+    path(
+        "book/<int:pk>/cover/<int:cover_pk>/update",
+        views.cover_update,
+        name="cover_update",
+    ),
+    path(
+        "book/<int:pk>/cover/<int:cover_pk>/delete",
+        views.cover_delete,
+        name="cover_delete",
+    ),
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),

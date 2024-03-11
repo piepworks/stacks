@@ -179,6 +179,42 @@ def author_new(request):
         return redirect(referer + f"?new_author={a.pk}")
 
 
+@login_required
+def covers(request, pk):
+    book = Book.objects.get(pk=pk)
+    return render(request, "covers.html", {"book": book})
+
+
+@login_required
+def cover_new(request, pk):
+    book = Book.objects.get(pk=pk)
+    return render(request, "cover_form.html", {"book": book})
+
+
+@login_required
+def cover_detail(request, pk, cover_pk):
+    book = Book.objects.get(pk=pk)
+    return render(request, "cover_detail.html", {"book": book})
+
+
+@require_POST
+@login_required
+def cover_update(request, pk, cover_pk):
+    book = Book.objects.get(pk=pk)
+    return render(request, "cover_form.html", {"book": book})
+
+
+@login_required
+def cover_delete(request, pk, cover_pk):
+    book = Book.objects.get(pk=pk)
+    cover = book.cover_set.get(pk=cover_pk)
+
+    cover.delete()
+    messages.success(request, "Cover deleted")
+
+    return redirect("status", status="backlog")
+
+
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # One day
 def favicon(request):
