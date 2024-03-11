@@ -190,6 +190,17 @@ button.link {
   }
 }
 
+.header-actions-inline {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin: 0 0 2rem;
+
+  h1 {
+    margin: 0;
+  }
+}
+
 fieldset > div + div {
   margin-top: 2rem;
 }

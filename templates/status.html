@@ -15,7 +15,10 @@
 {% endblock header %}
 
 {% block content %}
-  <h1>{{ status.name }}</h1>
+  <div class="header-actions-inline">
+    <h1>{{ status.name }}</h1>
+    <a href="{% url 'book_new' %}">add another</a>
+  </div>
 
   {% if finished_counts %}
     <dl class="finished-counts">

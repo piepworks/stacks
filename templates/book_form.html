@@ -5,7 +5,13 @@
 {% block body_tag %}class="form-page"{% endblock body_tag %}
 
 {% block content %}
-  <h1>Editing <u>{{ book }}</u></h1>
+  <h1>
+    {% if action == 'new' %}
+    Add a new book
+    {% else %}
+    Editing <u>{{ book }}</u>
+    {% endif %}
+  </h1>
 
   <form method="post">
     {% csrf_token %}

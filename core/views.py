@@ -77,7 +77,14 @@ def book_new(request):
     else:
         form = BookForm()
 
-    return render(request, "book_form.html", {"form": form})
+    return render(
+        request,
+        "book_form.html",
+        {
+            "form": form,
+            "action": "new",
+        },
+    )
 
 
 @login_required
@@ -115,7 +122,15 @@ def book_update(request, pk):
             # Set the initial value
             form.fields["author"].initial = current_authors
 
-    return render(request, "book_form.html", {"book": book, "form": form})
+    return render(
+        request,
+        "book_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "update",
+        },
+    )
 
 
 @require_POST
