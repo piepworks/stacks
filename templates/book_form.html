@@ -1,6 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Edit {{ book }}{% endblock title %}
+{% block title %}
+    {% if action == 'new' %}
+    Add a new book
+    {% else %}
+    Editing {{ book }}
+    {% endif %}
+{% endblock title %}
 
 {% block body_tag %}class="form-page"{% endblock body_tag %}
 
