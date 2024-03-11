@@ -11,9 +11,10 @@ from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from .forms import RegisterForm, BookForm
 from .utils import send_email_to_admin
-from .models import Book
+from .models import Book, Author
 from django.db import models
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 
 
 def home(request):
@@ -116,6 +117,19 @@ def book_delete(request, pk):
     book.delete()
     messages.success(request, mark_safe(f"<u>{book}</u> deleted"))
     return redirect("status", status="backlog")
+
+
+@require_POST
+@login_required
+def author_new(request):
+    author = request.POST
+    slug = slugify(author["name"])
+    Author.objects.create(
+        name=author["name"],
+        slug=slug,
+    )
+    messages.success(request, f"Author {author['name']} added")
+    return redirect(request.META.get("HTTP_REFERER", "index"))
 
 
 @require_GET

@@ -22,7 +22,7 @@
             <label>
               {{ field.label }}
               {% if field.name == 'author' %}
-                <a href="#add">add another</a>
+                <a href="#add" onclick="document.querySelector('#author-new').showModal()">add another</a>
               {% endif %}
               {{ field }}
             </label>
@@ -33,7 +33,7 @@
       <input type="submit" value="Save">
     </fieldset>
   </form>
-
+  {% include "components/author-new.html" %}
 {% endblock content %}
 
 {% block page_js %}

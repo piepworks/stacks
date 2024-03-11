@@ -15,11 +15,14 @@ urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
     # Books
-    # --------
+    # -----
     path("book/new", views.book_new, name="book_new"),  # C
     path("book/<int:pk>", views.book_detail, name="book_detail"),  # R
     path("book/<int:pk>/update", views.book_update, name="book_update"),  # U
     path("book/<int:pk>/delete", views.book_delete, name="book_delete"),  # D
+    # Authors
+    # -------
+    path("author/new", views.author_new, name="author_new"),
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),
