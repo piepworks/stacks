@@ -76,6 +76,9 @@ def book_new(request):
             return redirect("book_detail", pk=book.pk)
     else:
         form = BookForm()
+        # If there's a querystring for status, set the initial value
+        if "status" in request.GET:
+            form.fields["status"].initial = request.GET["status"]
 
     return render(
         request,
