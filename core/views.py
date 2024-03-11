@@ -106,6 +106,14 @@ def book_update(request, pk):
             return redirect("status", status=book.status)
     else:
         form = BookForm(instance=book)
+        if "new_author" in request.GET:
+            # Get the current authors
+            current_authors = form.initial["author"]
+            # Append the new author
+            new_authors = request.GET.getlist("new_author")
+            current_authors.extend(new_authors)
+            # Set the initial value
+            form.fields["author"].initial = current_authors
 
     return render(request, "book_form.html", {"book": book, "form": form})
 
@@ -124,12 +132,17 @@ def book_delete(request, pk):
 def author_new(request):
     author = request.POST
     slug = slugify(author["name"])
-    Author.objects.create(
+    a = Author.objects.create(
         name=author["name"],
         slug=slug,
     )
     messages.success(request, f"Author {author['name']} added")
-    return redirect(request.META.get("HTTP_REFERER", "index"))
+    referer = request.META.get("HTTP_REFERER", "index")
+    if "new_author" in referer:
+        # append the new author to the list of authors
+        return redirect(referer + f"&new_author={a.pk}")
+    else:
+        return redirect(referer + f"?new_author={a.pk}")
 
 
 @require_GET

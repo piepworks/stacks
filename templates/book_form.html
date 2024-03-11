@@ -38,7 +38,18 @@
 
 {% block page_js %}
 <script>
-  let settings = {};
-  new TomSelect('#id_author', settings);
+  new TomSelect('#id_author', {
+    onItemAdd: function(author_id) {
+      // Append the author to the querystring
+      // so that the new author is added to the list
+      // in the format `&author=1&author=2`
+      var url = new URL(window.location.href);
+      url.searchParams.append('new_author', author_id);
+      // Apply the querystring without (reloading the page and?)
+      // making scroll position jump
+      var stateObj = { url: url.search };
+      history.replaceState(stateObj, "", url.search);
+    },
+  });
 </script>
 {% endblock page_js %}
