@@ -52,6 +52,16 @@ nav ol {
       padding: 0.5rem 0;
     }
 
+    img {
+      width: 100%;
+      border: 0.125rem solid rgb(0 0 0 / 20%);
+      border-radius: 0.25rem;
+
+      @media (prefers-color-scheme: dark) {
+        border-color: rgb(255 255 255 / 20%);
+      }
+    }
+
     .actions {
       display: flex;
       justify-content: space-between;
