@@ -37,8 +37,8 @@
           <li>
             <form method="post" action="{% url 'logout' %}">
               {% csrf_token %}
-              <button class="link" onclick="return confirm('Do you want to log out?')">
-                  <span>Log out</span>
+              <button id="log-out"  onclick="return confirm('Do you want to log out?')">
+                Log out
               </button>
           </form>
           </li>
