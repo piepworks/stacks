@@ -29,7 +29,8 @@
               src="{{ cover.image.url }}">
           <div class="actions">
             <a href="{% url 'cover_detail' book.id cover.id %}" class="svg edit">Edit</a>
-            <form action="{% url 'cover_delete' book.id cover.id %}" method="post">
+            <form action="{% url 'cover_delete' book.id cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
+              {% csrf_token %}
               <button class="svg delete">Delete</button>
             </form>
           </div>

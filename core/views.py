@@ -11,7 +11,7 @@ from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from .forms import RegisterForm, BookForm
 from .utils import send_email_to_admin
-from .models import Book, Author
+from .models import Book, Author, BookCover
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
@@ -206,13 +206,10 @@ def cover_update(request, pk, cover_pk):
 
 @login_required
 def cover_delete(request, pk, cover_pk):
-    book = Book.objects.get(pk=pk)
-    cover = book.cover_set.get(pk=cover_pk)
-
+    cover = BookCover.objects.get(pk=cover_pk, book=pk)
     cover.delete()
     messages.success(request, "Cover deleted")
-
-    return redirect("status", status="backlog")
+    return redirect("book_update", pk=pk, cover_pk=cover_pk)
 
 
 @require_GET
