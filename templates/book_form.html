@@ -19,9 +19,24 @@
     {% endif %}
   </h1>
 
-  <section>
-    COVERS
-  </section>
+  {% if book.covers.all %}
+    <section class="covers">
+      {% for cover in book.covers.all %}
+        <div>
+          <img width="200"
+              height="auto"
+              alt="{{ cover }}"
+              src="{{ cover.image.url }}">
+          <div class="actions">
+            <a href="{% url 'cover_detail' book.id cover.id %}" class="svg edit">Edit</a>
+            <form action="{% url 'cover_delete' book.id cover.id %}" method="post">
+              <button class="svg delete">Delete</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    </section>
+  {% endif %}
 
   <form method="post">
     {% csrf_token %}
