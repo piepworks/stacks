@@ -1,5 +1,6 @@
 @import url('vendor/pico.min.css');
 @import url('includes/tom-select.css');
+@import url('includes/buttons.css');
 
 nav ol {
   display: grid;
@@ -72,36 +73,16 @@ nav ol {
       }
 
       button {
-        font-size: 0;
         padding: 0.75rem;
-        background-color: var(--pico-primary);
-
-        &:hover {
-          background-color: var(--pico-primary-hover);
-        }
       }
-    }
 
-    .previous-status {
-      /* https://remixicon.com/icon/skip-left-line */
-      mask: 0 0
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M13.9142 12L18.7071 16.7929L17.2929 18.2071L11.0858 12L17.2929 5.79291L18.7071 7.20712L13.9142 12ZM7 6.00002L7 18H5L5 6.00002L7 6.00002Z'%3E%3C/path%3E%3C/svg%3E")
-        no-repeat;
-    }
+      span:first-child {
+        padding: 0 0.25rem;
+      }
 
-    .next-status {
-      /* https://remixicon.com/icon/skip-right-line */
-      mask: 0 0
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M10.0858 12L5.29291 16.7929L6.70712 18.2071L12.9142 12L6.70712 5.79291L5.29291 7.20712L10.0858 12ZM17 6.00002L17 18H15L15 6.00002L17 6.00002Z'%3E%3C/path%3E%3C/svg%3E")
-        no-repeat;
-    }
-
-    button.adjust-status {
-      /* https://remixicon.com/icon/settings-6-line */
-      padding: 0.6rem;
-      mask: 0 0
-        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M17.5 2.47363L23 11.9999L17.5 21.5262H6.5L1 11.9999L6.5 2.47363H17.5ZM16.3453 4.47363H7.6547L3.3094 11.9999L7.6547 19.5262H16.3453L20.6906 11.9999L16.3453 4.47363ZM8.63398 8.16979L10.366 7.16979L15.366 15.83L13.634 16.83L8.63398 8.16979Z'%3E%3C/path%3E%3C/svg%3E")
-        no-repeat;
+      span:last-child {
+        padding: 0 0.75rem;
+      }
     }
   }
 }
@@ -172,19 +153,6 @@ dialog .grid {
   }
 }
 
-button.link {
-  background: none;
-  border: none;
-  color: var(--pico-primary);
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: var(--pico-primary-hover);
-    text-decoration: underline;
-  }
-}
-
 .header-actions {
   gap: 1rem;
   margin: 1rem 0;
@@ -237,15 +205,18 @@ fieldset > .radio {
   }
 }
 
-#log-out {
-  font-size: 0;
-  padding: 0.5rem;
-  mask: 0 0
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M6.26489 3.80698L7.41191 5.44558C5.34875 6.89247 4 9.28873 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 9.28873 18.6512 6.89247 16.5881 5.44558L17.7351 3.80698C20.3141 5.61559 22 8.61091 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 8.61091 3.68594 5.61559 6.26489 3.80698ZM11 12V2H13V12H11Z'%3E%3C/path%3E%3C/svg%3E")
-    no-repeat;
-  background-color: var(--pico-primary);
+.form-page .covers {
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-  &:hover {
-    background-color: var(--pico-primary-hover);
+  .actions {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
   }
 }
