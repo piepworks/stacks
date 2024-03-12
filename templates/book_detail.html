@@ -5,6 +5,8 @@
   {{ book }}
 {% endblock title %}
 
+{% block body_tag %}class="book-detail"{% endblock body_tag %}
+
 {% block content %}
   <section class="header-actions">
     <h1>{{ book }}</h1>
@@ -15,41 +17,52 @@
     </form>
   </section>
 
+  {% if book.covers.all %}
   <section class="covers">
-    {% for cover in book.covers.all %}
-      <img width="300"
-           height="auto"
-           alt="{{ cover }}"
-           src="{{ cover.image.url }}">
-    {% endfor %}
-  </section>
+      {% for cover in book.covers.all %}
+        <img width="300"
+            height="auto"
+            alt="{{ cover }}"
+            src="{{ cover.image.url }}">
+      {% endfor %}
+    </section>
+    {% else %}
+      <div class="no-cover">
+        {# https://remixicon.com/icon/book-line #}
+        <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
+        <p>No cover found for this book.</p>
+        <a class="svg add-cover" href="#add-cover">Add cover</a>
+      </div>
+    {% endif %}
 
-  <table>
-    <thead>
-      <tr>
-        <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
-        <th>Published Year</th>
-        <th>Status</th>
-        <th>On Hand</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          {% if book.author.all.count > 1 %}
-            <ul>
-              {% for author in book.author.all %}
-                <li>{{ author }}</li>
-              {% endfor %}
-            </ul>
-          {% else %}
-            {{ book.author.first }}
-          {% endif %}
-        </td>
-        <td>{{ book.published_year }}</td>
-        <td><a href="{% url 'status' book.status %}">{{ status.name }}</a></td>
-        <td>{{ book.on_hand }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="overflow-auto">
+    <table>
+      <thead>
+        <tr>
+          <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
+          <th>Published Year</th>
+          <th>Status</th>
+          <th>On Hand</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {% if book.author.all.count > 1 %}
+              <ul>
+                {% for author in book.author.all %}
+                  <li>{{ author }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              {{ book.author.first }}
+            {% endif %}
+          </td>
+          <td>{{ book.published_year }}</td>
+          <td><a href="{% url 'status' book.status %}">{{ status.name }}</a></td>
+          <td>{{ book.on_hand }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 {% endblock content %}

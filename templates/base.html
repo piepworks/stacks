@@ -35,9 +35,9 @@
         </ul>
         <ul>
           <li>
-            <form method="post" action="{% url 'logout' %}">
+            <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
               {% csrf_token %}
-              <button class="svg log-out" onclick="return confirm('Do you want to log out?')">
+              <button class="svg log-out">
                 Log out
               </button>
           </form>
