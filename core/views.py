@@ -208,20 +208,36 @@ def cover_new(request, pk):
         {
             "book": book,
             "form": form,
+            "action": "new",
         },
     )
 
 
 @login_required
-def cover_detail(request, pk, cover_pk):
-    book = Book.objects.get(pk=pk)
-    return render(request, "cover_detail.html", {"book": book})
-
-
-@login_required
 def cover_update(request, pk, cover_pk):
     book = Book.objects.get(pk=pk)
-    return render(request, "cover_form.html", {"book": book})
+    cover = BookCover.objects.get(pk=cover_pk, book=pk)
+
+    if request.method == "POST":
+        form = CoverForm(request.POST, request.FILES, instance=cover)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cover updated")
+            return redirect("book_update", pk=pk)
+
+    else:
+        form = CoverForm(instance=cover)
+
+    return render(
+        request,
+        "cover_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "update",
+        },
+    )
 
 
 @login_required

@@ -1,13 +1,25 @@
 {% extends "base.html" %}
 
-{% block title %}Add a cover to {{ book }}{% endblock title %}
+{% block title %}
+  {% if action == 'new' %}
+    Add a cover to {{ book }}
+  {% else %}
+    Edit cover for {{ book }}
+  {% endif %}
+{% endblock title %}
 
 {% block content %}
-  <h1>Add a cover to {{ book }}</h1>
+  <h1>
+    {% if action == 'new' %}
+      Add a cover to {{ book }}
+    {% else %}
+      Edit cover for {{ book }}
+    {% endif %}
+  </h1>
 
-  <form action="{% url 'cover_new' book.id %}" method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="Add cover">
+    <input type="submit" value="Save">
   </form>
 {% endblock content %}

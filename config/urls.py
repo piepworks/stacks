@@ -27,7 +27,6 @@ urlpatterns = [
     # -----------
     path("book/<int:pk>/covers", views.covers, name="covers"),
     path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),
-    path("book/<int:pk>/cover/<int:cover_pk>", views.cover_detail, name="cover_detail"),
     path(
         "book/<int:pk>/cover/<int:cover_pk>/update",
         views.cover_update,
