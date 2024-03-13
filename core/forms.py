@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Book
+from .models import User, Book, BookCover
 
 
 class RegisterForm(UserCreationForm):
@@ -20,3 +20,9 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ("status", "on_hand", "author", "published_year")
+
+
+class CoverForm(forms.ModelForm):
+    class Meta:
+        model = BookCover
+        fields = ("image", "description")

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Add a cover to {{ book }}{% endblock title %}
+
+{% block content %}
+  <h1>Add a cover to {{ book }}</h1>
+
+  <form action="{% url 'cover_new' book.id %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Add cover">
+  </form>
+{% endblock content %}

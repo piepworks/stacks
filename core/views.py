@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from .forms import RegisterForm, BookForm
+from .forms import RegisterForm, BookForm, CoverForm
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
 from django.db import models
@@ -188,7 +188,28 @@ def covers(request, pk):
 @login_required
 def cover_new(request, pk):
     book = Book.objects.get(pk=pk)
-    return render(request, "cover_form.html", {"book": book})
+
+    if request.method == "POST":
+        form = CoverForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            cover = form.save(commit=False)
+            cover.book = book
+            cover.save()
+            messages.success(request, "Cover added")
+            return redirect("book_update", pk=book.pk)
+
+    else:
+        form = CoverForm()
+
+    return render(
+        request,
+        "cover_form.html",
+        {
+            "book": book,
+            "form": form,
+        },
+    )
 
 
 @login_required
@@ -197,7 +218,6 @@ def cover_detail(request, pk, cover_pk):
     return render(request, "cover_detail.html", {"book": book})
 
 
-@require_POST
 @login_required
 def cover_update(request, pk, cover_pk):
     book = Book.objects.get(pk=pk)
