@@ -54,4 +54,4 @@ class BookCoverForm(forms.ModelForm):
 class BookNoteForm(forms.ModelForm):
     class Meta:
         model = BookNote
-        exclude = ("book", "created_at", "updated_at")
+        exclude = ("book", "page", "percentage", "created_at", "updated_at")

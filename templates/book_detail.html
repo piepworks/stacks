@@ -89,7 +89,8 @@
     {# Add note field always visible #}
     <form action="{% url 'note_new' book.id %}" method="post">
       {% csrf_token %}
-      {{ note_form }}
+      {{ note_form.text }}
+      <button type="submit">Save new note</button>
     </form>
 
     {% if notes %}
