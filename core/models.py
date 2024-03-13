@@ -134,3 +134,19 @@ class BookReading(models.Model):
 
     def __str__(self):
         return f"Reading of {self.book} starting on {self.start_date}"
+
+
+class BookNote(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="notes")
+    content = models.TextField()
+    page = models.PositiveSmallIntegerField(null=True, blank=True)
+    percentage = models.PositiveSmallIntegerField(
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(100)],
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Note for {self.book}"

@@ -66,20 +66,31 @@
     </table>
   </div>
 
-  <h2>Readings</h2>
-  {# TODO: probably put this on another page #}
-  {% comment %}
-  <form method="post">
-    {{ form }}
-    <button type="submit">Save</button>
-  </form>
- {% endcomment %}
+  <section>
+    <h2>Readings</h2>
+    {# TODO: probably put this on another page #}
+    {% comment %}
+    <form method="post">
+      {{ form }}
+      <button type="submit">Save</button>
+    </form>
+    {% endcomment %}
+    {% if readings %}
+      <ul>
+        {% for reading in readings %}
+          <li>{{ reading }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
 
-  {% if readings %}
-    <ul>
-      {% for reading in readings %}
-        <li>{{ reading }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
+  <section>
+    {% if notes %}
+      <ul>
+        {% for note in notes %}
+          <li>{{ note }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </section>
 {% endblock content %}
