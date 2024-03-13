@@ -196,7 +196,7 @@ fieldset > .radio {
 .covers {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
   margin: 0 0 2rem;
 
@@ -206,6 +206,15 @@ fieldset > .radio {
 
     @media (prefers-color-scheme: dark) {
       border-color: rgb(255 255 255 / 20%);
+    }
+  }
+
+  .no-cover.another {
+    margin: 0;
+    min-width: 175px;
+
+    .book {
+      height: 75px;
     }
   }
 }
