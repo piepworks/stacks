@@ -209,7 +209,7 @@ def cover_delete(request, pk, cover_pk):
     cover = BookCover.objects.get(pk=cover_pk, book=pk)
     cover.delete()
     messages.success(request, "Cover deleted")
-    return redirect("book_update", pk=pk, cover_pk=cover_pk)
+    return redirect("book_update", pk=pk)
 
 
 @require_GET
