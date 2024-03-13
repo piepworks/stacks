@@ -14,8 +14,8 @@ from .forms import (
     BookForm,
     BookStatusForm,
     BookReadingForm,
-    CoverForm,
-    NoteForm,
+    BookCoverForm,
+    BookNoteForm,
 )
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
@@ -117,7 +117,7 @@ def book_detail(request, pk):
                 "name": book.get_status_display(),
             },
             "reading_form": BookReadingForm(instance=book),
-            "note_form": NoteForm(instance=book),
+            "note_form": BookNoteForm(instance=book),
             "readings": book.readings.all(),
             "notes": book.notes.all(),
         },
@@ -196,7 +196,7 @@ def cover_new(request, pk):
     book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = CoverForm(request.POST, request.FILES)
+        form = BookCoverForm(request.POST, request.FILES)
 
         if form.is_valid():
             cover = form.save(commit=False)
@@ -206,7 +206,7 @@ def cover_new(request, pk):
             return redirect("book_update", pk=book.pk)
 
     else:
-        form = CoverForm()
+        form = BookCoverForm()
 
     return render(
         request,
@@ -225,7 +225,7 @@ def cover_update(request, pk, cover_pk):
     cover = BookCover.objects.get(pk=cover_pk, book=pk)
 
     if request.method == "POST":
-        form = CoverForm(request.POST, request.FILES, instance=cover)
+        form = BookCoverForm(request.POST, request.FILES, instance=cover)
 
         if form.is_valid():
             form.save()
@@ -233,7 +233,7 @@ def cover_update(request, pk, cover_pk):
             return redirect("book_update", pk=pk)
 
     else:
-        form = CoverForm(instance=cover)
+        form = BookCoverForm(instance=cover)
 
     return render(
         request,
@@ -324,7 +324,7 @@ def note_new(request, pk):
     book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = NoteForm(request.POST)
+        form = BookNoteForm(request.POST)
 
         if form.is_valid():
             note = form.save(commit=False)
@@ -334,7 +334,7 @@ def note_new(request, pk):
             return redirect("book_detail", pk=book.pk)
 
     else:
-        form = NoteForm()
+        form = BookNoteForm()
 
     return render(
         request,
@@ -353,7 +353,7 @@ def note_update(request, pk, note_pk):
     note = book.notes.get(pk=note_pk)
 
     if request.method == "POST":
-        form = NoteForm(request.POST, instance=note)
+        form = BookNoteForm(request.POST, instance=note)
 
         if form.is_valid():
             form.save()
@@ -361,7 +361,7 @@ def note_update(request, pk, note_pk):
             return redirect("book_detail", pk=pk)
 
     else:
-        form = NoteForm(instance=note)
+        form = BookNoteForm(instance=note)
 
     return render(
         request,

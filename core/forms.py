@@ -45,13 +45,13 @@ class BookReadingForm(forms.ModelForm):
     end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 
 
-class CoverForm(forms.ModelForm):
+class BookCoverForm(forms.ModelForm):
     class Meta:
         model = BookCover
         fields = ("image", "description")
 
 
-class NoteForm(forms.ModelForm):
+class BookNoteForm(forms.ModelForm):
     class Meta:
         model = BookNote
         exclude = ("book", "created_at", "updated_at")
