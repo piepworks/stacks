@@ -211,7 +211,8 @@ fieldset > .radio {
 
   .no-cover.another {
     margin: 0;
-    min-width: 175px;
+    min-width: 200px;
+    align-self: stretch;
 
     .book {
       height: 75px;
