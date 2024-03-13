@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.forms.widgets import MultipleHiddenInput
 from .models import User, Book, BookCover
 
 
@@ -20,6 +21,18 @@ class BookForm(forms.ModelForm):
     class Meta:
         model = Book
         fields = ("status", "on_hand", "author", "published_year")
+
+
+class BookStatusForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(BookStatusForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget = forms.HiddenInput()
+        self.fields["author"].widget = MultipleHiddenInput()
+
+    class Meta:
+        model = Book
+        exclude = ("created_at", "updated_at", "status")
 
 
 class CoverForm(forms.ModelForm):

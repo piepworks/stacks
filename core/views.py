@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from .forms import RegisterForm, BookForm, CoverForm
+from .forms import RegisterForm, BookForm, BookStatusForm, CoverForm
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
 from django.db import models
@@ -35,6 +35,7 @@ def status(request, status):
         Book.objects.all().values("status").annotate(count=models.Count("status"))
     )
     books = Book.objects.filter(status=status).order_by("-updated_at")
+    forms = [(book, BookStatusForm(instance=book)) for book in books]
 
     # If status is `finished`, get counts of how many (unique?) Books have
     # associated BookReadings that have end dates in each year and are also
@@ -55,11 +56,11 @@ def status(request, status):
             status["status"]: status["count"] for status in status_counts
         },
         "finished_counts": finished_counts if status == "finished" else None,
-        "books": books,
         "status": {
             "slug": status,
             "name": Book(status=status).get_status_display(),
         },
+        "forms": forms,
     }
 
     return render(request, "status.html", context)

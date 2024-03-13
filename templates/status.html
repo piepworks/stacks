@@ -34,7 +34,7 @@
   {% endif %}
 
   <ul>
-    {% for book in books %}
+    {% for book, form in forms %}
       <li class="book">
         <a href="{% url 'book_detail' book.id %}">
           {% if book.covers.all %}
@@ -59,11 +59,7 @@
           <form action="{% url 'book_update' book.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
-            {% for author in book.author.all %}
-              <input type="hidden" name="author" value="{{ author.id }}">
-            {% endfor %}
-            <input type="hidden" name="published_year" value="{{ book.published_year }}">
-
+            {{ form }}
             <button class="svg previous-status">Previous status</button>
           </form>
           {% else %}
@@ -78,10 +74,7 @@
           <form action="{% url 'book_update' book.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
-            {% for author in book.author.all %}
-              <input type="hidden" name="author" value="{{ author.id }}">
-            {% endfor %}
-            <input type="hidden" name="published_year" value="{{ book.published_year }}">
+            {{ form }}
             <button class="svg next-status">Next status</button>
           </form>
           {% else %}
