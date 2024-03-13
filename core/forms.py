@@ -14,8 +14,8 @@ class RegisterForm(UserCreationForm):
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
-        self.fields["author"].required = False
         self.fields["author"].label = "Author(s)"
+        self.fields["published_year"].required = True
 
     class Meta:
         model = Book
