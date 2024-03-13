@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load markdown_extras %}
 
 {% block title %}
   {{ book }}
@@ -94,11 +94,19 @@
     </form>
 
     {% if notes %}
-      <ul>
         {% for note in notes %}
-          <li>{{ note }}</li>
+          <div>
+            <div>
+              <small>
+                <a href="{% url 'note_update' book.id note.id %}">
+                  {{ note.created_at|date:"F j, Y" }}
+                  at {{ note.created_at|date:"g:i A" }}
+                </a>
+              </small>
+            </div>
+            {{ note.text|markdown }}
+          </div>
         {% endfor %}
-      </ul>
     {% endif %}
   </section>
 {% endblock content %}

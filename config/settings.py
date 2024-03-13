@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import bleach
 from django.core.management.utils import get_random_secret_key
 from pathlib import Path
 from environs import Env
@@ -214,3 +215,5 @@ filterwarnings(
     "ignore", "The FORMS_URLFIELD_ASSUME_HTTPS transitional setting is deprecated."
 )
 FORMS_URLFIELD_ASSUME_HTTPS = True
+
+BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS.extend(["p", "hr"])

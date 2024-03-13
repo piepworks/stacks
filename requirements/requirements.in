@@ -3,6 +3,7 @@ boto3
 coverage
 dj-database-url
 Django
+django-bleach
 django-browser-reload
 django-debug-toolbar
 django-extensions
@@ -14,6 +15,7 @@ Faker
 flake8
 gunicorn
 ipython
+markdown
 pillow
 pip-lock
 pip-tools

@@ -149,5 +149,8 @@ class BookNote(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def __str__(self):
         return f"Note for {self.book} / Created {date(self.created_at, 'Y-m-d')}"
