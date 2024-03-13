@@ -25,7 +25,6 @@ urlpatterns = [
     path("author/new", views.author_new, name="author_new"),
     # Book Covers
     # -----------
-    path("book/<int:pk>/covers", views.covers, name="covers"),
     path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),
     path(
         "book/<int:pk>/cover/<int:cover_pk>/update",
@@ -36,6 +35,19 @@ urlpatterns = [
         "book/<int:pk>/cover/<int:cover_pk>/delete",
         views.cover_delete,
         name="cover_delete",
+    ),
+    # Book Readings
+    # -------------
+    path("book/<int:pk>/reading/new", views.reading_new, name="reading_new"),
+    path(
+        "book/<int:pk>/reading/<int:reading_pk>/update",
+        views.reading_update,
+        name="reading_update",
+    ),
+    path(
+        "book/<int:pk>/reading/<int:reading_pk>/delete",
+        views.reading_delete,
+        name="reading_delete",
     ),
     # Boilerplate
     # -----------

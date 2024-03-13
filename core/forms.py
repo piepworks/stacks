@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import MultipleHiddenInput
-from .models import User, Book, BookCover
+from .models import User, Book, BookCover, BookReading
 
 
 class RegisterForm(UserCreationForm):
@@ -33,6 +33,16 @@ class BookStatusForm(forms.ModelForm):
     class Meta:
         model = Book
         exclude = ("created_at", "updated_at", "status")
+
+
+class BookReadingForm(forms.ModelForm):
+    class Meta:
+        model = BookReading
+        fields = ("start_date", "end_date", "finished", "rating")
+
+    rating = forms.IntegerField(min_value=1, max_value=5)
+    start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
 
 
 class CoverForm(forms.ModelForm):

@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from .forms import RegisterForm, BookForm, BookStatusForm, CoverForm
+from .forms import RegisterForm, BookForm, BookStatusForm, BookReadingForm, CoverForm
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
 from django.db import models
@@ -109,6 +109,8 @@ def book_detail(request, pk):
                 "slug": book.status,
                 "name": book.get_status_display(),
             },
+            "form": BookReadingForm(instance=book),
+            "readings": book.readings.all(),
         },
     )
 
@@ -181,12 +183,6 @@ def author_new(request):
 
 
 @login_required
-def covers(request, pk):
-    book = Book.objects.get(pk=pk)
-    return render(request, "covers.html", {"book": book})
-
-
-@login_required
 def cover_new(request, pk):
     book = Book.objects.get(pk=pk)
 
@@ -241,12 +237,77 @@ def cover_update(request, pk, cover_pk):
     )
 
 
+@require_POST
 @login_required
 def cover_delete(request, pk, cover_pk):
     cover = BookCover.objects.get(pk=cover_pk, book=pk)
     cover.delete()
     messages.success(request, "Cover deleted")
     return redirect("book_update", pk=pk)
+
+
+@login_required
+def reading_new(request, pk):
+    book = Book.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = BookReadingForm(request.POST)
+
+        if form.is_valid():
+            reading = form.save(commit=False)
+            reading.book = book
+            reading.save()
+            messages.success(request, "Reading added")
+            return redirect("book_detail", pk=book.pk)
+
+    else:
+        form = BookReadingForm()
+
+    return render(
+        request,
+        "reading_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "new",
+        },
+    )
+
+
+@login_required
+def reading_update(request, pk, reading_pk):
+    book = Book.objects.get(pk=pk)
+    reading = book.readings.get(pk=reading_pk)
+
+    if request.method == "POST":
+        form = BookReadingForm(request.POST, instance=reading)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Reading updated")
+            return redirect("book_detail", pk=pk)
+
+    else:
+        form = BookReadingForm(instance=reading)
+
+    return render(
+        request,
+        "reading_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "update",
+        },
+    )
+
+
+@require_POST
+@login_required
+def reading_delete(request, pk, reading_pk):
+    reading = Book.objects.get(pk=pk).readings.get(pk=reading_pk)
+    reading.delete()
+    messages.success(request, "Reading deleted")
+    return redirect("book_detail", pk=pk)
 
 
 @require_GET
