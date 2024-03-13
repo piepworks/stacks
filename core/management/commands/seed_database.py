@@ -87,9 +87,10 @@ class Command(BaseCommand):
 
         # Create BookNotes for every Book
         for book in Book.objects.all():
-            BookNote.objects.create(
-                book=book,
-                text=fake.text(),
-                page=fake.random_int(min=1, max=500),
-                percentage=fake.random_int(min=1, max=100),
-            )
+            for _ in range(5):
+                BookNote.objects.create(
+                    book=book,
+                    text=fake.text(),
+                    page=fake.random_int(min=1, max=500),
+                    percentage=fake.random_int(min=1, max=100),
+                )

@@ -71,7 +71,7 @@
     {# TODO: probably put this on another page #}
     {% comment %}
     <form method="post">
-      {{ form }}
+      {{ reading_form }}
       <button type="submit">Save</button>
     </form>
     {% endcomment %}
@@ -86,6 +86,12 @@
 
   <section>
     <h2>Notes</h2>
+    {# Add note field always visible #}
+    <form action="{% url 'note_new' book.id %}" method="post">
+      {% csrf_token %}
+      {{ note_form }}
+    </form>
+
     {% if notes %}
       <ul>
         {% for note in notes %}
