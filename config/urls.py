@@ -49,6 +49,19 @@ urlpatterns = [
         views.reading_delete,
         name="reading_delete",
     ),
+    # Book Notes
+    # ----------
+    path("book/<int:pk>/note/new", views.note_new, name="note_new"),
+    path(
+        "book/<int:pk>/note/<int:note_pk>/update",
+        views.note_update,
+        name="note_update",
+    ),
+    path(
+        "book/<int:pk>/note/<int:note_pk>/delete",
+        views.note_delete,
+        name="note_delete",
+    ),
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),

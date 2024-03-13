@@ -9,7 +9,14 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from .forms import RegisterForm, BookForm, BookStatusForm, BookReadingForm, CoverForm
+from .forms import (
+    RegisterForm,
+    BookForm,
+    BookStatusForm,
+    BookReadingForm,
+    CoverForm,
+    NoteForm,
+)
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
 from django.db import models
@@ -309,6 +316,75 @@ def reading_delete(request, pk, reading_pk):
     reading.delete()
     messages.success(request, "Reading deleted")
     return redirect("book_detail", pk=pk)
+
+
+@login_required
+def note_new(request, pk):
+    book = Book.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = NoteForm(request.POST)
+
+        if form.is_valid():
+            note = form.save(commit=False)
+            note.book = book
+            note.save()
+            messages.success(request, "Note added")
+            return redirect("book_detail", pk=book.pk)
+
+    else:
+        form = NoteForm()
+
+    return render(
+        request,
+        "note_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "new",
+        },
+    )
+
+
+@login_required
+def note_update(request, pk, note_pk):
+    book = Book.objects.get(pk=pk)
+    note = book.notes.get(pk=note_pk)
+
+    if request.method == "POST":
+        form = NoteForm(request.POST, instance=note)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Note updated")
+            return redirect("book_detail", pk=pk)
+
+    else:
+        form = NoteForm(instance=note)
+
+    return render(
+        request,
+        "note_form.html",
+        {
+            "book": book,
+            "form": form,
+            "action": "update",
+        },
+    )
+
+
+@require_POST
+@login_required
+def note_delete(request, pk, note_pk):
+    note = Book.objects.get(pk=pk).notes.get(pk=note_pk)
+    note.delete()
+    messages.success(request, "Note deleted")
+    return redirect("book_detail", pk=pk)
+
+
+# ----------------------------------
+# Standard stuff unrelated to books:
+# ----------------------------------
 
 
 @require_GET
