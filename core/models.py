@@ -93,6 +93,11 @@ class Book(models.Model):
 class BookCover(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
+    description = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="E.g. “First edition,” etc.",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
