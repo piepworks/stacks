@@ -225,12 +225,6 @@ fieldset > .radio {
       align-items: center;
       gap: 1rem;
     }
-
-    .no-cover.another {
-      height: 300px;
-      align-self: flex-start;
-      margin: 0;
-    }
   }
 }
 
