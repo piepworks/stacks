@@ -138,7 +138,7 @@ class BookReading(models.Model):
 
 class BookNote(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="notes")
-    content = models.TextField()
+    text = models.TextField()
     page = models.PositiveSmallIntegerField(null=True, blank=True)
     percentage = models.PositiveSmallIntegerField(
         null=True,
