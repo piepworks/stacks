@@ -2,7 +2,7 @@ import requests
 import urllib
 from django.core.management.base import BaseCommand
 from faker import Faker
-from core.models import Author, Book, BookCover, BookReading, rename_image
+from core.models import Author, Book, BookCover, BookReading, BookNote, rename_image
 from random import randint
 
 
@@ -83,4 +83,13 @@ class Command(BaseCommand):
                 finished=finished,
                 rating=rating,
                 format=format,
+            )
+
+        # Create BookNotes for every Book
+        for book in Book.objects.all():
+            BookNote.objects.create(
+                book=book,
+                text=fake.text(),
+                page=fake.random_int(min=1, max=500),
+                percentage=fake.random_int(min=1, max=100),
             )

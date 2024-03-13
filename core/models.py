@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.template.defaultfilters import date
 from core.image_helpers import rename_image, resize_and_optimize_image
 
 
@@ -133,7 +134,7 @@ class BookReading(models.Model):
         unique_together = ["book", "start_date"]
 
     def __str__(self):
-        return f"Reading of {self.book} starting on {self.start_date}"
+        return f"Reading of {self.book} / Starting on {self.start_date}"
 
 
 class BookNote(models.Model):
@@ -149,4 +150,4 @@ class BookNote(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Note for {self.book}"
+        return f"Note for {self.book} / Created {date(self.created_at, 'Y-m-d')}"

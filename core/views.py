@@ -111,6 +111,7 @@ def book_detail(request, pk):
             },
             "form": BookReadingForm(instance=book),
             "readings": book.readings.all(),
+            "notes": book.notes.all(),
         },
     )
 
