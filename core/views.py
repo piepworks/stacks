@@ -357,6 +357,7 @@ def note_update(request, pk, note_pk):
         "note_form.html",
         {
             "book": book,
+            "note": note,
             "form": form,
             "action": "update",
         },
