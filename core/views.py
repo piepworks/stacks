@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate
 from django.conf import settings
@@ -9,6 +10,11 @@ from django.contrib import messages
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
+from django.db import models
+from django.utils.safestring import mark_safe
+from django.utils.text import slugify
+from django.http import JsonResponse
+from django.core.exceptions import PermissionDenied
 from .forms import (
     RegisterForm,
     BookForm,
@@ -19,11 +25,6 @@ from .forms import (
 )
 from .utils import send_email_to_admin
 from .models import Book, Author, BookCover
-from django.db import models
-from django.utils.safestring import mark_safe
-from django.utils.text import slugify
-from django.http import JsonResponse
-import json
 
 
 def home(request):
@@ -165,6 +166,10 @@ def book_delete(request, pk):
 @require_POST
 @login_required
 def author_new(request):
+    if not request.headers.get("Content-Type") == "application/json":
+        # Require AJAX
+        raise PermissionDenied()
+
     author = json.loads(request.body)
     slug = slugify(author["name"])
     a = Author.objects.create(
