@@ -36,15 +36,15 @@ class BookStatusForm(forms.ModelForm):
 
 
 class BookReadingForm(forms.ModelForm):
-    class Meta:
-        model = BookReading
-        fields = ("start_date", "end_date", "finished", "rating")
-
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
     end_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), required=False
     )
     rating = forms.IntegerField(min_value=1, max_value=5, required=False)
+
+    class Meta:
+        model = BookReading
+        fields = ("start_date", "end_date", "finished", "rating")
 
 
 class BookCoverForm(forms.ModelForm):
@@ -54,6 +54,8 @@ class BookCoverForm(forms.ModelForm):
 
 
 class BookNoteForm(forms.ModelForm):
+    text = forms.CharField(widget=forms.Textarea(attrs={"rows": 3}))
+
     class Meta:
         model = BookNote
         exclude = ("book", "page", "percentage", "created_at", "updated_at")
