@@ -28,6 +28,14 @@ nav ol {
   }
 }
 
+nav + nav {
+  margin-top: 1.5rem;
+
+  @media (min-width: 576px) {
+    margin-top: 0;
+  }
+}
+
 .status main {
   ul,
   ol {
