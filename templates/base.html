@@ -29,21 +29,26 @@
   </head>
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
-      <nav>
-        <ul>
-          <li><strong>📚 <a href="{% url 'status' 'backlog' %}">Stacks</a></strong></li>
-        </ul>
-        <ul>
-          <li>
-            <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
-              {% csrf_token %}
-              <button class="svg log-out">
-                Log out
-              </button>
-          </form>
-          </li>
-        </ul>
-      </nav>
+      {% if user.is_authenticated %}
+        <nav>
+          <ul>
+            <li><strong>📚 <a href="{% url 'status' 'backlog' %}">Stacks</a></strong></li>
+          </ul>
+          <ul>
+            <li>
+              <a class="svg admin" href="{% url 'admin:index' %}">Admin</a>
+            </li>
+            <li>
+              <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
+                {% csrf_token %}
+                <button class="svg log-out">
+                  Log out
+                </button>
+            </form>
+            </li>
+          </ul>
+        </nav>
+      {% endif %}
       {% block header %}
       {% endblock header %}
 

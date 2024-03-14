@@ -26,8 +26,8 @@ button.svg {
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M6.26489 3.80698L7.41191 5.44558C5.34875 6.89247 4 9.28873 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C20 9.28873 18.6512 6.89247 16.5881 5.44558L17.7351 3.80698C20.3141 5.61559 22 8.61091 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 8.61091 3.68594 5.61559 6.26489 3.80698ZM11 12V2H13V12H11Z'%3E%3C/path%3E%3C/svg%3E")
       no-repeat;
-
     background-color: rgb(0 0 0 / 25%);
+    margin-bottom: -0.25rem;
 
     &:hover {
       background-color: rgb(0 0 0 / 50%);
@@ -38,6 +38,25 @@ button.svg {
 
       &:hover {
         background-color: rgb(255 255 255 / 50%);
+      }
+    }
+  }
+
+  &.admin {
+    /* https://remixicon.com/icon/flashlight-line */
+    mask: 0 0
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M13 9H21L11 24V15H4L13 0V9ZM11 11V7.22063L7.53238 13H13V17.3944L17.263 11H11Z'%3E%3C/path%3E%3C/svg%3E")
+      no-repeat;
+    padding: 1rem;
+    background-color: rgb(255, 191, 0); /* amber-200 */
+
+    &:hover {
+      background-color: black;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      &:hover {
+        background-color: white;
       }
     }
   }
