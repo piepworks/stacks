@@ -132,6 +132,7 @@ class BookReading(models.Model):
 
     class Meta:
         unique_together = ["book", "start_date"]
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"Reading of {self.book} / Starting on {self.start_date}"

@@ -40,9 +40,11 @@ class BookReadingForm(forms.ModelForm):
         model = BookReading
         fields = ("start_date", "end_date", "finished", "rating")
 
-    rating = forms.IntegerField(min_value=1, max_value=5)
     start_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
-    end_date = forms.DateField(widget=forms.DateInput(attrs={"type": "date"}))
+    end_date = forms.DateField(
+        widget=forms.DateInput(attrs={"type": "date"}), required=False
+    )
+    rating = forms.IntegerField(min_value=1, max_value=5, required=False)
 
 
 class BookCoverForm(forms.ModelForm):
