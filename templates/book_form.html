@@ -56,6 +56,8 @@
     {% endif %}
   {% endif %}
 
+  {# TODO: Attempt fetching the appropriate cover image from https://openlibrary.org/ #}
+
   <form method="post">
     {% csrf_token %}
     <fieldset>
@@ -70,9 +72,6 @@
           {% else %}
             <label>
               {{ field.label }}
-              {% if field.name == 'author' %}
-                <a href="{% url 'admin:core_author_add' %}" onclick="event.preventDefault(); document.querySelector('#author-new').showModal(); document.querySelector('#new-author-name').focus();">add another</a>
-              {% endif %}
               {{ field }}
             </label>
           {% endif %}
@@ -88,17 +87,43 @@
 {% block page_js %}
 <script>
   new TomSelect('#id_author', {
-    onItemAdd: function(author_id) {
-      // Append the author to the querystring
-      // so that the new author is added to the list
-      // in the format `&author=1&author=2`
-      var url = new URL(window.location.href);
-      url.searchParams.append('new_author', author_id);
-      // Apply the querystring without (reloading the page and?)
-      // making scroll position jump
-      var stateObj = { url: url.search };
-      history.replaceState(stateObj, "", url.search);
+    create: function(input, callback) {
+      // Get CSRF token
+      const csrftoken = document.cookie.split('; ').find(row => row.startsWith('csrftoken')).split('=')[1];
+
+      // Gather necessary data
+      const authorData = {
+        name: input, // assuming the input is the author's name
+        // add other necessary data
+      };
+
+      // Send POST request
+      fetch("{% url 'author_new' %}", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+        body: JSON.stringify(authorData),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          // Call the callback function with the new option
+          callback({
+            value: data.id,
+            text: input
+          });
+        })
+        .catch((error) => {
+          console.error('There has been a problem with your fetch operation:', error);
+        });
     },
+    createOnBlur: true,
   });
 </script>
 {% endblock page_js %}

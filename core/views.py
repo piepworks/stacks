@@ -22,6 +22,8 @@ from .models import Book, Author, BookCover
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.text import slugify
+from django.http import JsonResponse
+import json
 
 
 def home(request):
@@ -79,19 +81,14 @@ def book_new(request):
         form = BookForm(request.POST)
 
         if form.is_valid():
-            book = form.save(commit=False)
-            book.save()
+            book = form.save()
+            messages.success(request, f"{book} added")
             return redirect("book_detail", pk=book.pk)
     else:
         form = BookForm()
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
-
-        if "new_author" in request.GET:
-            # Append the new author
-            new_authors = request.GET.getlist("new_author")
-            form.fields["author"].initial = new_authors
 
     return render(
         request,
@@ -144,14 +141,6 @@ def book_update(request, pk):
             return redirect("status", status=book.status)
     else:
         form = BookForm(instance=book)
-        if "new_author" in request.GET:
-            # Get the current authors
-            current_authors = form.initial["author"]
-            # Append the new author
-            new_authors = request.GET.getlist("new_author")
-            current_authors.extend(new_authors)
-            # Set the initial value
-            form.fields["author"].initial = current_authors
 
     return render(
         request,
@@ -176,19 +165,14 @@ def book_delete(request, pk):
 @require_POST
 @login_required
 def author_new(request):
-    author = request.POST
+    author = json.loads(request.body)
     slug = slugify(author["name"])
     a = Author.objects.create(
         name=author["name"],
         slug=slug,
     )
     messages.success(request, f"Author {author['name']} added")
-    referer = request.META.get("HTTP_REFERER", "index")
-    if "?" in referer:
-        # append the new author to the existing querystring
-        return redirect(referer + f"&new_author={a.pk}")
-    else:
-        return redirect(referer + f"?new_author={a.pk}")
+    return JsonResponse({"id": a.pk})
 
 
 @login_required

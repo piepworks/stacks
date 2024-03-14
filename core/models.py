@@ -86,6 +86,12 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    # Create a slug based on the title field if none is provided
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = self.title.replace(" ", "-").lower()
+        super().save(*args, **kwargs)
+
     @property
     def status_display(self):
         return self.get_status_display()
