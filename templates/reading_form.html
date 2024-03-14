@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}
+  {% if action == 'new' %}
+    Start new reading
+  {% else %}
+    Edit reading
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+<h1>
+  {% if action == 'new' %}
+    Start a new reading
+  {% else %}
+    Edit reading
+  {% endif %}
+</h1>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Save</button>
+</form>
+{% endblock content %}

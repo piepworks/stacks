@@ -75,10 +75,14 @@
       <button type="submit">Save</button>
     </form>
     {% endcomment %}
+    <div>
+      <a href="{% url 'reading_new' book.id %}">Start a new reading</a>
+    </div>
+    <hr>
     {% if readings %}
       <ul>
         {% for reading in readings %}
-          <li>{{ reading }}</li>
+          <li><a href="{% url 'reading_update' book.id reading.id %}">Started on {{ reading.start_date|date:"F j, Y" }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
