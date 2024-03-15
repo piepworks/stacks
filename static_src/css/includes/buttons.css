@@ -97,7 +97,7 @@ button.svg {
       no-repeat;
   }
 
-  &.add-cover {
+  &.add-item {
     padding: 1.5rem;
     /* https://remixicon.com/icon/add-circle-line */
     mask: 0 0
