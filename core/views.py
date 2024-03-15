@@ -163,6 +163,24 @@ def book_delete(request, pk):
     return redirect("status", status="backlog")
 
 
+@login_required
+def search(request):
+    query = request.GET.get("q")
+    if query:
+        books = Book.objects.filter(title__icontains=query)
+    else:
+        books = Book.objects.none()
+
+    return render(
+        request,
+        "search.html",
+        {
+            "query": query,
+            "books": books,
+        },
+    )
+
+
 @require_POST
 @login_required
 def author_new(request):

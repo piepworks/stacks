@@ -14,12 +14,15 @@ admin.site.index_title = "Stacks innards"
 urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
-    # Books
-    # -----
+    # Book CRUD
+    # ---------
     path("book/new", views.book_new, name="book_new"),  # C
     path("book/<int:pk>", views.book_detail, name="book_detail"),  # R
     path("book/<int:pk>/update", views.book_update, name="book_update"),  # U
     path("book/<int:pk>/delete", views.book_delete, name="book_delete"),  # D
+    # Book Search
+    # -----------
+    path("search", views.search, name="search"),
     # Authors
     # -------
     path("author/new", views.author_new, name="author_new"),

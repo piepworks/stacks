@@ -36,6 +36,7 @@ nav + nav {
   }
 }
 
+.search main,
 .status main {
   ul,
   ol {
@@ -168,7 +169,7 @@ dialog .grid {
 
 .header-actions {
   gap: 1rem;
-  margin: 1rem 0;
+  margin: 0 0 1rem;
 
   @media (min-width: 1024px) {
     display: flex;
@@ -283,4 +284,8 @@ fieldset > .radio {
   table td {
     white-space: nowrap;
   }
+}
+
+.search-form {
+  margin-bottom: 1rem;
 }
