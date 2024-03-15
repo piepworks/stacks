@@ -32,7 +32,7 @@
       {% if user.is_authenticated %}
         <nav>
           <ul>
-            <li><strong>📚 <a href="{% url 'status' 'backlog' %}">Stacks</a></strong></li>
+            <li><a class="svg stack" href="{% url 'status' 'backlog' %}">Stacks</a></li>
           </ul>
           <ul>
             <li>
