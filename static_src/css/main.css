@@ -281,6 +281,20 @@ fieldset > .radio {
 }
 
 .book-detail {
+  .covers {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 1rem;
+    align-items: center;
+    margin: 3rem 0;
+
+    @media (min-width: 576px) {
+      flex-direction: row;
+      gap: 2rem;
+      margin: 0 0 2rem;
+    }
+  }
+
   table td {
     white-space: nowrap;
   }
