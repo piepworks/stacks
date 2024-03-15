@@ -41,9 +41,9 @@ nav + nav {
   ul,
   ol {
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 2rem;
   }
 
   li {
