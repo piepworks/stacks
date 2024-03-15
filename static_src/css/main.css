@@ -222,14 +222,15 @@ fieldset > .radio {
     }
   }
 
-  .no-cover.another {
+  .another {
     margin: 0;
     min-width: 200px;
+    min-height: 100px;
     align-self: stretch;
-
-    .book {
-      height: 75px;
-    }
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 
