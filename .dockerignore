@@ -6,3 +6,4 @@ fly.env
 node_modules/
 .venv/
 static/css/main.css
+media/
