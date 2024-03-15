@@ -70,6 +70,8 @@
       {% block footer %}
       {% endblock footer %}
     </footer>
+
+    <script src="{% static 'js/vendor/htmx-1.9.11.min.js' %}" defer></script>
     <script>{% include 'js/placeholder.js' %}</script>
     {% block page_js %}{% endblock page_js %}
   </body>
