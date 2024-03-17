@@ -6,12 +6,12 @@
   <h1>Choose a cover</h1>
 
   <div>
-    <a href="{% url 'book_new' %}">Skip this</a>
+    <a href="{% url 'book_new' %}">Skip this (no auto-populated fields)</a>
   </div>
 
   <div class="ol-covers">
     {% for result in results %}
-      <a href="{% url 'book_new' %}?status={{ status }}&isbn={{ result.isbn }}&cover={{ result.cover }}">
+      <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}">
         <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
       </a>
     {% endfor %}

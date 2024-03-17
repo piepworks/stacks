@@ -1,5 +1,4 @@
 import json
-from dateutil.parser import parse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate
 from django.conf import settings
@@ -25,7 +24,7 @@ from .forms import (
     BookNoteForm,
 )
 from .utils import send_email_to_admin
-from .cover_helpers import search_open_library, get_book_from_isbn
+from .cover_helpers import search_open_library
 from .models import Book, Author, BookCover
 
 
@@ -97,32 +96,31 @@ def book_new(request):
     else:
         isbn = request.GET.get("isbn", "")
         cover = request.GET.get("cover", "")
-        authors = []
+        authors = request.GET.get("authors", "").split(",")
+        author_records = []
+        title = request.GET.get("title", "")
+        year = request.GET.get("year", "")
+
+        print(year)
 
         form = BookForm()
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
-        if isbn != "":
-            data = get_book_from_isbn(request.GET["isbn"])
-            try:
-                year = parse(data["publish_date"]).strftime("%Y")
-            except KeyError:
-                year = ""
 
-            for a in data["authors"]:
-                if not Author.objects.filter(name=a["name"]).exists():
-                    new_author = Author.objects.create(
-                        name=a["name"],
-                        slug=slugify(a["name"]),
-                    )
-                    authors.append(new_author)
-                else:
-                    authors.append(Author.objects.get(name=a["name"]))
+        for a in authors:
+            if not Author.objects.filter(name=a).exists():
+                new_author = Author.objects.create(
+                    name=a,
+                    slug=slugify(a),
+                )
+                author_records.append(new_author)
+            else:
+                author_records.append(Author.objects.get(name=a))
 
-            form.fields["author"].initial = authors
-            form.fields["title"].initial = data["title"]
-            form.fields["published_year"].initial = year
+        form.fields["author"].initial = author_records
+        form.fields["title"].initial = title
+        form.fields["published_year"].initial = year
 
     return render(
         request,
@@ -228,6 +226,12 @@ def open_library_search(request):
         return redirect(request.META.get("HTTP_REFERER", "status"))
 
     results = search_open_library(query)
+
+    # Put all the authors in a comma separated string
+    for result in results:
+        print(result)
+        result["authors_string"] = ",".join([a["name"] for a in result["authors"]])
+
     if not results:
         messages.error(request, "No results from Open Library")
         return redirect(reverse("book_new") + f"?status={status}")
