@@ -5,11 +5,12 @@
 {% block content %}
   <h1>Choose a cover</h1>
 
+  <div>
+    <a href="{% url 'book_new' %}">Skip this</a>
+  </div>
+
   <div class="ol-covers">
     {% for result in results %}
-      <span style="background: dodgerblue; color: black; padding: 10px;">
-        {{ result }}
-      </span>
       <a href="{% url 'book_new' %}?status={{ status }}&isbn={{ result.isbn }}&cover={{ result.cover }}">
         <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
       </a>
