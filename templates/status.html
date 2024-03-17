@@ -19,7 +19,7 @@
 
   <div class="header-actions-inline">
     <h1>{{ status.name }}</h1>
-    <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a>
+    <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal()">add another</a>
   </div>
 
   {% if finished_counts %}
@@ -86,4 +86,23 @@
       </li>
     {% endfor %}
   </ul>
+  <dialog id="add-book">
+    <article>
+      <header>
+        <button aria-label="Close"
+                rel="prev"
+                onclick="document.querySelector('#add-book').close()"></button>
+        <p>
+          <b>Add a book to “{{ status.name }}”</b>
+        </p>
+      </header>
+      <form method="get" action="{% url 'open_library_search' %}">
+        <fieldset>
+          <input type="hidden" name="status" value="{{ status.slug }}">
+          <input type="text" name="q" required>
+        </fieldset>
+        <button type="submit">Search Open Library</button>
+      </form>
+    </article>
+  </dialog>
 {% endblock content %}

@@ -1,4 +1,5 @@
 import json
+from dateutil.parser import parse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate
 from django.conf import settings
@@ -24,6 +25,7 @@ from .forms import (
     BookNoteForm,
 )
 from .utils import send_email_to_admin
+from .cover_helpers import search_open_library, get_book_from_isbn
 from .models import Book, Author, BookCover
 
 
@@ -86,16 +88,35 @@ def book_new(request):
             messages.success(request, f"{book} added")
             return redirect("book_detail", pk=book.pk)
     else:
+        isbn = request.GET.get("isbn", "")
+        cover = request.GET.get("cover", "")
+        authors = []
+
         form = BookForm()
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
+        if isbn != "":
+            data = get_book_from_isbn(request.GET["isbn"])
+            try:
+                year = parse(data["publish_date"]).strftime("%Y")
+            except KeyError:
+                year = ""
+
+            for a in data["authors"]:
+                authors.append(a["name"])
+
+            form.fields["title"].initial = data["title"]
+            form.fields["published_year"].initial = year
 
     return render(
         request,
         "book_form.html",
         {
             "form": form,
+            "isbn": isbn,
+            "authors": authors,
+            "cover": cover,
             "action": "new",
         },
     )
@@ -179,6 +200,23 @@ def search(request):
             "books": books,
         },
     )
+
+
+@login_required
+def open_library_search(request):
+    query = request.GET.get("q")
+    status = request.GET.get("status")
+
+    if not query:
+        messages.error(request, "Search for something")
+        # Get back to where you once belonged
+        return redirect(request.META.get("HTTP_REFERER", "status"))
+
+    results = search_open_library(query)
+    if not results:
+        return redirect("book_new")
+
+    return render(request, "ol_search.html", {"results": results, "status": status})
 
 
 @require_POST

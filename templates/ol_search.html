@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Choose a cover{% endblock title %}
+
+{% block content %}
+  <h1>Choose a cover</h1>
+
+  <div class="ol-covers">
+    {% for result in results %}
+      <span style="background: dodgerblue; color: black; padding: 10px;">
+        {{ result }}
+      </span>
+      <a href="{% url 'book_new' %}?status={{ status }}&isbn={{ result.isbn }}&cover={{ result.cover }}">
+        <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
+      </a>
+    {% endfor %}
+  </div>
+
+{% endblock content %}

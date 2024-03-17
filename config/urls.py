@@ -23,6 +23,7 @@ urlpatterns = [
     # Book Search
     # -----------
     path("search", views.search, name="search"),
+    path("ol", views.open_library_search, name="open_library_search"),
     # Authors
     # -------
     path("author/new", views.author_new, name="author_new"),

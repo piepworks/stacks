@@ -17,5 +17,5 @@
     "*.js": "javascript",
     "*.svg": "django-html"
   },
-  "cSpell.words": ["userbook"]
+  "cSpell.words": ["isbnlib", "notisbn", "olclient", "openlibrary", "userbook"]
 }

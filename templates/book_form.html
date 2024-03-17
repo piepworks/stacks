@@ -51,7 +51,17 @@
         <a class="svg add-item" href="{% url 'cover_new' book.id %}">Add cover</a>
       </div>
     {% endif %}
+    {% if action == 'new' and cover != '' %}
+      <section class="covers">
+        <div>
+          <img width="200"
+              height="auto"
+              alt="New cover"
+              src="{{ cover }}">
+        </div>
+      </section>
   {% endif %}
+{% endif %}
 
   {# TODO: Attempt fetching the appropriate cover image from https://openlibrary.org/ #}
 
@@ -67,6 +77,9 @@
               {{ field.label }}
             </label>
           {% else %}
+            {% if field.name == 'author' and authors %}
+              <small>({% for author in authors %}{{ author }}{% if not forloop.last %}, {% endif %}{% endfor %})</small>
+            {% endif %}
             <label>
               {{ field.label }}
               {{ field }}

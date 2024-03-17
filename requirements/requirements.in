@@ -13,8 +13,10 @@ djlint
 environs[django]
 Faker
 flake8
+git+https://github.com/internetarchive/openlibrary-client.git
 gunicorn
 ipython
+isbnlib
 markdown
 pillow
 pip-lock
