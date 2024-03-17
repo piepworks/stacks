@@ -221,7 +221,8 @@ def open_library_search(request):
 
     results = search_open_library(query)
     if not results:
-        return redirect("book_new")
+        messages.error(request, "No results from Open Library")
+        return redirect(reverse("book_new") + f"?status={status}")
 
     return render(request, "ol_search.html", {"results": results, "status": status})
 
