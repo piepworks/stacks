@@ -2,19 +2,23 @@
 
 {% block title %}Choose a cover{% endblock title %}
 
+{% block body_tag %}class="ol-results"{% endblock body_tag %}
+
 {% block content %}
   <h1>Choose a cover</h1>
 
-  <div>
-    <a href="{% url 'book_new' %}">Skip this (no auto-populated fields)</a>
-  </div>
+  <main>
+    <p><a href="{% url 'book_new' %}">Skip this (no auto-populated fields)</a></p>
 
-  <div class="ol-covers">
-    {% for result in results %}
-      <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}">
-        <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
-      </a>
-    {% endfor %}
-  </div>
+    <ul>
+      {% for result in results %}
+        <li class="book">
+          <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}">
+            <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </main>
 
 {% endblock content %}

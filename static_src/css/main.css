@@ -36,6 +36,7 @@ nav + nav {
   }
 }
 
+.ol-results main,
 .search main,
 .status main {
   ul,
@@ -302,11 +303,4 @@ fieldset > .radio {
 
 .search-form {
   margin-bottom: 1rem;
-}
-
-.ol-covers {
-  display: flex;
-  flex-flow: row wrap;
-  gap: 2rem;
-  margin-top: 2rem;
 }
