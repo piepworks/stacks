@@ -1,36 +1,29 @@
 import requests
-from olclient.openlibrary import OpenLibrary
 
 
 def search_open_library(query):
-    ol = OpenLibrary()
+    querystring = f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,first_publish_year&q={query}"
+    response = requests.get(f"https://openlibrary.org/search.json{querystring}")
+    data = response.json()
+
     found = []
 
-    b = ol.Work.search(query)
+    for doc in data["docs"]:
+        if "cover_i" in doc:
+            cover_image = f"https://covers.openlibrary.org/b/id/{doc['cover_i']}-L.jpg"
+        elif "cover_edition_key" in doc:
+            cover_image = f"https://covers.openlibrary.org/b/olid/{doc['cover_edition_key']}-L.jpg"
+        else:
+            cover_image = None
 
-    if b:
-        olid = b.identifiers.get("olid")[0]
-        cover_image = f"https://covers.openlibrary.org/w/olid/{olid}-L.jpg"
-
-        r = requests.head(cover_image, allow_redirects=True)
-
-        try:
-            if r.headers["Content-Type"] == "image/jpeg":
-                title = b.title
-                authors = b.authors
-                publish_date = b.publish_date
-
-                found.append(
-                    {
-                        "title": title,
-                        "authors": authors,
-                        "published": publish_date,
-                        "olid": olid,
-                        "cover": cover_image,
-                    }
-                )
-        except KeyError:
-            pass
-            # TODO: Add an image search and return the first item?
+        if cover_image:
+            found.append(
+                {
+                    "title": doc["title"],
+                    "authors": doc.get("author_name", []),
+                    "published": doc["first_publish_year"],
+                    "cover": cover_image,
+                }
+            )
 
     return found

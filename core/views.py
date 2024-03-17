@@ -101,14 +101,15 @@ def book_new(request):
         title = request.GET.get("title", "")
         year = request.GET.get("year", "")
 
-        print(year)
-
         form = BookForm()
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
 
         for a in authors:
+            if not a:
+                # Don't save an empty author
+                continue
             if not Author.objects.filter(name=a).exists():
                 new_author = Author.objects.create(
                     name=a,
@@ -229,8 +230,7 @@ def open_library_search(request):
 
     # Put all the authors in a comma separated string
     for result in results:
-        print(result)
-        result["authors_string"] = ",".join([a["name"] for a in result["authors"]])
+        result["authors_string"] = ",".join(result.get("authors", []))
 
     if not results:
         messages.error(request, "No results from Open Library")
