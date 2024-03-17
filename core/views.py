@@ -85,6 +85,13 @@ def book_new(request):
 
         if form.is_valid():
             book = form.save()
+
+            if cover := request.POST.get("cover"):
+                new_cover = BookCover.objects.create(
+                    book=book,
+                )
+                new_cover.save_cover_from_url(cover)
+
             messages.success(request, f"{book} added")
             return redirect("book_detail", pk=book.pk)
     else:

@@ -1,8 +1,12 @@
+import os
+import requests
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
+from django.core.files.temp import NamedTemporaryFile
+from django.core.files import File
 from core.image_helpers import rename_image, resize_and_optimize_image
 
 
@@ -115,6 +119,21 @@ class BookCover(models.Model):
         super().save(*args, **kwargs)
         if self.image and self.image.width > 600:
             self.image = resize_and_optimize_image(self, self.image.name)
+
+    def save_cover_from_url(self, url):
+        if url != "":
+            r = requests.get(url)
+
+            if r.status_code == 200:
+                img_tmp = NamedTemporaryFile(delete=True)
+                img_tmp.write(r.content)
+                img_tmp.flush()
+
+                self.image.save(os.path.basename(url), File(img_tmp), save=True)
+            else:
+                return False
+        else:
+            return False
 
 
 class BookReading(models.Model):

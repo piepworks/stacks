@@ -101,7 +101,10 @@
           <input type="hidden" name="status" value="{{ status.slug }}">
           <input type="text" name="q" required>
         </fieldset>
-        <button type="submit">Search Open Library</button>
+        <div role="group">
+          <button type="submit">Search Open Library</button>
+          <a role="button" class="secondary" href="{% url 'book_new' %}">Add manually</a>
+        </div>
       </form>
     </article>
   </dialog>

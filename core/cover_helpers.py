@@ -1,9 +1,6 @@
-import os
 import requests
 from olclient.openlibrary import OpenLibrary
 from isbnlib import canonical, notisbn, to_isbn13
-from django.core.files.temp import NamedTemporaryFile
-from django.core.files import File
 
 
 def get_book_from_isbn(isbn):
@@ -119,19 +116,3 @@ def search_open_library(query):
             }
         )
     return found
-
-
-def save_cover_from_url(self, url):
-    if url != "":
-        r = requests.get(url)
-
-        if r.status_code == 200:
-            img_tmp = NamedTemporaryFile(delete=True)
-            img_tmp.write(r.content)
-            img_tmp.flush()
-
-            self.cover.save(os.path.basename(url), File(img_tmp), save=True)
-        else:
-            return False
-    else:
-        return False

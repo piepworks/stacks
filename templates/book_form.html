@@ -68,6 +68,9 @@
   <form method="post">
     {% csrf_token %}
     <fieldset>
+      {% if cover != '' %}
+        <input type="hidden" name="cover" value="{{ cover }}">
+      {% endif %}
       {% for field in form %}
         <div{% if field.name == "on_hand" %} class="checkbox"{% endif %}>
           {{ field.errors }}
