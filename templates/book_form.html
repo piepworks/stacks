@@ -80,9 +80,6 @@
               {{ field.label }}
             </label>
           {% else %}
-            {% if field.name == 'author' and authors %}
-              <small>({% for author in authors %}{{ author }}{% if not forloop.last %}, {% endif %}{% endfor %})</small>
-            {% endif %}
             <label>
               {{ field.label }}
               {{ field }}

@@ -111,8 +111,16 @@ def book_new(request):
                 year = ""
 
             for a in data["authors"]:
-                authors.append(a["name"])
+                if not Author.objects.filter(name=a["name"]).exists():
+                    new_author = Author.objects.create(
+                        name=a["name"],
+                        slug=slugify(a["name"]),
+                    )
+                    authors.append(new_author)
+                else:
+                    authors.append(Author.objects.get(name=a["name"]))
 
+            form.fields["author"].initial = authors
             form.fields["title"].initial = data["title"]
             form.fields["published_year"].initial = year
 
