@@ -11,7 +11,6 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
-from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -174,7 +173,7 @@ def book_update(request, pk):
                 f"{book} updated",
             )
 
-            return redirect("status", status=book.status)
+            return redirect("book_detail", pk=book.id)
     else:
         form = BookForm(instance=book)
 
@@ -194,7 +193,7 @@ def book_update(request, pk):
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk)
     book.delete()
-    messages.success(request, mark_safe(f"<u>{book}</u> deleted"))
+    messages.success(request, f"{book} deleted")
     return redirect("status", status="backlog")
 
 
@@ -295,7 +294,7 @@ def cover_update(request, pk, cover_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Cover updated")
-            return redirect("book_update", pk=pk)
+            return redirect("book_detail", pk=pk)
 
     else:
         form = BookCoverForm(instance=cover)
