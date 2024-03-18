@@ -6,7 +6,7 @@ nav ol {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     display: flex;
     gap: 1rem;
   }
