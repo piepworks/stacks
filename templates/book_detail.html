@@ -42,7 +42,7 @@
           <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
           <th>Published Year</th>
           <th>Status</th>
-          {% if book.status.slug != 'wishlist' %}
+          {% if book.status != 'wishlist' %}
             <th>{% if book.format.all.count > 1 %}Formats{% else %}Format{% endif %}</th>
           {% endif %}
         </tr>
@@ -62,7 +62,7 @@
           </td>
           <td>{{ book.published_year }}</td>
           <td><a href="{% url 'status' book.status %}">{{ status.name }}</a></td>
-          {% if book.status.slug != 'wishlist' %}
+          {% if book.status != 'wishlist' %}
           <td>
             {% if book.format.all.count > 1 %}
               <ul>
