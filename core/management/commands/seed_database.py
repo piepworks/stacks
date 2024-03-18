@@ -81,15 +81,12 @@ class Command(BaseCommand):
             rating = None
             if finished:
                 rating = randint(1, 5)
-            format_choices = ["physical", "digital", "audio"]
-            format = format_choices[randint(0, 2)]
             BookReading.objects.create(
                 book=book,
                 start_date=start_date,
                 end_date=end_date,
                 finished=finished,
                 rating=rating,
-                format=format,
             )
 
         # Create BookNotes for every Book

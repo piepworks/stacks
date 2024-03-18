@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import Group
-from .models import User, Book, Author, BookCover, BookReading, BookNote
+from .models import User, Book, Author, BookCover, BookReading, BookNote, BookFormat
 
 
 @admin.register(User)
@@ -63,6 +63,11 @@ class BookAdmin(admin.ModelAdmin):
     authors_list.short_description = "Authors"
 
 
+class BookFormatAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ("name", "slug")
+
+
 class AuthorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
 
@@ -70,6 +75,7 @@ class AuthorAdmin(admin.ModelAdmin):
 admin.site.unregister(Group)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Book, BookAdmin)
+admin.site.register(BookFormat, BookFormatAdmin)
 admin.site.register(BookCover)
 admin.site.register(BookReading)
 admin.site.register(BookNote)

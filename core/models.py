@@ -68,6 +68,16 @@ class Author(models.Model):
         return self.name
 
 
+class BookFormat(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    slug = models.SlugField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -84,7 +94,12 @@ class Book(models.Model):
             ("dnf", "Did Not Finish"),
         ],
     )
-    on_hand = models.BooleanField(default=False)
+    format = models.ManyToManyField(
+        BookFormat,
+        related_name="books",
+        help_text="Choose as many as you have",
+        blank=True,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -144,15 +159,6 @@ class BookReading(models.Model):
     finished = models.BooleanField(default=False)
     rating = models.IntegerField(
         null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(5)]
-    )
-    format = models.CharField(
-        max_length=20,
-        choices=[
-            ("physical", "Physical"),
-            ("digital", "Digital"),
-            ("audio", "Audio"),
-        ],
-        blank=True,
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -60,10 +60,8 @@
               src="{{ cover }}">
         </div>
       </section>
+    {% endif %}
   {% endif %}
-{% endif %}
-
-  {# TODO: Attempt fetching the appropriate cover image from https://openlibrary.org/ #}
 
   <form method="post">
     {% csrf_token %}
@@ -72,30 +70,24 @@
         <input type="hidden" name="cover" value="{{ cover }}">
       {% endif %}
       {% for field in form %}
-        <div{% if field.name == "on_hand" %} class="checkbox"{% endif %}>
+        <div>
           {{ field.errors }}
-          {% if field.name == "on_hand" %}
-            <label>
-              {{ field }}
-              {{ field.label }}
-            </label>
-          {% else %}
-            <label>
-              {{ field.label }}
-              {{ field }}
-            </label>
-          {% endif %}
+          <label>
+            {{ field.label }}
+            {{ field }}
+          </label>
         </div>
       {% endfor %}
-
-      <input type="submit" value="Save">
     </fieldset>
+    <button type="submit">Save</button>
   </form>
   {% include "components/author-new.html" %}
 {% endblock content %}
 
 {% block page_js %}
 <script>
+  new TomSelect('#id_format', {});
+
   new TomSelect('#id_author', {
     create: function(input, callback) {
       // Get CSRF token

@@ -19,7 +19,7 @@ class BookForm(forms.ModelForm):
 
     class Meta:
         model = Book
-        fields = ("title", "status", "on_hand", "author", "published_year")
+        fields = ("title", "status", "author", "published_year", "format")
 
 
 class BookStatusForm(forms.ModelForm):
