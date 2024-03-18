@@ -20,10 +20,11 @@
                      {% if status.0 == book.status %}checked{% endif %}>
               {{ status.1 }}
             </label>
+            {{ form }}
           {% endfor %}
         </div>
       </fieldset>
-      <input type="submit" value="Save">
+      <button type="submit">Save</button>
     </form>
   </article>
 </dialog>
