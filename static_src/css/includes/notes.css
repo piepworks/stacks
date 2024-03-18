@@ -8,11 +8,27 @@
   .content {
     margin-top: 0.5rem;
     background: rgb(0 0 0 / 5%);
-    padding: 1rem 1rem 0.5rem;
+    padding: 1rem 1rem 0.25rem;
     border-radius: 0.5rem;
 
     @media (prefers-color-scheme: dark) {
       background: rgb(255 255 255 / 5%);
+    }
+
+    blockquote {
+      border-color: rgb(0 0 0 / 10%);
+
+      @media (prefers-color-scheme: dark) {
+        border-color: rgb(255 255 255 / 10%);
+      }
+
+      p {
+        margin-bottom: 0;
+
+        & + & {
+          margin-top: var(--pico-typography-spacing-vertical);
+        }
+      }
     }
   }
 }
