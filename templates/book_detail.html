@@ -88,7 +88,7 @@
     {% endif %}
   </section>
 
-  <section>
+  <section class="notes">
     <h2>Notes</h2>
     {# Add note field always visible #}
     <form action="{% url 'note_new' book.id %}" method="post">
@@ -99,8 +99,8 @@
 
     {% if notes %}
         {% for note in notes %}
-          <div>
-            <div>
+          <div class="note">
+            <div class="datetime">
               <small>
                 <a href="{% url 'note_update' book.id note.id %}">
                   {{ note.created_at|date:"F j, Y" }}
@@ -108,7 +108,7 @@
                 </a>
               </small>
             </div>
-            {{ note.text|markdown }}
+            <div class="content">{{ note.text|markdown }}</div>
           </div>
         {% endfor %}
     {% endif %}

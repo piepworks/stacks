@@ -1,0 +1,22 @@
+.notes {
+  form {
+    margin-bottom: 2rem;
+  }
+}
+
+.note {
+  .content {
+    margin-top: 0.5rem;
+    background: rgb(0 0 0 / 5%);
+    padding: 1rem 1rem 0.5rem;
+    border-radius: 0.5rem;
+
+    @media (prefers-color-scheme: dark) {
+      background: rgb(255 255 255 / 5%);
+    }
+  }
+}
+
+.note + .note {
+  margin-top: 2rem;
+}
