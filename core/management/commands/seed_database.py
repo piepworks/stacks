@@ -41,7 +41,14 @@ class Command(BaseCommand):
                 title=book_title,
                 slug=book_slug,
                 status=fake.random_element(
-                    elements=("backlog", "to-read", "reading", "finished", "dnf")
+                    elements=(
+                        "wishlist",
+                        "backlog",
+                        "to-read",
+                        "reading",
+                        "finished",
+                        "dnf",
+                    )
                 ),
                 published_year=fake.year(),
             )
