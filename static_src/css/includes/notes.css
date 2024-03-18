@@ -20,3 +20,7 @@
 .note + .note {
   margin-top: 2rem;
 }
+
+.note-edit #id_text {
+  min-height: 20ch;
+}
