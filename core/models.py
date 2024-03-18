@@ -100,6 +100,7 @@ class Book(models.Model):
         help_text="Choose as many as you have",
         blank=True,
     )
+    olid = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

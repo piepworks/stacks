@@ -13,7 +13,7 @@
     <ul>
       {% for result in results %}
         <li class="book">
-          <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}">
+          <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}&olid={{ result.olid }}">
             <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
           </a>
         </li>

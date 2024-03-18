@@ -82,7 +82,12 @@ def book_new(request):
         form = BookForm(request.POST)
 
         if form.is_valid():
-            book = form.save()
+            book = form.save(commit=False)
+
+            if (olid := request.POST.get("olid")) != "":
+                book.olid = olid
+
+            book.save()
 
             if cover := request.POST.get("cover"):
                 new_cover = BookCover.objects.create(
@@ -93,7 +98,7 @@ def book_new(request):
             messages.success(request, f"{book} added")
             return redirect("book_detail", pk=book.pk)
     else:
-        isbn = request.GET.get("isbn", "")
+        olid = request.GET.get("olid", "")
         cover = request.GET.get("cover", "")
         authors = request.GET.get("authors", "").split(",")
         author_records = []
@@ -101,6 +106,7 @@ def book_new(request):
         year = request.GET.get("year", "")
 
         form = BookForm()
+
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
             form.fields["status"].initial = request.GET["status"]
@@ -127,7 +133,7 @@ def book_new(request):
         "book_form.html",
         {
             "form": form,
-            "isbn": isbn,
+            "olid": olid,
             "authors": authors,
             "cover": cover,
             "action": "new",

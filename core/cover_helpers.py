@@ -21,7 +21,14 @@ def search_open_library(query):
                 {
                     "title": doc["title"],
                     "authors": doc.get("author_name", []),
-                    "published": doc["first_publish_year"],
+                    "published": (
+                        doc["first_publish_year"]
+                        if "first_publish_year" in doc
+                        else None
+                    ),
+                    "olid": (
+                        doc["cover_edition_key"] if "cover_edition_key" in doc else None
+                    ),
                     "cover": cover_image,
                 }
             )

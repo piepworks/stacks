@@ -69,6 +69,7 @@
       {% if cover != '' %}
         <input type="hidden" name="cover" value="{{ cover }}">
       {% endif %}
+      <input type="hidden" name="olid"{% if olid != '' %} value="{{ olid }}"{% endif %}>
       {% for field in form %}
         <div>
           {{ field.errors }}
