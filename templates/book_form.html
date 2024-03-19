@@ -10,12 +10,14 @@
 
 {% block body_tag %}class="form-page"{% endblock body_tag %}
 
+{% block stack_link %}{% if action != 'new' %}{% url 'status' book.status %}{% else %}{{ block.super }}{% endif %}{% endblock stack_link %}
+
 {% block content %}
   <h1>
     {% if action == 'new' %}
-    Add a new book
+      Add a new book
     {% else %}
-    Editing <a href="{% url 'book_detail' book.id %}">{{ book }}</a>
+      Editing <a href="{% url 'book_detail' book.id %}">{{ book }}</a>
     {% endif %}
   </h1>
 
