@@ -274,7 +274,7 @@ def cover_new(request, pk):
             cover.book = book
             cover.save()
             messages.success(request, "Cover added")
-            return redirect("book_update", pk=book.pk)
+            return redirect("book_detail", pk=book.pk)
 
     else:
         form = BookCoverForm()
