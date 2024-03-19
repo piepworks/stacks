@@ -149,11 +149,18 @@ class BookCover(models.Model):
             new_height = int(img.height * ratio)
             img = img.resize((max_width, new_height))
 
-        # Save the image back to the instance
-        temp_file = BytesIO()
-        img.save(temp_file, format=self.image.file.content_type.split("/")[-1].upper())
-        temp_file.seek(0)
-        self.image = File(temp_file, name=self.image.name)
+            # Get the file extension
+            extension = self.image.name.split(".")[-1].upper()
+
+            # Correct the format string for JPEG images
+            if extension == "JPG":
+                extension = "JPEG"
+
+            # Save the image back to the instance
+            temp_file = BytesIO()
+            img.save(temp_file, format=extension)
+            temp_file.seek(0)
+            self.image = File(temp_file, name=self.image.name)
 
         super().save(*args, **kwargs)
 
