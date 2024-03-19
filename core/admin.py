@@ -70,7 +70,12 @@ class BookFormatAdmin(admin.ModelAdmin):
 
 class AuthorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ("name", "slug")
+    list_display = ("name", "slug", "book_count")
+
+    def book_count(self, obj):
+        return obj.book_set.count()
+
+    book_count.short_description = "Book Count"
 
 
 admin.site.unregister(Group)
