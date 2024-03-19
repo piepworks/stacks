@@ -88,6 +88,7 @@ def book_new(request):
                 book.olid = olid
 
             book.save()
+            form.save_m2m()
 
             if cover := request.POST.get("cover"):
                 new_cover = BookCover.objects.create(
