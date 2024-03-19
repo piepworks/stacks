@@ -70,6 +70,7 @@ class BookFormatAdmin(admin.ModelAdmin):
 
 class AuthorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
+    list_display = ("name", "slug")
 
 
 admin.site.unregister(Group)
