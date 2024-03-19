@@ -1,5 +1,7 @@
 import os
 import requests
+from io import BytesIO
+from PIL import Image
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -7,7 +9,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
-from core.image_helpers import rename_image, resize_and_optimize_image
+from core.image_helpers import rename_image
 
 
 class UserManager(BaseUserManager):
@@ -136,9 +138,24 @@ class BookCover(models.Model):
         return f"Cover of {self.book}"
 
     def save(self, *args, **kwargs):
+        # Resize the image to a max-width of 600px
+        max_width = 600
+
+        # Open the image using PIL
+        img = Image.open(self.image)
+
+        if img.width > max_width:
+            ratio = max_width / img.width
+            new_height = int(img.height * ratio)
+            img = img.resize((max_width, new_height))
+
+        # Save the image back to the instance
+        temp_file = BytesIO()
+        img.save(temp_file, format=self.image.file.content_type.split("/")[-1].upper())
+        temp_file.seek(0)
+        self.image = File(temp_file, name=self.image.name)
+
         super().save(*args, **kwargs)
-        if self.image and self.image.width > 600:
-            self.image = resize_and_optimize_image(self, self.image.name)
 
     def save_cover_from_url(self, url):
         if url != "":
