@@ -175,8 +175,16 @@ dialog .grid {
   margin: 0 0 1rem;
 
   @media (min-width: 1024px) {
-    display: flex;
-    justify-content: space-between;
+    &,
+    form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    form {
+      gap: 0.25rem;
+    }
   }
 
   a,
