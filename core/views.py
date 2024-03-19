@@ -31,7 +31,7 @@ def home(request):
     context = {}
 
     if request.user.is_authenticated:
-        return redirect("status", status="backlog")
+        return redirect("status", status="reading")
 
     return render(request, "home.html", context)
 

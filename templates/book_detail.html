@@ -7,6 +7,8 @@
 
 {% block body_tag %}class="book-detail"{% endblock body_tag %}
 
+{% block stack_link %}{% url 'status' book.status %}{% endblock stack_link %}
+
 {% block content %}
   <section class="header-actions">
     <h1>{{ book }}</h1>
