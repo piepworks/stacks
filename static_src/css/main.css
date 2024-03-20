@@ -327,3 +327,7 @@ fieldset > .radio {
 .search-form {
   margin-bottom: 1rem;
 }
+
+.filters {
+  margin-bottom: 2rem;
+}

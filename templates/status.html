@@ -35,57 +35,77 @@
     </dl>
   {% endif %}
 
-  <ul>
-    {% for book, form in forms %}
-      <li class="book">
-        <a href="{% url 'book_detail' book.id %}">
-          {% if book.covers.all %}
-            {% with book.covers.all|first as cover %}
-              <img src="{{ cover.image.url }}"
-                  alt="{{ cover }}"
-                  width="150"
-                  height="auto"
-                  title="{{ book }}">
-            {% endwith %}
-          {% else %}
-          <div class="no-cover">
-            {# https://remixicon.com/icon/book-line #}
-            <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
+  <div x-data="{ selected: 'all', formatIsInList: function(format, list) { return list.split(',').includes(format); } }">
+    {% if status.slug != 'wishlist' %}
+    <section class="filters">
+      <input type="radio" id="all" name="format" value="all" x-model="selected">
+      <label for="all">All</label>
+
+      <input type="radio" id="physical" name="format" value="physical" x-model="selected">
+      <label for="physical">Physical</label>
+
+      <input type="radio" id="digital" name="format" value="digital" x-model="selected">
+      <label for="digital">Digital</label>
+
+      <input type="radio" id="audio" name="format" value="audio" x-model="selected">
+      <label for="audio">Audio</label>
+    </section>
+    {% endif %}
+
+    <ul>
+      {% for book, form in forms %}
+        {{ book.format_set.all }}
+        <li class="book" data-formats="{% for format in book.format.all %}{{ format.slug }}{% if not forloop.last %},{% endif %}{% endfor %}" x-show="selected === 'all' || formatIsInList(selected, $el.dataset.formats)">
+          <a href="{% url 'book_detail' book.id %}">
+            {% if book.covers.all %}
+              {% with book.covers.all|first as cover %}
+                <img src="{{ cover.image.url }}"
+                    alt="{{ cover }}"
+                    width="150"
+                    height="auto"
+                    title="{{ book }}">
+              {% endwith %}
+            {% else %}
+            <div class="no-cover">
+              {# https://remixicon.com/icon/book-line #}
+              <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
+            </div>
+            {% endif %}
+          </a>
+          <div class="title" title="{{ book }}">{{ book }}</div>
+          <div class="actions">
+            {% if book.status|get_previous_status != None %}
+            <form action="{% url 'book_update' book.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
+              {{ form }}
+              <button class="svg previous-status">Previous status</button>
+            </form>
+            {% else %}
+            <span>&nbsp;</span>
+            {% endif %}
+
+            <button class="svg adjust-status" onclick="document.querySelector('#book-{{ book.id }}').showModal()">
+              Adjust status
+            </button>
+
+            {% if book.status|get_next_status != None %}
+            <form action="{% url 'book_update' book.id %}" method="post">
+              {% csrf_token %}
+              <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
+              {{ form }}
+              <button class="svg next-status">Next status</button>
+            </form>
+            {% else %}
+            <span>&nbsp;</span>
+            {% endif %}
           </div>
-          {% endif %}
-        </a>
-        <div class="title" title="{{ book }}">{{ book }}</div>
-        <div class="actions">
-          {% if book.status|get_previous_status != None %}
-          <form action="{% url 'book_update' book.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
-            {{ form }}
-            <button class="svg previous-status">Previous status</button>
-          </form>
-          {% else %}
-          <span>&nbsp;</span>
-          {% endif %}
+          {% include "components/status-modal.html" %}
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 
-          <button class="svg adjust-status" onclick="document.querySelector('#book-{{ book.id }}').showModal()">
-            Adjust status
-          </button>
-
-          {% if book.status|get_next_status != None %}
-          <form action="{% url 'book_update' book.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
-            {{ form }}
-            <button class="svg next-status">Next status</button>
-          </form>
-          {% else %}
-          <span>&nbsp;</span>
-          {% endif %}
-        </div>
-        {% include "components/status-modal.html" %}
-      </li>
-    {% endfor %}
-  </ul>
   <dialog id="add-book">
     <article>
       <header>
