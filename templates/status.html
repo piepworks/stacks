@@ -38,17 +38,25 @@
   <div x-data="{ selected: 'all', formatIsInList: function(format, list) { return list.split(',').includes(format); } }">
     {% if status.slug != 'wishlist' %}
     <section class="filters">
-      <input type="radio" id="all" name="format" value="all" x-model="selected">
-      <label for="all">All</label>
+      <div>
+        <input type="radio" id="all" name="format" value="all" x-model="selected">
+        <label for="all">All</label>
+      </div>
 
-      <input type="radio" id="physical" name="format" value="physical" x-model="selected">
-      <label for="physical">Physical</label>
+      <div>
+        <input type="radio" id="physical" name="format" value="physical" x-model="selected">
+        <label for="physical">Physical</label>
+      </div>
 
-      <input type="radio" id="digital" name="format" value="digital" x-model="selected">
-      <label for="digital">Digital</label>
+      <div>
+        <input type="radio" id="digital" name="format" value="digital" x-model="selected">
+        <label for="digital">Digital</label>
+      </div>
 
-      <input type="radio" id="audio" name="format" value="audio" x-model="selected">
-      <label for="audio">Audio</label>
+      <div>
+        <input type="radio" id="audio" name="format" value="audio" x-model="selected">
+        <label for="audio">Audio</label>
+      </div>
     </section>
     {% endif %}
 

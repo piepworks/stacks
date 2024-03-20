@@ -330,4 +330,7 @@ fieldset > .radio {
 
 .filters {
   margin-bottom: 2rem;
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
 }
