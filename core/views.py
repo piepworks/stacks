@@ -1,4 +1,6 @@
 import json
+import bleach
+import markdown
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login, authenticate
 from django.conf import settings
@@ -145,6 +147,11 @@ def book_new(request):
 @login_required
 def book_detail(request, pk):
     book = Book.objects.get(pk=pk)
+    notes = book.notes.all()
+
+    # Apply Markdown formatting and convert URLs in notes to clickable links
+    for note in notes:
+        note.text_html = bleach.linkify(markdown.markdown(note.text))
 
     return render(
         request,
@@ -158,7 +165,7 @@ def book_detail(request, pk):
             "reading_form": BookReadingForm(instance=book),
             "note_form": BookNoteForm(instance=book),
             "readings": book.readings.all(),
-            "notes": book.notes.all(),
+            "notes": notes,
         },
     )
 
