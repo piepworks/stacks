@@ -33,4 +33,17 @@ def search_open_library(query):
                 }
             )
 
+    # If `found` is empty, return the first item in the data['docs']
+    if not found and data["docs"]:
+        doc = data["docs"][0]
+
+        found = {
+            "title": doc["title"],
+            "authors": doc.get("author_name", []),
+            "published": (
+                doc["first_publish_year"] if "first_publish_year" in doc else None
+            ),
+            "olid": (doc["cover_edition_key"] if "cover_edition_key" in doc else None),
+        }
+
     return found

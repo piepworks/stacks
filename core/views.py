@@ -241,6 +241,17 @@ def open_library_search(request):
 
     results = search_open_library(query)
 
+    # If results is a dict, it means there was only one result
+    if isinstance(results, dict):
+        messages.info(request, "Open Library didn’t have a cover for this book")
+        return redirect(
+            reverse("book_new")
+            + f"?title={results['title']}&authors={','.join(results['authors'])}"
+            + f"&year={results['published']}&status={status}"
+        )
+
+    # Now we know there are multiple results with covers
+
     # Put all the authors in a comma separated string
     for result in results:
         result["authors_string"] = ",".join(result.get("authors", []))
