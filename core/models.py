@@ -138,29 +138,30 @@ class BookCover(models.Model):
         return f"Cover of {self.book}"
 
     def save(self, *args, **kwargs):
-        # Resize the image to a max-width of 600px
-        max_width = 600
+        if self.image:
+            # Resize the image to a max-width of 600px
+            max_width = 600
 
-        # Open the image using PIL
-        img = Image.open(self.image)
+            # Open the image using PIL
+            img = Image.open(self.image)
 
-        if img.width > max_width:
-            ratio = max_width / img.width
-            new_height = int(img.height * ratio)
-            img = img.resize((max_width, new_height))
+            if img.width > max_width:
+                ratio = max_width / img.width
+                new_height = int(img.height * ratio)
+                img = img.resize((max_width, new_height))
 
-            # Get the file extension
-            extension = self.image.name.split(".")[-1].upper()
+                # Get the file extension
+                extension = self.image.name.split(".")[-1].upper()
 
-            # Correct the format string for JPEG images
-            if extension == "JPG":
-                extension = "JPEG"
+                # Correct the format string for JPEG images
+                if extension == "JPG":
+                    extension = "JPEG"
 
-            # Save the image back to the instance
-            temp_file = BytesIO()
-            img.save(temp_file, format=extension)
-            temp_file.seek(0)
-            self.image = File(temp_file, name=self.image.name)
+                # Save the image back to the instance
+                temp_file = BytesIO()
+                img.save(temp_file, format=extension)
+                temp_file.seek(0)
+                self.image = File(temp_file, name=self.image.name)
 
         super().save(*args, **kwargs)
 
