@@ -274,7 +274,7 @@ def cover_new(request, pk):
     book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = BookCoverForm(request.POST, request.FILES)
+        form = BookCoverForm(request.POST, request.FILES, book=book)
 
         if form.is_valid():
             cover = form.save(commit=False)
@@ -284,7 +284,7 @@ def cover_new(request, pk):
             return redirect("book_detail", pk=book.pk)
 
     else:
-        form = BookCoverForm()
+        form = BookCoverForm(book=book)
 
     return render(
         request,

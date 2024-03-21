@@ -48,9 +48,28 @@ class BookReadingForm(forms.ModelForm):
 
 
 class BookCoverForm(forms.ModelForm):
+    url = forms.URLField(
+        required=False, label="URL", help_text="If you don't have a file"
+    )
+
     class Meta:
         model = BookCover
-        fields = ("image", "description")
+        fields = ("image", "url", "description")
+
+    def __init__(self, *args, **kwargs):
+        self.book = kwargs.pop("book", None)
+        super(BookCoverForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        image = cleaned_data.get("image")
+        url = cleaned_data.get("url")
+
+        if not image and url:
+            self.instance.book = self.book
+            self.instance.save_cover_from_url(url)
+
+        return cleaned_data
 
 
 class BookNoteForm(forms.ModelForm):
