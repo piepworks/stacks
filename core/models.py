@@ -1,7 +1,5 @@
 import os
 import requests
-from io import BytesIO
-from PIL import Image
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -9,7 +7,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
-from imagekit.models import ImageSpecField
+from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
 
@@ -123,10 +121,15 @@ class Book(models.Model):
 
 
 class BookCover(models.Model):
-    image = models.ImageField(upload_to=rename_image, blank=True)
+    image = ProcessedImageField(
+        upload_to=rename_image,
+        processors=[ResizeToFit(width=600, upscale=False)],
+        format="JPEG",
+        options={"quality": 70},
+    )
     thumbnail = ImageSpecField(
         source="image",
-        processors=[ResizeToFit(width=300)],
+        processors=[ResizeToFit(width=300, upscale=False)],
         format="JPEG",
         options={"quality": 60},
     )
@@ -144,34 +147,6 @@ class BookCover(models.Model):
 
     def __str__(self):
         return f"Cover of {self.book}"
-
-    def save(self, *args, **kwargs):
-        if self.image:
-            # Resize the image to a max-width of 600px
-            max_width = 600
-
-            # Open the image using PIL
-            img = Image.open(self.image)
-
-            if img.width > max_width:
-                ratio = max_width / img.width
-                new_height = int(img.height * ratio)
-                img = img.resize((max_width, new_height))
-
-                # Get the file extension
-                extension = self.image.name.split(".")[-1].upper()
-
-                # Correct the format string for JPEG images
-                if extension.startswith("JPG"):
-                    extension = "JPEG"
-
-                # Save the image back to the instance
-                temp_file = BytesIO()
-                img.save(temp_file, format=extension)
-                temp_file.seek(0)
-                self.image = File(temp_file, name=self.image.name)
-
-        super().save(*args, **kwargs)
 
     def save_cover_from_url(self, url):
         if url != "":
