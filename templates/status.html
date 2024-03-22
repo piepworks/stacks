@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% load get_next_status %}
-{% load get_previous_status %}
+{% load get_next_status get_previous_status %}
 
 {% block body_tag %}
   class="status"
@@ -85,6 +84,7 @@
             {% if book.status|get_previous_status != None %}
             <form action="{% url 'book_update' book.id %}" method="post">
               {% csrf_token %}
+              <input type="hidden" name="status_change" value="true">
               <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
               {{ form }}
               <button class="svg previous-status">Previous status</button>
@@ -101,6 +101,7 @@
             <form action="{% url 'book_update' book.id %}" method="post">
               {% csrf_token %}
               <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
+              <input type="hidden" name="status_change" value="true">
               {{ form }}
               <button class="svg next-status">Next status</button>
             </form>

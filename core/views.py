@@ -173,15 +173,20 @@ def book_detail(request, pk):
 @login_required
 def book_update(request, pk):
     book = Book.objects.get(pk=pk)
-    # statuses = Book._meta.get_field("status").choices
-    # old_status = book.status
+    old_status = book.status
 
     if request.method == "POST":
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
 
-            # TODO: customize message based on what was actually updated
+            if request.POST.get("status_change"):
+                messages.success(
+                    request,
+                    f"{book} moved to {book.get_status_display()}",
+                )
+                return redirect("status", status=old_status)
+
             messages.success(
                 request,
                 f"{book} updated",
