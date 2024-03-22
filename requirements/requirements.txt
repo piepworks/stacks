@@ -56,12 +56,15 @@ django==5.0.3
     # via
     #   -r requirements/requirements.in
     #   dj-database-url
+    #   django-appconf
     #   django-bleach
     #   django-browser-reload
     #   django-debug-toolbar
     #   django-extensions
     #   django-htmx
     #   django-storages
+django-appconf==1.0.6
+    # via django-imagekit
 django-bleach==3.1.0
     # via -r requirements/requirements.in
 django-browser-reload==1.12.1
@@ -73,6 +76,8 @@ django-debug-toolbar==4.3.0
 django-extensions==3.2.3
     # via -r requirements/requirements.in
 django-htmx==1.17.3
+    # via -r requirements/requirements.in
+django-imagekit==5.0.0
     # via -r requirements/requirements.in
 django-storages==1.14.2
     # via -r requirements/requirements.in
@@ -145,8 +150,12 @@ pathspec==0.12.1
     #   djlint
 pexpect==4.9.0
     # via ipython
+pilkit==3.0
+    # via django-imagekit
 pillow==10.2.0
-    # via -r requirements/requirements.in
+    # via
+    #   -r requirements/requirements.in
+    #   pilkit
 pip-lock==2.11.0
     # via -r requirements/requirements.in
 pip-tools==7.4.0

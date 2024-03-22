@@ -9,6 +9,8 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
 
 
@@ -122,6 +124,12 @@ class Book(models.Model):
 
 class BookCover(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True)
+    thumbnail = ImageSpecField(
+        source="image",
+        processors=[ResizeToFit(width=300)],
+        format="JPEG",
+        options={"quality": 60},
+    )
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     description = models.CharField(
         max_length=100,

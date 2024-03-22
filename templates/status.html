@@ -67,7 +67,7 @@
           <a href="{% url 'book_detail' book.id %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
-                <img src="{{ cover.image.url }}"
+                <img src="{{ cover.thumbnail.url }}"
                     alt="{{ cover }}"
                     width="150"
                     height="auto"

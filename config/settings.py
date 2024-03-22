@@ -70,6 +70,7 @@ INSTALLED_APPS += [
     "django_browser_reload",
     "django_extensions",
     "django_htmx",
+    "imagekit",
 ]
 
 # Our apps
