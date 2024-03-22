@@ -154,7 +154,7 @@ class BookCover(models.Model):
                 extension = self.image.name.split(".")[-1].upper()
 
                 # Correct the format string for JPEG images
-                if extension == "JPG":
+                if extension.startswith("JPG"):
                     extension = "JPEG"
 
                 # Save the image back to the instance
