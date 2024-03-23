@@ -39,10 +39,10 @@
       <section class="filters">
         <div>
           <input type="radio" id="all" name="format" value="all" x-model="selected">
-          <label for="all">All</label>
+          <label for="all">All <small>(<span x-text="document.querySelectorAll('[data-formats]').length"></span>)</small></label>
         </div>
         {% for format in formats %}
-          <div>
+          <div x-show="document.querySelectorAll('[data-formats*={{ format.slug }}]').length">
             <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="selected">
             <label for="{{ format.slug }}">{{ format.name }} <small>(<span x-text="document.querySelectorAll('[data-formats*={{ format.slug }}]').length"></span>)</small></label>
           </div>
