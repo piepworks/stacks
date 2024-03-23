@@ -26,7 +26,7 @@ from .forms import (
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
-from .models import Book, Author, BookCover
+from .models import Book, Author, BookCover, BookFormat
 
 
 def home(request):
@@ -43,9 +43,7 @@ def status(request, status):
     if status not in dict(Book._meta.get_field("status").choices):
         raise Http404()
 
-    status_counts = (
-        Book.objects.all().values("status").annotate(count=models.Count("status"))
-    )
+    status_counts = Book.objects.values("status").annotate(count=models.Count("status"))
     books = Book.objects.filter(status=status).order_by("-updated_at")
     forms = [(book, BookStatusForm(instance=book)) for book in books]
 
@@ -73,6 +71,7 @@ def status(request, status):
             "name": Book(status=status).get_status_display(),
         },
         "forms": forms,
+        "formats": BookFormat.objects.all(),
     }
 
     return render(request, "status.html", context)
