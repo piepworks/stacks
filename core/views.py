@@ -44,12 +44,21 @@ def status(request, status):
         raise Http404()
 
     status_counts = Book.objects.values("status").annotate(count=models.Count("status"))
-    books = Book.objects.filter(status=status).order_by("-updated_at")
+    books = (
+        Book.objects.filter(status=status)
+        .order_by("-updated_at")
+        .prefetch_related("covers", "author", "format")
+    )
     forms = [(book, BookStatusForm(instance=book)) for book in books]
 
     # If status is `finished`, get counts of how many (unique?) Books have
     # associated BookReadings that have end dates in each year and are also
     # marked finished
+    #
+    # Books of any status can have a reading that's finished
+    # This is so you can re-read a book and have it count as finished
+    # while still being counted as being finished before.
+
     if status == "finished":
         finished_counts = (
             Book.objects.filter(
