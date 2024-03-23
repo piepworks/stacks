@@ -44,7 +44,7 @@
         {% for format in formats %}
           <div>
             <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="selected">
-            <label for="{{ format.slug }}">{{ format.name }}</label>
+            <label for="{{ format.slug }}">{{ format.name }} <small>(<span x-text="document.querySelectorAll('[data-formats*={{ format.slug }}]').length"></span>)</small></label>
           </div>
         {% endfor %}
       </section>

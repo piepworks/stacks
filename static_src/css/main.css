@@ -333,4 +333,8 @@ fieldset > .radio {
   display: flex;
   flex-flow: row wrap;
   gap: 1rem;
+
+  small {
+    opacity: 0.5;
+  }
 }
