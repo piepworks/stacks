@@ -105,11 +105,10 @@
 
   <section class="notes">
     <h2>Notes</h2>
-    {# Add note field always visible #}
     <form action="{% url 'note_new' book.slug %}" method="post">
       {% csrf_token %}
       {{ note_form.text }}
-      <button type="submit">Save new note</button>
+      <button type="submit">Save a new note</button>
     </form>
 
     {% if notes %}
