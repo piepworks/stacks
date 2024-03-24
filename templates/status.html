@@ -53,7 +53,7 @@
     <ul>
       {% for book, form in forms %}
         <li class="book"{% if status.slug != 'wishlist' %} data-formats="{% for format in book.format.all %}{{ format.slug }}{% if not forloop.last %},{% endif %}{% endfor %}" x-show="selected === 'all' || formatIsInList(selected, $el.dataset.formats)"{% endif %}>
-          <a href="{% url 'book_detail' book.id %}">
+          <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
                 <img src="{{ cover.thumbnail.url }}"

@@ -51,6 +51,7 @@ class BookCoverForm(forms.ModelForm):
     url = forms.URLField(
         required=False, label="URL", help_text="If you don't have a file"
     )
+    image = forms.ImageField(required=False)  # make image field optional
 
     class Meta:
         model = BookCover

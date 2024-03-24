@@ -30,8 +30,8 @@
               alt="{{ cover }}"
               src="{{ cover.image.url }}">
           <div class="actions">
-            <a href="{% url 'cover_update' book.id cover.id %}" class="svg edit">Edit</a>
-            <form action="{% url 'cover_delete' book.id cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
+            <a href="{% url 'cover_update' book.slug cover.id %}" class="svg edit">Edit</a>
+            <form action="{% url 'cover_delete' book.slug cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
               {% csrf_token %}
               <button class="svg delete">Delete</button>
             </form>
@@ -40,7 +40,7 @@
       {% endfor %}
       {% if action == 'update' %}
         <div class="another">
-          <a class="svg add-item" href="{% url 'cover_new' book.id %}">Add cover</a>
+          <a class="svg add-item" href="{% url 'cover_new' book.slug %}">Add cover</a>
         </div>
       {% endif %}
     </section>
@@ -50,7 +50,7 @@
         {# https://remixicon.com/icon/book-line #}
         <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
         <p>No cover found for this book.</p>
-        <a class="svg add-item" href="{% url 'cover_new' book.id %}">Add cover</a>
+        <a class="svg add-item" href="{% url 'cover_new' book.slug %}">Add cover</a>
       </div>
     {% endif %}
     {% if action == 'new' and cover != '' %}

@@ -12,9 +12,9 @@
 {% block content %}
   <section class="header-actions">
     <h1>{{ book }}</h1>
-    <form action="{% url 'book_delete' book.id %}" method="post">
+    <form action="{% url 'book_delete' book.slug %}" method="post">
       {% csrf_token %}
-      <a role="button" href="{% url 'book_update' book.id %}">Edit</a>
+      <a role="button" href="{% url 'book_update' book.slug %}">Edit</a>
       <button class="contrast" onclick="return confirm('Are you sure?')">Delete</button>
     </form>
   </section>
@@ -85,7 +85,7 @@
   <section>
     <div class="header-actions-inline">
       <h2>Readings</h2>
-      <a class="svg add-item" href="{% url 'reading_new' book.id %}">Start a new reading</a>
+      <a class="svg add-item" href="{% url 'reading_new' book.slug %}">Start a new reading</a>
     </div>
     {# TODO: probably put this on another page #}
     {% comment %}
@@ -97,7 +97,7 @@
     {% if readings %}
       <ul>
         {% for reading in readings %}
-          <li><a href="{% url 'reading_update' book.id reading.id %}">Started on {{ reading.start_date|date:"F j, Y" }}</a></li>
+          <li><a href="{% url 'reading_update' book.slug reading.id %}">Started on {{ reading.start_date|date:"F j, Y" }}</a></li>
         {% endfor %}
       </ul>
     {% endif %}
@@ -106,7 +106,7 @@
   <section class="notes">
     <h2>Notes</h2>
     {# Add note field always visible #}
-    <form action="{% url 'note_new' book.id %}" method="post">
+    <form action="{% url 'note_new' book.slug %}" method="post">
       {% csrf_token %}
       {{ note_form.text }}
       <button type="submit">Save new note</button>
@@ -117,7 +117,7 @@
           <div class="note">
             <div class="datetime">
               <small>
-                <a href="{% url 'note_update' book.id note.id %}">
+                <a href="{% url 'note_update' book.slug note.id %}">
                   {{ note.created_at|date:"F j, Y" }}
                   at {{ note.created_at|date:"g:i A" }}
                 </a>
