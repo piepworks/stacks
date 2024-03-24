@@ -54,7 +54,7 @@ class BookAuthorInline(admin.TabularInline):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "authors_list")
+    list_display = ("title", "slug", "authors_list")
     inlines = [BookAuthorInline, BookCoverInline]
     exclude = ("author",)
     prepopulated_fields = {"slug": ("title",)}
