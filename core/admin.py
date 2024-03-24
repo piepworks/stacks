@@ -1,6 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
 from django.utils.translation import gettext_lazy as _
+from django.utils.html import format_html
+from django.urls import reverse
 from django.contrib.auth.models import Group
 from .models import User, Book, Author, BookCover, BookReading, BookNote, BookFormat
 
@@ -76,6 +78,18 @@ class AuthorAdmin(admin.ModelAdmin):
         return obj.book_set.count()
 
     book_count.short_description = "Book Count"
+
+    def get_readonly_fields(self, request, obj=None):
+        return self.readonly_fields + ("display_books",)
+
+    def display_books(self, obj):
+        links = "".join(
+            f'<p><a href="{reverse("admin:core_book_change", args=[book.pk])}">{book}</a></p>'
+            for book in obj.book_set.all()
+        )
+        return format_html(links)
+
+    display_books.short_description = "Books"
 
 
 admin.site.unregister(Group)
