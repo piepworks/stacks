@@ -13,7 +13,7 @@
     <button type="submit">Save</button>
   </form>
 
-  <form method="post" action="{% url 'note_delete' book.id note.id %}" onsubmit="return confirm('Are you sure you want to delete this note?')">
+  <form method="post" action="{% url 'note_delete' book.slug note.id %}" onsubmit="return confirm('Are you sure you want to delete this note?')">
     {% csrf_token %}
     <button class="secondary">Delete</button>
   </form>

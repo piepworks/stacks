@@ -406,6 +406,7 @@ def reading_update(request, slug, reading_pk):
         "reading_form.html",
         {
             "book": book,
+            "reading": reading,
             "form": form,
             "action": "update",
         },

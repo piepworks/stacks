@@ -9,17 +9,24 @@
 {% endblock title %}
 
 {% block content %}
-<h1>
-  {% if action == 'new' %}
-    Start a new reading
-  {% else %}
-    Edit reading
-  {% endif %}
-</h1>
+  <h1>
+    {% if action == 'new' %}
+      Start a new reading
+    {% else %}
+      Edit reading
+    {% endif %}
+  </h1>
 
-<form method="post">
-  {% csrf_token %}
-  {{ form }}
-  <button type="submit">Save</button>
-</form>
+  <form method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Save</button>
+  </form>
+
+  {% if action != 'new' %}
+    <form method="post" action="{% url 'reading_delete' book.slug reading.id %}" onsubmit="return confirm('Are you sure you want to delete this reading?')">
+      {% csrf_token %}
+      <button class="secondary">Delete</button>
+    </form>
+  {% endif %}
 {% endblock content %}
