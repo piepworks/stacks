@@ -1,8 +1,8 @@
 import requests
-import urllib
 from django.core.management.base import BaseCommand
 from faker import Faker
-from core.models import Author, Book, BookCover, BookReading, BookNote, rename_image
+from core.models import Author, Book, BookCover, BookReading, BookNote
+from core.forms import BookCoverForm
 from random import randint
 
 
@@ -60,16 +60,12 @@ class Command(BaseCommand):
 
         # Download a Cover for every Book
         for book in Book.objects.all():
-            cover = BookCover.objects.create(book=book)
-
             image_url = requests.get("https://source.unsplash.com/random").url
-            # Get file name from `image_url` and remove any query parameters
-            image_name = image_url.split("/")[-1].split("?")[0]
-            image_name_final = f"{rename_image(cover, image_name)}.jpg"
-            # Download the image to the media folder
-            urllib.request.urlretrieve(image_url, f"media/{image_name_final}")
-            cover.image = image_name_final
-            cover.save()
+            cover_form = BookCoverForm({"url": image_url}, book=book)
+
+            if cover_form.is_valid():
+                cover = cover_form.save()
+                cover.save()
 
         # Create BookReadings for every Book
         for book in Book.objects.all():
