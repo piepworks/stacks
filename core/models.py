@@ -7,6 +7,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
+from django.utils.text import slugify
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
@@ -112,7 +113,7 @@ class Book(models.Model):
     # Create a slug based on the title field if none is provided
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = self.title.replace(" ", "-").lower()
+            self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     @property
