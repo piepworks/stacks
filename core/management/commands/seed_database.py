@@ -1,7 +1,7 @@
 import requests
 from django.core.management.base import BaseCommand
 from faker import Faker
-from core.models import Author, Book, BookCover, BookReading, BookNote
+from core.models import Author, Book, BookCover, BookReading, BookNote, BookFormat
 from core.forms import BookCoverForm
 from random import randint
 
@@ -20,6 +20,7 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         fake = Faker()
         num_books_authors = kwargs["num"]
+        formats = list(BookFormat.objects.all())
 
         # Delete all BookCover records and their associated images
         for cover in BookCover.objects.all():
@@ -53,19 +54,20 @@ class Command(BaseCommand):
                 published_year=fake.year(),
             )
 
-        # Associate an existing Author with every Book
         for book in Book.objects.all():
+            # Associate an existing Author with every Book
             author = Author.objects.order_by("?").first()
             book.author.add(author)
 
-        # Download a Cover for every Book
-        for book in Book.objects.all():
+            # Download a Cover for every Book
             image_url = requests.get("https://source.unsplash.com/random").url
             cover_form = BookCoverForm({"url": image_url}, book=book)
-
             if cover_form.is_valid():
                 cover = cover_form.save()
                 cover.save()
+
+            # Add a Format to every Book
+            book.format.add(fake.random_element(formats))
 
         # Create BookReadings for every Book
         for book in Book.objects.all():
