@@ -34,15 +34,29 @@
     </dl>
   {% endif %}
 
-  <div{% if status.slug != 'wishlist' %} x-data="{ selected: 'all', formatIsInList: function(format, list) { return list.split(',').includes(format); } }"{% endif %}>
+  <div{% if status.slug != 'wishlist' %}
+    x-data="
+      {
+        selected: 'all',
+        formatsVisible: true,
+        formatIsInList: function(format, list) { return list.split(',').includes(format); },
+        multipleFormats: function() {
+          this.$nextTick(() => {
+            const elements = document.querySelectorAll(`.format-field:not([style*='display: none'])`);
+            this.formatsVisible = elements.length > 1;
+          });
+        },
+      }
+    "
+    x-init="multipleFormats()"{% endif %}>
     {% if status.slug != 'wishlist' %}
-      <section class="filters">
+      <section class="filters" x-show="formatsVisible">
         <div>
           <input type="radio" id="all" name="format" value="all" x-model="selected">
           <label for="all">All <small>(<span x-text="document.querySelectorAll('[data-formats]').length"></span>)</small></label>
         </div>
         {% for format in formats %}
-          <div x-show="document.querySelectorAll('[data-formats*={{ format.slug }}]').length">
+          <div class="format-field" x-show="document.querySelectorAll('[data-formats*={{ format.slug }}]').length">
             <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="selected">
             <label for="{{ format.slug }}">{{ format.name }} <small>(<span x-text="document.querySelectorAll('[data-formats*={{ format.slug }}]').length"></span>)</small></label>
           </div>
