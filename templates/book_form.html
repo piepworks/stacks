@@ -17,7 +17,7 @@
     {% if action == 'new' %}
       Add a new book
     {% else %}
-      Editing <a href="{% url 'book_detail' book.id %}">{{ book }}</a>
+      Editing <a href="{% url 'book_detail' book.slug %}">{{ book }}</a>
     {% endif %}
   </h1>
 

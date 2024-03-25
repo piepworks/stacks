@@ -8,8 +8,9 @@
         <b>Adjust status for <i>{{ book.title }}</i></b>
       </p>
     </header>
-    <form method="post" action="{% url 'book_update' book.id %}">
+    <form method="post" action="{% url 'book_update' book.slug %}">
       {% csrf_token %}
+      <input type="hidden" name="status_change" value="true">
       <fieldset>
         <div class="grid">
           {% for status in statuses %}

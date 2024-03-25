@@ -72,7 +72,7 @@
           <div class="title" title="{{ book }}">{{ book }}</div>
           <div class="actions">
             {% if book.status|get_previous_status != None %}
-            <form action="{% url 'book_update' book.id %}" method="post">
+            <form action="{% url 'book_update' book.slug %}" method="post">
               {% csrf_token %}
               <input type="hidden" name="status_change" value="true">
               <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
@@ -88,7 +88,7 @@
             </button>
 
             {% if book.status|get_next_status != None %}
-            <form action="{% url 'book_update' book.id %}" method="post">
+            <form action="{% url 'book_update' book.slug %}" method="post">
               {% csrf_token %}
               <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
               <input type="hidden" name="status_change" value="true">
