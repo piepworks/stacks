@@ -294,6 +294,21 @@ def author_new(request):
 
 
 @login_required
+def author_detail(request, slug):
+    author = Author.objects.get(slug=slug)
+    books = Book.objects.filter(author=author)
+
+    return render(
+        request,
+        "author_detail.html",
+        {
+            "author": author,
+            "books": books,
+        },
+    )
+
+
+@login_required
 def cover_new(request, slug):
     book = Book.objects.get(slug=slug)
 

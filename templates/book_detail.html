@@ -55,11 +55,11 @@
             {% if book.author.all.count > 1 %}
               <ul>
                 {% for author in book.author.all %}
-                  <li>{{ author }}</li>
+                  <li><a href="{% url 'author_detail' author.slug %}">{{ author }}</a></li>
                 {% endfor %}
               </ul>
             {% else %}
-              {{ book.author.first }}
+              <a href="{% url 'author_detail' book.author.first.slug %}">{{ book.author.first }}</a>
             {% endif %}
           </td>
           <td>{{ book.published_year }}</td>

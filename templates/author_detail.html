@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load markdown_extras %}
+
+{% block title %}
+  {{ author }}
+{% endblock title %}
+
+{% block body_tag %}class="author-detail"{% endblock body_tag %}
+
+{% block content %}
+  <section class="header-actions">
+    <h1>{{ author }}</h1>
+    <a href="{% url 'admin:core_author_change' author.id %}">Edit</a>
+  </section>
+
+  <div class="author-bio">
+    {{ author.bio|markdown }}
+  </div>
+
+  <h2>Books</h2>
+  <ul>
+    {% for book in books %}
+      <li class="book">
+        <a href="{% url 'book_detail' book.slug %}">
+          {% if book.covers.all %}
+            {% with book.covers.all|first as cover %}
+              <img src="{{ cover.thumbnail.url }}"
+                alt="{{ cover }}"
+                width="150"
+                height="auto"
+                title="{{ book }}">
+            {% endwith %}
+          {% endif %}
+        </a>
+        <div class="title" title="{{ book }}">{{ book }}</div>
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock content %}
+```

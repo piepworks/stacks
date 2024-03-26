@@ -39,7 +39,8 @@ nav + nav {
 
 .ol-results main,
 .search main,
-.status main {
+.status main,
+.author-detail main {
   ul,
   ol {
     padding: 0;
