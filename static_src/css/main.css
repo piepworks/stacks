@@ -200,6 +200,12 @@ dialog .grid {
   button {
     padding: 0.25rem 1rem;
   }
+
+  .inner {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
 }
 
 .header-actions-inline {
