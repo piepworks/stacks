@@ -22,10 +22,12 @@
   {% if book.covers.all %}
   <section class="covers">
       {% for cover in book.covers.all %}
-        <img width="300"
-            height="auto"
-            alt="{{ cover }}"
-            src="{{ cover.image.url }}">
+        <a href="{{ cover.image.url }}" target="_blank">
+          <img width="300"
+              height="auto"
+              alt="{{ cover }}"
+              src="{{ cover.image.url }}">
+        </a>
       {% endfor %}
     </section>
     {% else %}
