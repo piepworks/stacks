@@ -37,7 +37,7 @@ litestream restore "$DB_DIR/db.sqlite3"
 
 ./manage.py collectstatic --noinput
 ./manage.py migrate --noinput
-./manage.py loaddata book_format
+./manage.py loaddata book_format book_type
 ./manage.py createcachetable
 
 chmod -R a+rwX /db
