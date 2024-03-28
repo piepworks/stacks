@@ -85,6 +85,7 @@ class BookType(models.Model):
     name = models.CharField(max_length=20, unique=True)
     slug = models.SlugField(unique=True)
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
