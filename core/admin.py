@@ -4,7 +4,16 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 from django.urls import reverse
 from django.contrib.auth.models import Group
-from .models import User, Book, Author, BookCover, BookReading, BookNote, BookFormat
+from .models import (
+    User,
+    Book,
+    Author,
+    BookCover,
+    BookReading,
+    BookNote,
+    BookFormat,
+    BookType,
+)
 
 
 @admin.register(User)
@@ -70,6 +79,11 @@ class BookFormatAdmin(admin.ModelAdmin):
     list_display = ("name", "slug")
 
 
+class BookTypeAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ("name", "slug", "parent")
+
+
 class AuthorAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug", "book_count")
@@ -99,3 +113,4 @@ admin.site.register(BookFormat, BookFormatAdmin)
 admin.site.register(BookCover)
 admin.site.register(BookReading)
 admin.site.register(BookNote)
+admin.site.register(BookType, BookTypeAdmin)

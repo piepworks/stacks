@@ -81,6 +81,17 @@ class BookFormat(models.Model):
         return self.name
 
 
+class BookType(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    slug = models.SlugField(unique=True)
+    parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Book(models.Model):
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
