@@ -90,6 +90,19 @@ class BookType(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
+        if self.parent:
+            return f"{self.parent.name} / {self.name}"
+        return self.name
+
+
+class BookLocation(models.Model):
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
+    description = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
         return self.name
 
 
@@ -109,17 +122,22 @@ class Book(models.Model):
             ("dnf", "Did Not Finish"),
         ],
     )
+    type = models.ForeignKey(
+        BookType,
+        on_delete=models.SET_NULL,
+        related_name="books",
+        null=True,
+        blank=True,
+    )
     format = models.ManyToManyField(
         BookFormat,
         related_name="books",
         help_text="Choose as many as you have",
         blank=True,
     )
-    type = models.ForeignKey(
-        BookType,
-        on_delete=models.SET_NULL,
+    location = models.ManyToManyField(
+        BookLocation,
         related_name="books",
-        null=True,
         blank=True,
     )
     olid = models.CharField(max_length=100, blank=True)
