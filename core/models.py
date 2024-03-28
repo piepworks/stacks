@@ -95,6 +95,20 @@ class BookType(models.Model):
         return self.name
 
 
+class BookGenre(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    slug = models.SlugField(unique=True)
+    parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True)
+    description = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        if self.parent:
+            return f"{self.parent.name} / {self.name}"
+        return self.name
+
+
 class BookLocation(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
@@ -124,6 +138,13 @@ class Book(models.Model):
     )
     type = models.ForeignKey(
         BookType,
+        on_delete=models.SET_NULL,
+        related_name="books",
+        null=True,
+        blank=True,
+    )
+    genre = models.ForeignKey(
+        BookGenre,
         on_delete=models.SET_NULL,
         related_name="books",
         null=True,
