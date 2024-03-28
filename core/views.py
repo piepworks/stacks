@@ -228,7 +228,9 @@ def book_delete(request, slug):
 def search(request):
     query = request.GET.get("q")
     if query:
-        books = Book.objects.filter(title__icontains=query)
+        books = Book.objects.filter(
+            models.Q(title__icontains=query) | models.Q(author__name__icontains=query)
+        )
     else:
         books = Book.objects.none()
 
