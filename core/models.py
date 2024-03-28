@@ -115,6 +115,13 @@ class Book(models.Model):
         help_text="Choose as many as you have",
         blank=True,
     )
+    type = models.ForeignKey(
+        BookType,
+        on_delete=models.SET_NULL,
+        related_name="books",
+        null=True,
+        blank=True,
+    )
     olid = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
