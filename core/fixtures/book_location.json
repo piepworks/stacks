@@ -1,0 +1,35 @@
+[
+  {
+    "model": "core.booklocation",
+    "pk": 1,
+    "fields": {
+      "name": "Kobo",
+      "slug": "kobo",
+      "description": "",
+      "created_at": "2024-03-28T23:32:55.128Z",
+      "updated_at": "2024-03-28T23:32:55.128Z"
+    }
+  },
+  {
+    "model": "core.booklocation",
+    "pk": 2,
+    "fields": {
+      "name": "Kindle",
+      "slug": "kindle",
+      "description": "",
+      "created_at": "2024-03-28T23:32:58.222Z",
+      "updated_at": "2024-03-28T23:32:58.222Z"
+    }
+  },
+  {
+    "model": "core.booklocation",
+    "pk": 3,
+    "fields": {
+      "name": "Apple Books",
+      "slug": "apple",
+      "description": "",
+      "created_at": "2024-03-28T23:33:11.975Z",
+      "updated_at": "2024-03-28T23:33:11.975Z"
+    }
+  }
+]

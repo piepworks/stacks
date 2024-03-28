@@ -13,6 +13,7 @@ from .models import (
     BookNote,
     BookFormat,
     BookType,
+    BookLocation,
 )
 
 
@@ -74,14 +75,19 @@ class BookAdmin(admin.ModelAdmin):
     authors_list.short_description = "Authors"
 
 
+class BookTypeAdmin(admin.ModelAdmin):
+    prepopulated_fields = {"slug": ("name",)}
+    list_display = ("name", "slug", "parent")
+
+
 class BookFormatAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug")
 
 
-class BookTypeAdmin(admin.ModelAdmin):
+class BookLocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ("name", "slug", "parent")
+    list_display = ("name", "slug")
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -114,3 +120,4 @@ admin.site.register(BookCover)
 admin.site.register(BookReading)
 admin.site.register(BookNote)
 admin.site.register(BookType, BookTypeAdmin)
+admin.site.register(BookLocation, BookLocationAdmin)
