@@ -14,8 +14,6 @@
 {% endblock header %}
 
 {% block content %}
-  {% include "components/search-form.html" %}
-
   <div class="header-actions-inline">
     <h1>{{ status.name }}</h1>
     <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
@@ -118,6 +116,10 @@
       {% endfor %}
     </ul>
   </div>
+
+  <hr>
+
+  {% include "components/search-form.html" %}
 
   <dialog id="add-book">
     <article>

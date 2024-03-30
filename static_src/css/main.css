@@ -294,17 +294,17 @@ fieldset > .radio {
     }
   }
 
-  hr {
-    margin: 3rem 0;
-  }
-
   table td {
     white-space: nowrap;
   }
 }
 
 .search-form {
-  margin-bottom: 1rem;
+  margin: 3rem 0;
+}
+
+hr {
+  margin: 3rem 0;
 }
 
 .filters {
