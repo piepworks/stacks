@@ -13,13 +13,15 @@
 {% block stack_link %}{% if action != 'new' %}{% url 'status' book.status %}{% else %}{{ block.super }}{% endif %}{% endblock stack_link %}
 
 {% block content %}
-  <h1>
-    {% if action == 'new' %}
-      Add a new book
-    {% else %}
-      Editing <a href="{% url 'book_detail' book.slug %}">{{ book }}</a>
-    {% endif %}
-  </h1>
+  <header>
+    <h1>
+      {% if action == 'new' %}
+        Add a new book
+      {% else %}
+        Editing <a href="{% url 'book_detail' book.slug %}">{{ book }}</a>
+      {% endif %}
+    </h1>
+  </header>
 
   {% if book.covers.all %}
     <section class="covers">

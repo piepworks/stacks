@@ -147,7 +147,7 @@ dialog .grid {
   }
 }
 
-.header-actions {
+main header {
   gap: 1rem;
   margin: 0 0 3rem;
 
@@ -164,7 +164,7 @@ dialog .grid {
     }
   }
 
-  a,
+  a[role='button'],
   button {
     padding: 0.25rem 1rem;
   }
@@ -174,26 +174,31 @@ dialog .grid {
     gap: 0.5rem;
     align-items: center;
   }
-}
 
-.header-actions-inline {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-  margin: 0 0 1rem;
+  &.actions-inline {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    align-items: flex-end;
 
-  .status & {
-    margin: 0 0 2rem;
+    .status & {
+      margin: 0 0 2rem;
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+    }
+
+    .svg.add-item {
+      padding: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
   }
 
-  h1,
-  h2 {
-    margin: 0;
-  }
-
-  .svg.add-item {
-    padding: 0.75rem;
-    margin-bottom: 0.25rem;
+  /* Sub-headings like "Readings" */
+  section & {
+    margin: 0 0 1rem;
   }
 }
 

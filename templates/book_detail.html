@@ -10,7 +10,7 @@
 {% block stack_link %}{% url 'status' book.status %}{% endblock stack_link %}
 
 {% block content %}
-  <section class="header-actions">
+  <header class="actions">
     <h1>{{ book }}</h1>
     <form action="{% url 'book_delete' book.slug %}" method="post">
       {% csrf_token %}
@@ -20,7 +20,7 @@
         <button class="contrast" onclick="return confirm('Are you sure?')">Delete</button>
       </div>
     </form>
-  </section>
+  </header>
 
   {% if book.covers.all %}
   <section class="covers">
@@ -90,10 +90,10 @@
   <hr>
 
   <section>
-    <div class="header-actions-inline">
+    <header class="actions-inline">
       <h2>Readings</h2>
       <a class="svg add-item" href="{% url 'reading_new' book.slug %}">Start a new reading</a>
-    </div>
+    </header>
     {# TODO: probably put this on another page #}
     {% comment %}
     <form method="post">

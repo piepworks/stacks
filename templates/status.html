@@ -14,10 +14,10 @@
 {% endblock header %}
 
 {% block content %}
-  <div class="header-actions-inline">
+  <header class="actions-inline">
     <h1>{{ status.name }}</h1>
     <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
-  </div>
+  </header>
 
   {% if finished_counts %}
     <dl class="finished-counts">

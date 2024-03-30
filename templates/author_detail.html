@@ -8,10 +8,10 @@
 {% block body_tag %}class="author-detail"{% endblock body_tag %}
 
 {% block content %}
-  <section class="header-actions">
+  <header class="actions-inline">
     <h1>{{ author }}</h1>
     <a href="{% url 'admin:core_author_change' author.id %}">Edit</a>
-  </section>
+  </header>
 
   <div class="author-bio">
     {{ author.bio|markdown }}
