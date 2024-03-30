@@ -1,7 +1,18 @@
 import requests
 from django.core.management.base import BaseCommand
+from django.utils.text import slugify
 from faker import Faker
-from core.models import Author, Book, BookCover, BookReading, BookNote, BookFormat
+from core.models import (
+    Author,
+    Book,
+    BookCover,
+    BookReading,
+    BookNote,
+    BookFormat,
+    BookType,
+    BookGenre,
+    BookLocation,
+)
 from core.forms import BookCoverForm
 from random import randint
 
@@ -37,7 +48,7 @@ class Command(BaseCommand):
             Author.objects.create(name=author_name, slug=author_slug, bio=fake.text())
 
             book_title = fake.unique.catch_phrase()
-            book_slug = book_title.replace(" ", "-").lower()
+            book_slug = slugify(book_title)
             Book.objects.create(
                 title=book_title,
                 slug=book_slug,
@@ -51,6 +62,8 @@ class Command(BaseCommand):
                         "dnf",
                     )
                 ),
+                type=fake.random_element(elements=BookType.objects.all()),
+                genre=fake.random_element(elements=BookGenre.objects.all()),
                 published_year=fake.year(),
             )
 
@@ -68,6 +81,9 @@ class Command(BaseCommand):
 
             # Add a Format to every Book
             book.format.add(fake.random_element(formats))
+
+            # Add a Location to every Book
+            book.location.add(fake.random_element(BookLocation.objects.all()))
 
         # Create BookReadings for every Book
         for book in Book.objects.all():

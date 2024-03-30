@@ -35,7 +35,7 @@
   <div{% if status.slug != 'wishlist' %}
     x-data="
       {
-        selected: 'all',
+        formatSelected: 'all',
         formatsVisible: true,
         formatIsInList: function(format, list) { return list.split(',').includes(format); },
         multipleFormats: function() {
@@ -44,27 +44,50 @@
             this.formatsVisible = elements.length > 1;
           });
         },
+        //
+        locationSelected: 'all',
+        locationsVisible: true,
+        locationIsInList: function(location, list) { return list.split(',').includes(location); },
+        multipleLocations: function() {
+          this.$nextTick(() => {
+            const elements = document.querySelectorAll(`.location-field:not([style*='display: none'])`);
+            this.locationsVisible = elements.length > 1;
+          });
+        },
       }
     "
     x-init="multipleFormats()"{% endif %}>
     {% if status.slug != 'wishlist' %}
       <section class="filters" x-show="formatsVisible">
         <div>
-          <input type="radio" id="all" name="format" value="all" x-model="selected">
+          <input type="radio" id="all" name="format" value="all" x-model="formatSelected">
           <label for="all">All <small>(<span x-text="document.querySelectorAll('[data-formats]').length"></span>)</small></label>
         </div>
         {% for format in formats %}
           <div class="format-field" x-show="document.querySelectorAll('[data-formats*={{ format.slug }}]').length">
-            <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="selected">
+            <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="formatSelected">
             <label for="{{ format.slug }}">{{ format.name }} <small>(<span x-text="document.querySelectorAll('[data-formats*={{ format.slug }}]').length"></span>)</small></label>
           </div>
         {% endfor %}
+      </section>
+
+      <section class="filters">
+        <div>
+          <input type="radio" id="all" name="location" value="all">
+          <label for="all">All <small>(…)</small></label>
+        </div>
       </section>
     {% endif %}
 
     <ul>
       {% for book, form in forms %}
-        <li class="book"{% if status.slug != 'wishlist' %} data-formats="{% for format in book.format.all %}{{ format.slug }}{% if not forloop.last %},{% endif %}{% endfor %}" x-show="selected === 'all' || formatIsInList(selected, $el.dataset.formats)"{% endif %}>
+        <li class="book"
+          {% if status.slug != 'wishlist' %}
+            data-formats="{% for format in book.format.all %}{{ format.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
+            data-locations="{% for location in book.location.all %}{{ location.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
+            data-type="{{ book.type.slug }}"
+            x-show="formatSelected === 'all' || formatIsInList(formatSelected, $el.dataset.formats)"
+          {% endif %}>
           <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
