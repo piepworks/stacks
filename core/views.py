@@ -26,7 +26,15 @@ from .forms import (
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
-from .models import Book, Author, BookCover, BookFormat
+from .models import (
+    Book,
+    Author,
+    BookCover,
+    BookFormat,
+    BookType,
+    BookLocation,
+    BookGenre,
+)
 
 
 def home(request):
@@ -82,6 +90,9 @@ def status(request, status):
         },
         "forms": forms,
         "formats": BookFormat.objects.all(),
+        "types": BookType.objects.all(),
+        "locations": BookLocation.objects.all(),
+        "genres": BookGenre.objects.all(),
     }
 
     return render(request, "status.html", context)
