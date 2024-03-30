@@ -161,6 +161,7 @@ class Book(models.Model):
         related_name="books",
         blank=True,
     )
+    archived = models.BooleanField(default=False)
     olid = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
