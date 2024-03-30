@@ -149,7 +149,7 @@ dialog .grid {
 
 .header-actions {
   gap: 1rem;
-  margin: 0 0 1rem;
+  margin: 0 0 3rem;
 
   @media (min-width: 1024px) {
     &,
@@ -292,6 +292,10 @@ fieldset > .radio {
       gap: 2rem;
       margin: 0 0 2rem;
     }
+  }
+
+  hr {
+    margin: 3rem 0;
   }
 
   table td {
