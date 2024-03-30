@@ -66,13 +66,23 @@ class BookAuthorInline(admin.TabularInline):
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "slug", "authors_list")
+    list_filter = ("archived",)
     inlines = [BookAuthorInline, BookCoverInline]
     exclude = ("author",)
     prepopulated_fields = {"slug": ("title",)}
+    actions = ["archive_books", "unarchive_books"]
+
+    def archive_books(self, request, queryset):
+        queryset.update(archived=True)
+
+    def unarchive_books(self, request, queryset):
+        queryset.update(archived=False)
 
     def authors_list(self, obj):
         return ", ".join([author.name for author in obj.author.all()])
 
+    unarchive_books.short_description = "Un-archive selected books"
+    archive_books.short_description = "Archive selected books"
     authors_list.short_description = "Authors"
 
 

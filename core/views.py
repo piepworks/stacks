@@ -46,6 +46,7 @@ def status(request, status):
     status_counts = Book.objects.values("status").annotate(count=models.Count("status"))
     books = (
         Book.objects.filter(status=status)
+        .filter(archived=False)
         .order_by("-updated_at")
         .prefetch_related("covers", "author", "format")
     )
@@ -219,9 +220,21 @@ def book_update(request, slug):
 @login_required
 def book_delete(request, slug):
     book = get_object_or_404(Book, slug=slug)
+    status = book.status
     book.delete()
     messages.success(request, f"{book} deleted")
-    return redirect("status", status="backlog")
+    return redirect("status", status=status)
+
+
+@require_POST
+@login_required
+def book_archive(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    status = book.status
+    book.archived = True
+    book.save()
+    messages.success(request, f"{book} archived")
+    return redirect("status", status=status)
 
 
 @login_required
@@ -230,7 +243,7 @@ def search(request):
     if query:
         books = Book.objects.filter(
             models.Q(title__icontains=query) | models.Q(author__name__icontains=query)
-        )
+        ).exclude(archived=True)
     else:
         books = Book.objects.none()
 

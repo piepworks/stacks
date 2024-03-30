@@ -20,6 +20,7 @@ urlpatterns = [
     path("book/<slug:slug>", views.book_detail, name="book_detail"),  # R
     path("book/<slug:slug>/update", views.book_update, name="book_update"),  # U
     path("book/<slug:slug>/delete", views.book_delete, name="book_delete"),  # D
+    path("book/<slug:slug>/archive", views.book_archive, name="book_archive"),
     # Book Search
     # -----------
     path("search", views.search, name="search"),

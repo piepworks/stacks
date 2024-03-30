@@ -36,7 +36,7 @@
           </ul>
           <ul>
             <li>
-              <a class="svg admin" href="{% url 'admin:index' %}">Admin</a>
+                <a class="svg admin" href="{% url 'admin:core_book_changelist' %}">Admin</a>
             </li>
             <li>
               <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
