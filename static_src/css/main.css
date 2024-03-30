@@ -1,42 +1,9 @@
 @import url('vendor/pico.min.css');
 @import url('includes/tom-select.css');
+@import url('includes/navigation.css');
 @import url('includes/buttons.css');
 @import url('includes/notes.css');
-@import url('includes/bootstrap-bits.css');
-
-nav ol {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-
-  @media (min-width: 1024px) {
-    display: flex;
-    gap: 1rem;
-  }
-
-  a {
-    border-radius: 0;
-    border-bottom: 2px solid transparent;
-    white-space: nowrap;
-
-    small {
-      opacity: 0.5;
-    }
-  }
-
-  .active a,
-  a:hover {
-    border-bottom: 2px solid var(--pico-primary-background);
-    text-decoration: none;
-  }
-}
-
-nav + nav {
-  margin-top: 1.5rem;
-
-  @media (min-width: 576px) {
-    margin-top: 0;
-  }
-}
+@import url('includes/filters.css');
 
 .ol-results main,
 .search main,
