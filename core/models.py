@@ -1,5 +1,6 @@
 import os
 import requests
+import pillow_avif  # noqa: F401 (ignore "unused import" error)
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _

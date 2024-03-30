@@ -18,6 +18,7 @@ gunicorn
 ipython
 markdown
 pillow
+pillow-avif-plugin
 pip-lock
 pip-tools
 pre-commit

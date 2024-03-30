@@ -156,6 +156,8 @@ pillow==10.2.0
     # via
     #   -r requirements/requirements.in
     #   pilkit
+pillow-avif-plugin==1.4.3
+    # via -r requirements/requirements.in
 pip-lock==2.11.0
     # via -r requirements/requirements.in
 pip-tools==7.4.1
