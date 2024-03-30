@@ -147,7 +147,7 @@ dialog .grid {
   }
 }
 
-main header {
+main header:not(dialog header) {
   gap: 1rem;
   margin: 0 0 3rem;
 
