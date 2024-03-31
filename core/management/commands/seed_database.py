@@ -33,6 +33,8 @@ class Command(BaseCommand):
         num_books_authors = kwargs["num"]
         all_formats = BookFormat.objects.all()
         all_locations = BookLocation.objects.all()
+        all_genres = BookGenre.objects.all()
+        all_types = BookType.objects.all()
 
         # Delete all BookCover records and their associated images
         for cover in BookCover.objects.all():
@@ -63,8 +65,8 @@ class Command(BaseCommand):
                         "dnf",
                     )
                 ),
-                type=fake.random_element(elements=BookType.objects.all()),
-                genre=fake.random_element(elements=BookGenre.objects.all()),
+                type=fake.random_element(elements=all_types),
+                genre=fake.random_element(elements=all_genres),
                 published_year=fake.year(),
             )
 
