@@ -31,7 +31,8 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         fake = Faker()
         num_books_authors = kwargs["num"]
-        formats = list(BookFormat.objects.all())
+        all_formats = BookFormat.objects.all()
+        all_locations = BookLocation.objects.all()
 
         # Delete all BookCover records and their associated images
         for cover in BookCover.objects.all():
@@ -79,11 +80,15 @@ class Command(BaseCommand):
                 cover = cover_form.save()
                 cover.save()
 
-            # Add a Format to every Book
-            book.format.add(fake.random_element(formats))
+            # Add one or more Formats to every Book
+            num_formats = randint(1, 3)
+            for _ in range(num_formats):
+                book.format.add(fake.random_element(all_formats))
 
             # Add a Location to every Book
-            book.location.add(fake.random_element(BookLocation.objects.all()))
+            num_locations = randint(1, 3)
+            for _ in range(num_locations):
+                book.location.add(fake.random_element(all_locations))
 
         # Create BookReadings for every Book
         for book in Book.objects.all():
