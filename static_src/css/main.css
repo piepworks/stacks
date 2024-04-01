@@ -322,3 +322,7 @@ hr {
     opacity: 0.5;
   }
 }
+
+.alpine [x-ignore] {
+  display: none;
+}

@@ -97,6 +97,56 @@
           {% include "components/status-modal.html" %}
         </li>
       </template>
+      {% for book, form in forms %}
+        <li x-ignore>
+          <a href="{% url 'book_detail' book.slug %}">
+            {% if book.covers.all %}
+              {% with book.covers.all|first as cover %}
+                <img src="{{ cover.thumbnail.url }}"
+                    alt="{{ cover }}"
+                    width="150"
+                    height="auto"
+                    title="{{ book }}">
+              {% endwith %}
+            {% else %}
+              <div class="no-cover">
+                {# https://remixicon.com/icon/book-line #}
+                <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45 463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path>
+                </svg>
+              </div>
+            {% endif %}
+          </a>
+          <div class="title" title="{{ book }}">{{ book }}</div>
+          <div class="actions">
+            {% if book.status|get_previous_status != None %}
+              <form action="{% url 'book_update' book.slug %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="status_change" value="true">
+                <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
+                {{ form }}
+                <button class="svg previous-status">Previous status</button>
+              </form>
+            {% else %}
+              <span>&nbsp;</span>
+            {% endif %}
+            <button disabled class="svg adjust-status">
+              Adjust status
+            </button>
+            {% if book.status|get_next_status != None %}
+              <form action="{% url 'book_update' book.slug %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
+                <input type="hidden" name="status_change" value="true">
+                {{ form }}
+                <button class="svg next-status">Next status</button>
+              </form>
+            {% else %}
+                <span>&nbsp;</span>
+            {% endif %}
+          </div>
+        </li>
+      {% endfor %}
     </ul>
   </div>
 
@@ -184,6 +234,9 @@
 					}
 				};
 			},
+      init() {
+        document.documentElement.classList.add('alpine');
+      }
     }));
   });
 </script>
