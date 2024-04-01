@@ -32,32 +32,9 @@
     </dl>
   {% endif %}
 
-  <div{% if status.slug != 'wishlist' %}
-    x-data="
-      {
-        formatSelected: 'all',
-        formatsVisible: true,
-        formatIsInList: function(format, list) { return list.split(',').includes(format); },
-        multipleFormats: function() {
-          this.$nextTick(() => {
-            const elements = document.querySelectorAll(`.format-field:not([style*='display: none'])`);
-            this.formatsVisible = elements.length > 1;
-          });
-        },
-        //
-        locationSelected: 'all',
-        locationsVisible: true,
-        locationIsInList: function(location, list) { return list.split(',').includes(location); },
-        multipleLocations: function() {
-          this.$nextTick(() => {
-            const elements = document.querySelectorAll(`.location-field:not([style*='display: none'])`);
-            this.locationsVisible = elements.length > 1;
-          });
-        },
-      }
-    "
-    x-init="multipleFormats()"{% endif %}>
+  <div x-data="bookList">
     {% if status.slug != 'wishlist' %}
+      {% comment %}
       <section class="filters" x-show="formatsVisible">
         <div>
           <input type="radio" id="all" name="format" value="all" x-model="formatSelected">
@@ -70,66 +47,56 @@
           </div>
         {% endfor %}
       </section>
+      {% endcomment %}
     {% endif %}
 
     <ul>
-      {% for book, form in forms %}
-        <li class="book"
-          {% if status.slug != 'wishlist' %}
-            data-formats="{% for format in book.format.all %}{{ format.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
-            data-locations="{% for location in book.location.all %}{{ location.slug }}{% if not forloop.last %},{% endif %}{% endfor %}"
-            data-type="{{ book.type.slug }}"
-            x-show="formatSelected === 'all' || formatIsInList(formatSelected, $el.dataset.formats)"
-          {% endif %}>
-          <a href="{% url 'book_detail' book.slug %}">
-            {% if book.covers.all %}
-              {% with book.covers.all|first as cover %}
-                <img src="{{ cover.thumbnail.url }}"
-                    alt="{{ cover }}"
-                    width="150"
-                    height="auto"
-                    title="{{ book }}">
-              {% endwith %}
-            {% else %}
-            <div class="no-cover">
-              {# https://remixicon.com/icon/book-line #}
-              <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
-            </div>
-            {% endif %}
+      <template x-for="book in filteredBooks" :key="book.id">
+        <li class="book">
+          <a :href="book.url">
+            <template x-if="book.cover">
+              <img :src="book.cover"
+                  alt="{{ cover }}"
+                  width="150"
+                  height="auto"
+                  title="book.title">
+            </template>
+            <template x-if="!book.cover">
+              <div class="no-cover">
+                {# https://remixicon.com/icon/book-line #}
+                <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
+              </div>
+            </template>
           </a>
-          <div class="title" title="{{ book }}">{{ book }}</div>
+          <div class="title" :title="book.title" x-text="book.title"></div>
           <div class="actions">
-            {% if book.status|get_previous_status != None %}
-            <form action="{% url 'book_update' book.slug %}" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="status_change" value="true">
-              <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
-              {{ form }}
-              <button class="svg previous-status">Previous status</button>
-            </form>
-            {% else %}
-            <span>&nbsp;</span>
-            {% endif %}
-
-            <button class="svg adjust-status" onclick="document.querySelector('#book-{{ book.id }}').showModal()">
+            <template x-if="book.previous_status">
+              <form :action="book.update_url" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="status_change" value="true">
+                <input type="hidden" name="status" :value="book.previous_status">
+                <div x-html="book.form"></div>
+                <button class="svg previous-status">Previous status</button>
+              </form>
+            </template>
+            <template x-if="!book.previous_status"><span>&nbsp;</span></template>
+            <button class="svg adjust-status" @click="openModal = book.id">
               Adjust status
             </button>
-
-            {% if book.status|get_next_status != None %}
-            <form action="{% url 'book_update' book.slug %}" method="post">
-              {% csrf_token %}
-              <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
-              <input type="hidden" name="status_change" value="true">
-              {{ form }}
-              <button class="svg next-status">Next status</button>
-            </form>
-            {% else %}
-            <span>&nbsp;</span>
-            {% endif %}
+            <template x-if="book.next_status">
+              <form :action="book.update_url" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="status" :value="book.next_status">
+                <input type="hidden" name="status_change" value="true">
+                <div x-html="book.form"></div>
+                <button class="svg next-status">Next status</button>
+              </form>
+            </template>
+            <template x-if="!book.next_status"><span>&nbsp;</span></template>
           </div>
           {% include "components/status-modal.html" %}
         </li>
-      {% endfor %}
+      </template>
     </ul>
   </div>
 
@@ -156,3 +123,68 @@
     </article>
   </dialog>
 {% endblock content %}
+
+{% block page_js %}
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('bookList', () => ({
+      openModal: null,
+      books: [
+        {% for book, form in forms %}
+          {
+            form: `{{ form }}`,
+            id: "{{ book.id }}",
+            title: "{{ book }}",
+            status: "{{ book.status }}",
+            previous_status: "{{ book.status|get_previous_status|default_if_none:'null' }}",
+            next_status: "{{ book.status|get_next_status|default_if_none:'null' }}",
+            url: "{% url 'book_detail' book.slug %}",
+            update_url: "{% url 'book_update' book.slug %}",
+            archive_url: "{% url 'book_archive' book.slug %}",
+            formats: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
+            locations: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
+            type: "{{ book.type.slug }}",
+            genre: "{{ book.genre.slug }}",
+            {% if book.covers.all %}
+              {% with book.covers.all|first as cover %}
+                cover: "{{ cover.thumbnail.url }}",
+              {% endwith %}
+            {% else %}
+              cover: null,
+            {% endif %}
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ],
+      filters: {
+				type: 'all',
+				location: 'all',
+				format: 'all',
+        genre: 'all',
+			},
+      get filteredBooks() {
+				return this.books.filter(book => {
+					const formatMatch = this.filters.format === 'all' || book.formats.some(format => format.slug === this.filters.format);
+					const locationMatch = this.filters.location === 'all' || book.locations.some(location => location.slug === this.filters.location);
+					const typeMatch = this.filters.type === 'all' || book.type === this.filters.type;
+          const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre;
+					return formatMatch && locationMatch && typeMatch && genreMatch;
+				});
+			},
+      get filterCount() {
+				return (filterType, filterValue) => {
+					switch (filterType) {
+						case 'type':
+							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.type === filterValue).length;
+						case 'location':
+							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.locations.some(location => location.slug === filterValue)).length;
+						case 'format':
+							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.formats.some(format => format.slug === filterValue)).length;
+						default:
+							return this.books.length;
+					}
+				};
+			},
+    }));
+  });
+</script>
+{% endblock page_js %}
