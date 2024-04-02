@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load get_next_status get_previous_status %}
+{% load get_next_status get_previous_status get_item %}
 
 {% block body_tag %}
   class="status"
@@ -69,6 +69,70 @@
               </label>
             </div>
           </div>
+        </dd>
+      </div>
+      <div>
+        <dt>Genres</dt>
+        <dd x-data="{
+          filters: { genre: null },
+          genres: [
+            {% for genre in genres %}
+              {
+                id: {{ genre.id }},
+                name: '{{ genre.name }}',
+                slug: '{{ genre.slug }}',
+                parent: {% if genre.parent %}'{{ genre.parent.slug }}'{% else %}null{% endif %}
+              }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+          ],
+          getParentGenre: function(slug) {
+            let genre = this.genres.find(g => g.slug === slug);
+              return genre ? genre.parent : null;
+          },
+          isSubGenreSelected: function(parentGenre) {
+              // Check if the selected genre is a sub-genre (i.e., it has no parent)
+              let selectedGenreParent = this.getParentGenre(this.filters.genre);
+              // not a sub-genre
+              // if (selectedGenreParent !== null) {
+              //     return false;
+              // }
+
+              // Check if the selected genre is a sub-genre of the current parent genre
+              return this.getParentGenre(this.filters.genre) == parentGenre;
+          },
+        }">
+          <div>
+            <label>
+              <input type="radio" name="genre" value="all" x-model="filters.genre" checked>
+              All (<span x-text="filterCount('genre', 'all')"></span>)
+            </label>
+          </div>
+          {% for genre in genres %}
+            {% if not genre.parent %}
+              <div x-show="filterMatchesAny('genre', '{{ genre.slug }}')" :class="{ 'selected': isSubGenreSelected('{{ genre.slug }}') }">
+                <label class="parent" x-show="filterCount('genre', '{{ genre.slug }}') > 0">
+                  <input type="radio" name="genre" value="{{ genre.slug }}" x-model="filters.genre">
+                  {{ genre.name }} (<span x-text="filterCount('genre', '{{ genre.slug }}')"></span>)
+                </label>
+
+                {% if has_sub_genres|get_item:genre.slug %}
+                  <div class="sub-filters">
+                    {% for sub_genre in genres %}
+                      {% if sub_genre.parent == genre %}
+                        <label x-show="filterCount('genre', '{{ sub_genre.slug }}') > 0">
+                          <input type="radio" name="genre" value="{{ sub_genre.slug }}" x-model="filters.genre">
+                          {{ sub_genre.name }} (<span x-text="filterCount('genre', '{{ sub_genre.slug }}')"></span>)
+                        </label>
+                      {% endif %}
+                    {% endfor %}
+                  </div>{# / Sub genres #}
+                {% endif %}
+                <script>
+                  console.log('hasSubGenres', JSON.parse(document.getElementById('hasSubGenres').textContent));
+                </script>
+              </div>{# / Parent genre #}
+            {% endif %}
+          {% endfor %}
         </dd>
       </div>
     </dl>

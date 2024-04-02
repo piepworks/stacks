@@ -78,6 +78,11 @@ def status(request, status):
             .annotate(count=models.Count("readings__end_date__year"))
         )
 
+    genres = BookGenre.objects.all()
+    has_sub_genres = {
+        genre.slug: BookGenre.objects.filter(parent=genre).exists() for genre in genres
+    }
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
         "status_counts": {
@@ -92,7 +97,8 @@ def status(request, status):
         "formats": BookFormat.objects.all(),
         "types": BookType.objects.all(),
         "locations": BookLocation.objects.all(),
-        "genres": BookGenre.objects.all(),
+        "genres": genres,
+        "has_sub_genres": has_sub_genres,
     }
 
     return render(request, "status.html", context)
