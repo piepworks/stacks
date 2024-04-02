@@ -49,11 +49,25 @@
               Textual (<span x-text="filterCount('type', 'textual')"></span>)
             </label>
           </div>
-          <div>
-            <label x-show="filterCount('type', 'visual') > 0">
+          <div x-show="filterMatchesAny('type', 'visual')" x-bind:class="{ 'selected': filters.type === 'visual' || filters.type === 'comic' || filters.type === 'picture' || filters.type === 'photo' }">
+            <label class="parent" x-show="filterCount('type', 'visual') > 0">
               <input type="radio" name="type" value="visual" x-model="filters.type">
               Visual (<span x-text="filterCount('type', 'visual')"></span>)
             </label>
+            <div class="sub-filter">
+              <label x-show="filterCount('type', 'comic')">
+                <input type="radio" name="type" value="comic" x-model="filters.type">
+                Comics (<span x-text="filterCount('type', 'comic')"></span>)
+              </label>
+              <label x-show="filterCount('type', 'photo')">
+                <input type="radio" name="type" value="photo" x-model="filters.type">
+                Photo Books (<span x-text="filterCount('type', 'photo')"></span>)
+              </label>
+              <label x-show="filterCount('type', 'picture')">
+                <input type="radio" name="type" value="picture" x-model="filters.type">
+                Picture Books (<span x-text="filterCount('type', 'picture')"></span>)
+              </label>
+            </div>
           </div>
         </dd>
       </div>
