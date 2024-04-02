@@ -1,6 +1,29 @@
 .filters {
   display: flex;
   flex-direction: column;
+  margin-bottom: 2rem;
+
+  small {
+    opacity: 0.5;
+  }
+
+  dt {
+    display: inline-block;
+    background: rgb(255 255 255 / 10%);
+    color: white;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    padding: 0.25rem 0.5rem;
+  }
+
+  dd {
+    border-top: 1px solid rgb(255 255 255 / 10%);
+    margin: 0;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 0.5rem;
+  }
 
   .format-field {
     display: flex;
@@ -22,7 +45,7 @@
     border: 1px solid var(--pico-primary-background);
   }
 
-  input[type='radio']:checked + label {
+  label:has(input[type='radio']:checked) {
     background-color: var(--pico-primary-background);
     color: white;
   }

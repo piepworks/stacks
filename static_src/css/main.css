@@ -312,17 +312,6 @@ hr {
   margin: 3rem 0;
 }
 
-.filters {
-  margin-bottom: 2rem;
-  display: flex;
-  flex-flow: row wrap;
-  gap: 0.5rem;
-
-  small {
-    opacity: 0.5;
-  }
-}
-
 .alpine [x-ignore] {
   display: none;
 }

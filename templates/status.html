@@ -33,23 +33,31 @@
   {% endif %}
 
   <div x-data="bookList">
-    {% if status.slug != 'wishlist' %}
-      {% comment %}
-      <section class="filters" x-show="formatsVisible">
-        <div>
-          <input type="radio" id="all" name="format" value="all" x-model="formatSelected">
-          <label for="all">All <small>(<span x-text="document.querySelectorAll('[data-formats]').length"></span>)</small></label>
-        </div>
-        {% for format in formats %}
-          <div class="format-field" x-show="document.querySelectorAll('[data-formats*={{ format.slug }}]').length">
-            <input type="radio" id="{{ format.slug }}" name="format" value="{{ format.slug }}" x-model="formatSelected">
-            <label for="{{ format.slug }}">{{ format.name }} <small>(<span x-text="document.querySelectorAll('[data-formats*={{ format.slug }}]').length"></span>)</small></label>
+    <dl class="filters">
+      <div>
+        <dt>Types</dt>
+        <dd>
+          <div>
+            <label>
+              <input type="radio" name="type" value="all" x-model="filters.type" checked>
+              All (<span x-text="filterCount('type', 'all')"></span>)
+            </label>
           </div>
-        {% endfor %}
-      </section>
-      {% endcomment %}
-    {% endif %}
-
+          <div>
+            <label x-show="filterCount('type', 'textual') > 0">
+              <input type="radio" name="type" value="textual" x-model="filters.type">
+              Textual (<span x-text="filterCount('type', 'textual')"></span>)
+            </label>
+          </div>
+          <div>
+            <label x-show="filterCount('type', 'visual') > 0">
+              <input type="radio" name="type" value="visual" x-model="filters.type">
+              Visual (<span x-text="filterCount('type', 'visual')"></span>)
+            </label>
+          </div>
+        </dd>
+      </div>
+    </dl>
     <ul>
       <template x-for="book in filteredBooks" :key="book.id">
         <li class="book">
