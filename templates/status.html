@@ -34,7 +34,7 @@
 
   <div x-data="bookList">
     <dl class="filters">
-      <div>
+      <div x-show="filterMatchesAny('type', 'textual') && filterMatchesAny('type', 'visual')">
         <dt>Types</dt>
         <dd>
           <div>
@@ -202,7 +202,9 @@
             formats: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
             locations: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
             type: "{{ book.type.slug }}",
+            parent_type: {% if book.type.parent %}"{{ book.type.parent.slug }}"{% else %}null{% endif %},
             genre: "{{ book.genre.slug }}",
+            parent_genre: {% if book.genre.parent %}"{{ book.genre.parent.slug }}"{% else %}null{% endif %},
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
                 cover: "{{ cover.thumbnail.url }}",
@@ -219,29 +221,37 @@
 				format: 'all',
         genre: 'all',
 			},
+      filterMatchesAny(filterType, filter) {
+        return this.books.some(book =>
+          book[filterType] === filter ||
+          book['parent_' + filterType] === filter
+        );
+      },
       get filteredBooks() {
 				return this.books.filter(book => {
-					const formatMatch = this.filters.format === 'all' || book.formats.some(format => format.slug === this.filters.format);
-					const locationMatch = this.filters.location === 'all' || book.locations.some(location => location.slug === this.filters.location);
-					const typeMatch = this.filters.type === 'all' || book.type === this.filters.type;
-          const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre;
-					return formatMatch && locationMatch && typeMatch && genreMatch;
-				});
+          const formatMatch = this.filters.format === 'all' || book.formats.some(format => format.slug === this.filters.format);
+          const locationMatch = this.filters.location === 'all' || book.locations.some(location => location.slug === this.filters.location);
+          const typeMatch = this.filters.type === 'all' || book.type === this.filters.type || book.parent_type === this.filters.type;
+          const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre || book.parent_genre === this.filters.genre;
+          return formatMatch && locationMatch && typeMatch && genreMatch;
+        });
 			},
       get filterCount() {
-				return (filterType, filterValue) => {
-					switch (filterType) {
-						case 'type':
-							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.type === filterValue).length;
-						case 'location':
-							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.locations.some(location => location.slug === filterValue)).length;
-						case 'format':
-							return filterValue === 'all' ? this.books.length : this.books.filter(book => book.formats.some(format => format.slug === filterValue)).length;
-						default:
-							return this.books.length;
-					}
-				};
-			},
+        return (filterType, filterValue) => {
+          switch (filterType) {
+            case 'type':
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.type === filterValue || book.parent_type === filterValue).length;
+            case 'location':
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.locations.some(location => location.slug === filterValue)).length;
+            case 'format':
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.formats.some(format => format.slug === filterValue)).length;
+            case 'genre':
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.genre === filterValue || book.parent_genre === filterValue).length;
+            default:
+              return this.books.length;
+          }
+        };
+      },
       init() {
         document.documentElement.classList.add('alpine');
       }
