@@ -16,10 +16,20 @@ class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(BookForm, self).__init__(*args, **kwargs)
         self.fields["author"].label = "Author(s)"
+        self.fields["location"].label = "Location(s)"
 
     class Meta:
         model = Book
-        fields = ("title", "status", "author", "published_year", "format")
+        fields = (
+            "title",
+            "status",
+            "author",
+            "type",
+            "genre",
+            "published_year",
+            "format",
+            "location",
+        )
 
 
 class BookStatusForm(forms.ModelForm):
@@ -29,6 +39,7 @@ class BookStatusForm(forms.ModelForm):
             self.fields[field].widget = forms.HiddenInput()
         self.fields["author"].widget = MultipleHiddenInput()
         self.fields["format"].widget = MultipleHiddenInput()
+        self.fields["location"].widget = MultipleHiddenInput()
 
     class Meta:
         model = Book
