@@ -307,7 +307,7 @@
             parent_genre: {% if book.genre.parent %}"{{ book.genre.parent.slug }}"{% else %}null{% endif %},
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
-                cover: "{{ cover.thumbnail.url }}",
+                cover: "{{ cover.thumbnail.url|safe }}",
               {% endwith %}
             {% else %}
               cover: null,
