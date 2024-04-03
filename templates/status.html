@@ -73,34 +73,7 @@
       </div>
       <div>
         <dt>Genres</dt>
-        <dd x-data="{
-          filters: { genre: null },
-          genres: [
-            {% for genre in genres %}
-              {
-                id: {{ genre.id }},
-                name: '{{ genre.name }}',
-                slug: '{{ genre.slug }}',
-                parent: {% if genre.parent %}'{{ genre.parent.slug }}'{% else %}null{% endif %}
-              }{% if not forloop.last %},{% endif %}
-            {% endfor %}
-          ],
-          getParentGenre: function(slug) {
-            let genre = this.genres.find(g => g.slug === slug);
-              return genre ? genre.parent : null;
-          },
-          isSubGenreSelected: function(parentGenre) {
-              // Check if the selected genre is a sub-genre (i.e., it has no parent)
-              let selectedGenreParent = this.getParentGenre(this.filters.genre);
-              // not a sub-genre
-              // if (selectedGenreParent !== null) {
-              //     return false;
-              // }
-
-              // Check if the selected genre is a sub-genre of the current parent genre
-              return this.getParentGenre(this.filters.genre) == parentGenre;
-          },
-        }">
+        <dd>
           <div>
             <label>
               <input type="radio" name="genre" value="all" x-model="filters.genre" checked>
@@ -265,6 +238,16 @@
   document.addEventListener('alpine:init', () => {
     Alpine.data('bookList', () => ({
       openModal: null,
+      genres: [
+        {% for genre in genres %}
+          {
+            id: {{ genre.id }},
+            name: '{{ genre.name }}',
+            slug: '{{ genre.slug }}',
+            parent: {% if genre.parent %}'{{ genre.parent.slug }}'{% else %}null{% endif %}
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ],
       books: [
         {% for book, form in forms %}
           {
@@ -304,6 +287,14 @@
           book[filterType] === filter ||
           book['parent_' + filterType] === filter
         );
+      },
+      getParentGenre: function(slug) {
+        let genre = this.genres.find(g => g.slug === slug);
+          return genre ? genre.parent : null;
+      },
+      isSubGenreSelected: function(parentGenre) {
+        // Check if the selected genre is a sub-genre of the current parent genre
+        return this.getParentGenre(this.filters.genre) == parentGenre;
       },
       get filteredBooks() {
 				return this.books.filter(book => {
