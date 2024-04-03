@@ -153,10 +153,10 @@
           <a :href="book.url">
             <template x-if="book.cover">
               <img :src="book.cover"
-                  alt="{{ cover }}"
+                  :alt="`Cover of ${book.title}`"
                   width="150"
                   height="auto"
-                  title="book.title">
+                  :title="book.title">
             </template>
             <template x-if="!book.cover">
               <div class="no-cover">
