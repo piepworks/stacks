@@ -14,28 +14,30 @@
 {% endblock header %}
 
 {% block content %}
-  <header class="actions-inline">
-    <h1>{{ status.name }}</h1>
-    <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
-  </header>
-
-  {% if finished_counts %}
-    <dl class="finished-counts">
-      {% for count in finished_counts reversed %}
-        <div>
-          <dt>{{ count.readings__end_date__year }}</dt>
-          <dd>
-            {{ count.count }}
-          </dd>
-        </div>
-      {% endfor %}
-    </dl>
-  {% endif %}
-
   <div x-data="bookList">
-    <div class="filter-toggle">
-      <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters">Boop</button>
-    </div>
+    <header class="actions-inline">
+      <div>
+        <h1>{{ status.name }}</h1>
+        <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
+      </div>
+      <div class="filter-toggle">
+        <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters">Boop</button>
+      </div>
+    </header>
+
+    {% if finished_counts %}
+      <dl class="finished-counts">
+        {% for count in finished_counts reversed %}
+          <div>
+            <dt>{{ count.readings__end_date__year }}</dt>
+            <dd>
+              {{ count.count }}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
+    {% endif %}
+
     <dl class="filters" x-show="openFilters" x-transition>
       <div x-show="filterMatchesAny('type', 'textual') && filterMatchesAny('type', 'visual')">
         <dt>Types</dt>

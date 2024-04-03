@@ -194,6 +194,21 @@ main header:not(dialog header) {
       padding: 0.75rem;
       margin-bottom: 0.25rem;
     }
+
+    /* Filter toggle goodies */
+    &:has(> div) {
+      justify-content: space-between;
+    }
+
+    > div {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-end;
+    }
+
+    .filter-toggle {
+      margin-right: 1rem;
+    }
   }
 
   /* Sub-headings like "Readings" */
