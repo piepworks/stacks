@@ -100,9 +100,6 @@
                     {% endfor %}
                   </div>{# / Sub genres #}
                 {% endif %}
-                <script>
-                  console.log('hasSubGenres', JSON.parse(document.getElementById('hasSubGenres').textContent));
-                </script>
               </div>{# / Parent genre #}
             {% endif %}
           {% endfor %}
@@ -110,7 +107,22 @@
       </div>
       <div>
         <dt>Formats</dt>
-        <dd><p><b><i>[formats here]</i></b></p></dd>
+        <dd>
+          <div>
+            <label>
+              <input type="radio" name="format" value="all" x-model="filters.format">
+              All (<span x-text="filterCount('format', 'all')"></span>)
+            </label>
+          </div>
+          {% for format in formats %}
+            <div x-show="filterMatchesAny('format', '{{ format.slug }}')">
+              <label>
+                <input type="radio" name="format" value="{{ format.slug }}" x-model="filters.format">
+                {{ format.name }} (<span x-text="filterCount('format', '{{ format.slug }}')"></span>)
+              </label>
+            </div>
+          {% endfor %}
+        </dd>
       </div>
       <div>
         <dt>Locations</dt>
@@ -268,7 +280,7 @@
             url: "{% url 'book_detail' book.slug %}",
             update_url: "{% url 'book_update' book.slug %}",
             archive_url: "{% url 'book_archive' book.slug %}",
-            formats: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
+            format: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
             locations: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
             type: "{{ book.type.slug }}",
             parent_type: {% if book.type.parent %}"{{ book.type.parent.slug }}"{% else %}null{% endif %},
@@ -291,10 +303,13 @@
         genre: 'all',
 			},
       filterMatchesAny(filterType, filter) {
-        return this.books.some(book =>
-          book[filterType] === filter ||
-          book['parent_' + filterType] === filter
-        );
+        return this.books.some(book => {
+          if (Array.isArray(book[filterType])) {
+            return book[filterType].some(b => b.slug === filter);
+          } else {
+            return book[filterType] === filter || book['parent_' + filterType] === filter;
+          }
+        });
       },
       getParentGenre: function(slug) {
         let genre = this.genres.find(g => g.slug === slug);
@@ -306,7 +321,7 @@
       },
       get filteredBooks() {
 				return this.books.filter(book => {
-          const formatMatch = this.filters.format === 'all' || book.formats.some(format => format.slug === this.filters.format);
+          const formatMatch = this.filters.format === 'all' || book.format.some(format => format.slug === this.filters.format);
           const locationMatch = this.filters.location === 'all' || book.locations.some(location => location.slug === this.filters.location);
           const typeMatch = this.filters.type === 'all' || book.type === this.filters.type || book.parent_type === this.filters.type;
           const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre || book.parent_genre === this.filters.genre;
@@ -321,7 +336,7 @@
             case 'location':
               return filterValue === 'all' ? this.books.length : this.books.filter(book => book.locations.some(location => location.slug === filterValue)).length;
             case 'format':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.formats.some(format => format.slug === filterValue)).length;
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.format.some(format => format.slug === filterValue)).length;
             case 'genre':
               return filterValue === 'all' ? this.books.length : this.books.filter(book => book.genre === filterValue || book.parent_genre === filterValue).length;
             default:
