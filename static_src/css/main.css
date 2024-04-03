@@ -330,3 +330,8 @@ hr {
 .alpine [x-ignore] {
   display: none;
 }
+
+/* Don't show Alpine things until Alpine is ready */
+[x-cloak] {
+  display: none !important;
+}

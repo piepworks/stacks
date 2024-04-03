@@ -21,7 +21,8 @@
         <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
       </div>
       <div class="filter-toggle">
-        <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters">Boop</button>
+        <button class="svg no-filter" disabled x-ignore>Show filters</button>
+        <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
       </div>
     </header>
 
@@ -38,7 +39,7 @@
       </dl>
     {% endif %}
 
-    <dl class="filters" x-show="openFilters" x-transition>
+    <dl class="filters" x-show="openFilters" x-transition x-cloak>
       <div x-show="filterMatchesAny('type', 'textual') && filterMatchesAny('type', 'visual')">
         <dt>Types</dt>
         <dd>
