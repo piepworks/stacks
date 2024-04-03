@@ -126,7 +126,22 @@
       </div>
       <div>
         <dt>Locations</dt>
-        <dd><p><b><i>[locations here]</i></b></p></dd>
+        <dd>
+          <div>
+            <label>
+              <input type="radio" name="location" value="all" x-model="filters.location">
+              All (<span x-text="filterCount('location', 'all')"></span>)
+            </label>
+          </div>
+          {% for location in locations %}
+            <div x-show="filterMatchesAny('location', '{{ location.slug }}')">
+              <label>
+                <input type="radio" name="location" value="{{ location.slug }}" x-model="filters.location">
+                {{ location.name }} (<span x-text="filterCount('location', '{{ location.slug }}')"></span>)
+              </label>
+            </div>
+          {% endfor %}
+        </dd>
       </div>
     </dl>
     <ul>
@@ -281,7 +296,7 @@
             update_url: "{% url 'book_update' book.slug %}",
             archive_url: "{% url 'book_archive' book.slug %}",
             format: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
-            locations: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
+            location: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
             type: "{{ book.type.slug }}",
             parent_type: {% if book.type.parent %}"{{ book.type.parent.slug }}"{% else %}null{% endif %},
             genre: "{{ book.genre.slug }}",
@@ -322,7 +337,7 @@
       get filteredBooks() {
 				return this.books.filter(book => {
           const formatMatch = this.filters.format === 'all' || book.format.some(format => format.slug === this.filters.format);
-          const locationMatch = this.filters.location === 'all' || book.locations.some(location => location.slug === this.filters.location);
+          const locationMatch = this.filters.location === 'all' || book.location.some(location => location.slug === this.filters.location);
           const typeMatch = this.filters.type === 'all' || book.type === this.filters.type || book.parent_type === this.filters.type;
           const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre || book.parent_genre === this.filters.genre;
           return formatMatch && locationMatch && typeMatch && genreMatch;
@@ -334,7 +349,7 @@
             case 'type':
               return filterValue === 'all' ? this.books.length : this.books.filter(book => book.type === filterValue || book.parent_type === filterValue).length;
             case 'location':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.locations.some(location => location.slug === filterValue)).length;
+              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.location.some(location => location.slug === filterValue)).length;
             case 'format':
               return filterValue === 'all' ? this.books.length : this.books.filter(book => book.format.some(format => format.slug === filterValue)).length;
             case 'genre':
