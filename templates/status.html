@@ -169,7 +169,7 @@
           </a>
           <div class="title" :title="book.title" x-text="book.title"></div>
           <div class="actions">
-            <template x-if="book.previous_status">
+            <template x-if="book.previous_status !== 'null'">
               <form :action="book.update_url" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="status_change" value="true">
@@ -178,11 +178,11 @@
                 <button class="svg previous-status">Previous status</button>
               </form>
             </template>
-            <template x-if="!book.previous_status"><span>&nbsp;</span></template>
+            <template x-if="book.previous_status === 'null'"><span class="empty left"></span></template>
             <button class="svg adjust-status" @click="openModal = book.id">
               Adjust status
             </button>
-            <template x-if="book.next_status">
+            <template x-if="book.next_status !== 'null'">
               <form :action="book.update_url" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="status" :value="book.next_status">
@@ -191,7 +191,7 @@
                 <button class="svg next-status">Next status</button>
               </form>
             </template>
-            <template x-if="!book.next_status"><span>&nbsp;</span></template>
+            <template x-if="book.next_status === 'null'"><span class="empty right"></span></template>
           </div>
           {% include "components/status-modal.html" %}
         </li>
@@ -227,7 +227,7 @@
                 <button class="svg previous-status">Previous status</button>
               </form>
             {% else %}
-              <span>&nbsp;</span>
+              <span class="empty left"></span>
             {% endif %}
             <button disabled class="svg adjust-status">
               Adjust status
@@ -241,7 +241,7 @@
                 <button class="svg next-status">Next status</button>
               </form>
             {% else %}
-                <span>&nbsp;</span>
+                <span class="empty right"></span>
             {% endif %}
           </div>
         </li>
