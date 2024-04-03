@@ -76,3 +76,8 @@
     color: white;
   }
 }
+
+.filter-toggle {
+  text-align: right;
+  padding-bottom: 1rem;
+}

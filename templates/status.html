@@ -33,7 +33,10 @@
   {% endif %}
 
   <div x-data="bookList">
-    <dl class="filters">
+    <div class="filter-toggle">
+      <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters">Boop</button>
+    </div>
+    <dl class="filters" x-show="openFilters" x-transition>
       <div x-show="filterMatchesAny('type', 'textual') && filterMatchesAny('type', 'visual')">
         <dt>Types</dt>
         <dd>
@@ -273,6 +276,7 @@
   document.addEventListener('alpine:init', () => {
     Alpine.data('bookList', () => ({
       openModal: null,
+      openFilters: false,
       genres: [
         {% for genre in genres %}
           {
