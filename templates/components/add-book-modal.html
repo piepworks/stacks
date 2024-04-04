@@ -1,5 +1,5 @@
-<dialog x-show="openNewBookModal" x-htmldialog="openNewBookModal = false" @click.outside="openNewBookModal = false" x-transition>
-  <article>
+<dialog x-show="openNewBookModal" x-htmldialog="openNewBookModal = false" x-transition>
+  <article @click.outside="openNewBookModal = false">
     <header>
       <button aria-label="Close"
               rel="prev"
