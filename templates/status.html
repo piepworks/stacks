@@ -114,44 +114,46 @@
           {% endfor %}
         </dd>
       </div>
-      <div>
-        <dt>Formats</dt>
-        <dd>
-          <div>
-            <label>
-              <input type="radio" name="format" value="all" x-model="filters.format">
-              All (<span x-text="filterCount('format', 'all')"></span>)
-            </label>
-          </div>
-          {% for format in formats %}
-            <div x-show="filterMatchesAny('format', '{{ format.slug }}')">
+      {% if status.slug != 'wishlist' %}{# Personal Copies #}
+        <div>
+          <dt>Formats</dt>
+          <dd>
+            <div>
               <label>
-                <input type="radio" name="format" value="{{ format.slug }}" x-model="filters.format">
-                {{ format.name }} (<span x-text="filterCount('format', '{{ format.slug }}')"></span>)
+                <input type="radio" name="format" value="all" x-model="filters.format">
+                All (<span x-text="filterCount('format', 'all')"></span>)
               </label>
             </div>
-          {% endfor %}
-        </dd>
-      </div>
-      <div>
-        <dt>Locations</dt>
-        <dd>
-          <div>
-            <label>
-              <input type="radio" name="location" value="all" x-model="filters.location">
-              All (<span x-text="filterCount('location', 'all')"></span>)
-            </label>
-          </div>
-          {% for location in locations %}
-            <div x-show="filterMatchesAny('location', '{{ location.slug }}')">
+            {% for format in formats %}
+              <div x-show="filterMatchesAny('format', '{{ format.slug }}')">
+                <label>
+                  <input type="radio" name="format" value="{{ format.slug }}" x-model="filters.format">
+                  {{ format.name }} (<span x-text="filterCount('format', '{{ format.slug }}')"></span>)
+                </label>
+              </div>
+            {% endfor %}
+          </dd>
+        </div>
+        <div>
+          <dt>Locations</dt>
+          <dd>
+            <div>
               <label>
-                <input type="radio" name="location" value="{{ location.slug }}" x-model="filters.location">
-                {{ location.name }} (<span x-text="filterCount('location', '{{ location.slug }}')"></span>)
+                <input type="radio" name="location" value="all" x-model="filters.location">
+                All (<span x-text="filterCount('location', 'all')"></span>)
               </label>
             </div>
-          {% endfor %}
-        </dd>
-      </div>
+            {% for location in locations %}
+              <div x-show="filterMatchesAny('location', '{{ location.slug }}')">
+                <label>
+                  <input type="radio" name="location" value="{{ location.slug }}" x-model="filters.location">
+                  {{ location.name }} (<span x-text="filterCount('location', '{{ location.slug }}')"></span>)
+                </label>
+              </div>
+            {% endfor %}
+          </dd>
+        </div>
+      {% endif %}{# / Personal Copies #}
     </dl>
     <ul>
       <template x-for="book in filteredBooks" :key="book.id">
