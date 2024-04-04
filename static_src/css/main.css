@@ -255,7 +255,7 @@ fieldset > .radio {
 
   .another {
     margin: 0;
-    min-width: 200px;
+    min-width: 150px;
     min-height: 100px;
     align-self: stretch;
     display: flex;
@@ -263,23 +263,19 @@ fieldset > .radio {
     justify-content: center;
     align-items: center;
   }
-}
 
-.form-page {
-  .covers {
-    > div {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 
-    .actions {
-      padding: 0 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-    }
+  .actions {
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
   }
 }
 

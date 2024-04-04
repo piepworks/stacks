@@ -401,7 +401,7 @@ def cover_delete(request, slug, cover_pk):
     cover = BookCover.objects.get(pk=cover_pk, book=Book.objects.get(slug=slug))
     cover.delete()
     messages.success(request, "Cover deleted")
-    return redirect("book_update", slug=slug)
+    return redirect("book_detail", slug=slug)
 
 
 @login_required
