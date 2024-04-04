@@ -176,10 +176,13 @@ main header:not(dialog header) {
   }
 
   &.actions-inline {
-    display: flex;
     gap: 1rem;
     justify-content: flex-start;
     align-items: flex-end;
+
+    @media (min-width: 576px) {
+      display: flex;
+    }
 
     .status & {
       margin: 0 0 2rem;
@@ -207,7 +210,15 @@ main header:not(dialog header) {
     }
 
     .filter-toggle {
+      display: flex;
+      align-items: flex-end;
       margin-right: 1rem;
+      justify-content: flex-end;
+      gap: 0.5rem;
+
+      p {
+        margin: 0;
+      }
     }
   }
 

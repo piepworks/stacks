@@ -21,6 +21,9 @@
         <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">add another</a>
       </div>
       <div class="filter-toggle">
+        <p x-cloak x-show="filteredBooks.length !== books.length">
+          <a href="{{ request.path }}" @click.prevent="resetFilters">Showing <span x-text="filteredBooks.length"></span> of <span x-text="books.length"></span> books</a>
+        </p>
         <button class="svg no-filter" disabled x-ignore>Show filters</button>
         <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
       </div>
@@ -309,6 +312,14 @@
 				format: 'all',
         genre: 'all',
 			},
+      resetFilters: function() {
+        this.filters = {
+          type: 'all',
+          location: 'all',
+          format: 'all',
+          genre: 'all',
+        };
+      },
       filterMatchesAny(filterType, filter) {
         return this.books.some(book => {
           if (Array.isArray(book[filterType])) {
