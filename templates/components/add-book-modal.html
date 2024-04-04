@@ -1,0 +1,18 @@
+<dialog x-show="openNewBookModal" x-htmldialog="openNewBookModal = false" @click.outside="openNewBookModal = false" x-transition>
+  <article>
+    <header>
+      <button aria-label="Close"
+              rel="prev"
+              @click="openNewBookModal = false"></button>
+      <p><b>Search to add a book to “{{ status.name }}”</b></p>
+      <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
+    </header>
+    <form method="get" action="{% url 'open_library_search' %}">
+      <fieldset>
+        <input type="hidden" name="status" value="{{ status.slug }}">
+        <input type="text" name="q" required>
+      </fieldset>
+      <button type="submit">Search Open Library</button>
+    </form>
+  </article>
+</dialog>

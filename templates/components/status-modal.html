@@ -1,7 +1,7 @@
-<dialog x-show="openModal === book.id" x-htmldialog="openModal = null" @click.outside="openModal = null">
+<dialog x-show="openStatusModal === book.id" x-htmldialog="openStatusModal = null" @click.outside="openStatusModal = null" x-transition>
   <article>
     <header>
-      <button aria-label="Close" rel="prev" @click="openModal = null"></button>
+      <button aria-label="Close" rel="prev" @click="openStatusModal = null"></button>
       <p>
         <b>Adjust status for <i x-text="book.title"></i></b>
       </p>

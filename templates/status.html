@@ -18,7 +18,7 @@
     <header class="actions-inline">
       <div>
         <h1>{{ status.name }}</h1>
-        <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" onclick="event.preventDefault(); document.querySelector('#add-book').showModal();document.querySelector('#add-book input[name=q]').focus()">add another</a>
+        <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">add another</a>
       </div>
       <div class="filter-toggle">
         <button class="svg no-filter" disabled x-ignore>Show filters</button>
@@ -180,7 +180,7 @@
               </form>
             </template>
             <template x-if="book.previous_status === 'null'"><span class="empty left"></span></template>
-            <button class="svg adjust-status" @click="openModal = book.id">
+            <button class="svg adjust-status" @click="openStatusModal = book.id">
               Adjust status
             </button>
             <template x-if="book.next_status !== 'null'">
@@ -248,37 +248,22 @@
         </li>
       {% endfor %}
     </ul>
+
+    {% include "components/add-book-modal.html" %}
   </div>
 
   <hr>
 
   {% include "components/search-form.html" %}
 
-  <dialog id="add-book">
-    <article>
-      <header>
-        <button aria-label="Close"
-                rel="prev"
-                onclick="document.querySelector('#add-book').close()"></button>
-        <p><b>Search to add a book to “{{ status.name }}”</b></p>
-        <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
-      </header>
-      <form method="get" action="{% url 'open_library_search' %}">
-        <fieldset>
-          <input type="hidden" name="status" value="{{ status.slug }}">
-          <input type="text" name="q" required>
-        </fieldset>
-        <button type="submit">Search Open Library</button>
-      </form>
-    </article>
-  </dialog>
 {% endblock content %}
 
 {% block page_js %}
 <script>
   document.addEventListener('alpine:init', () => {
     Alpine.data('bookList', () => ({
-      openModal: null,
+      openStatusModal: null,
+      openNewBookModal: false,
       openFilters: false,
       genres: [
         {% for genre in genres %}
