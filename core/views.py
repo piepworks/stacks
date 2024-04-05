@@ -61,20 +61,22 @@ def status(request, status):
     )
 
     # Get filter parameters from request
-    type_parameter = request.GET.get("type", "all")
-    location_parameter = request.GET.getlist("location", "all")
-    format_parameter = request.GET.getlist("format", "all")
-    genre_parameter = request.GET.get("genre", "all")
+    filter_queries = {
+        "type": request.GET.get("type", "all"),
+        "location": request.GET.get("location", "all"),
+        "format": request.GET.get("format", "all"),
+        "genre": request.GET.get("genre", "all"),
+    }
 
     # Apply filters to the books queryset
-    if type_parameter != "all":
-        books = books.filter(type__slug=type_parameter)
-    if genre_parameter != "all":
-        books = books.filter(genre__slug=genre_parameter)
-    if location_parameter != "all":
-        books = books.filter(location__slug__in=location_parameter)
-    if format_parameter != "all":
-        books = books.filter(format__slug__in=format_parameter)
+    if filter_queries["format"] != "all":
+        books = books.filter(type__slug=filter_queries["format"])
+    if filter_queries["genre"] != "all":
+        books = books.filter(genre__slug=filter_queries["genre"])
+    if filter_queries["location"] != "all":
+        books = books.filter(location__slug=filter_queries["location"])
+    if filter_queries["format"] != "all":
+        books = books.filter(format__slug__in=filter_queries["format"])
 
     paginator = Paginator(books, 2)
     page_number = request.GET.get("page", 1)
@@ -149,6 +151,7 @@ def status(request, status):
         "location_filters": location_filters,
         "format_filters": format_filters,
         "genre_filters": genre_filters,
+        "filter_queries": filter_queries,
     }
 
     return render(request, "status.html", context)

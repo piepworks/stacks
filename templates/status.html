@@ -20,13 +20,13 @@
         <h1>{{ status.name }}</h1>
         <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">add another</a>
       </div>
-      <div class="filter-toggle">
+      {% comment %} <div class="filter-toggle">
         <p x-cloak x-show="filteredBooks.length !== books.length">
           <a href="{{ request.path }}" @click.prevent="resetFilters">Showing <span x-text="filteredBooks.length"></span> of <span x-text="books.length"></span> books</a>
         </p>
         <button class="svg no-filter" disabled x-ignore>Show filters</button>
         <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
-      </div>
+      </div> {% endcomment %}
     </header>
 
     {% if finished_counts %}
@@ -42,122 +42,120 @@
       </dl>
     {% endif %}
 
-    <dl id="ajax-filters" class="filters">
-      <div>
-        <dt>Types</dt>
-        <dd>
-          <div>
-            <label>
-              <input type="radio" name="type" value="all" {% if not type_filter %}checked{% endif %}>
-              All
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="type" value="textual" {% if type_filter == 'textual' %}checked{% endif %}>
-              Textual
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="type" value="visual" {% if type_filter == 'visual' %}checked{% endif %}>
-              Visual
-            </label>
-            <div class="sub-filters">
-              <label>
-                <input type="radio" name="type" value="comic" {% if type_filter == 'comic' %}checked{% endif %}>
-                Comics
-              </label>
-              <label>
-                <input type="radio" name="type" value="photo" {% if type_filter == 'photo' %}checked{% endif %}>
-                Photo Books
-              </label>
-              <label>
-                <input type="radio" name="type" value="picture" {% if type_filter == 'picture' %}checked{% endif %}>
-                Picture Books
-              </label>
-            </div>
-          </div>
-        </dd>
-      </div>
-      <div>
-        <dt>Genres</dt>
-        <dd>
-          <div>
-            <label>
-              <input type="radio" name="genre" value="all" {% if not genre_filter %}checked{% endif %}>
-              All
-            </label>
-          </div>
-          {% for genre in genres %}
-            {% if not genre.parent %}
-              <div>
-                <label>
-                  <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == genre_filter %}checked{% endif %}>
-                  {{ genre.name }}
-                </label>
-                {% if has_sub_genres|get_item:genre.slug %}
-                  <div class="sub-filters">
-                    {% for sub_genre in genres %}
-                      {% if sub_genre.parent == genre %}
-                        <label>
-                          <input type="radio" name="genre" value="{{ sub_genre.slug }}" {% if sub_genre.slug == genre_filter %}checked{% endif %}>
-                          {{ sub_genre.name }}
-                        </label>
-                      {% endif %}
-                    {% endfor %}
-                  </div>{# / Sub genre #}
-                {% endif %}
-              </div>{# / Parent genre #}
-            {% endif %}
-          {% endfor %}
-        </dd>
-      </div>
-      {% if status.slug != 'wishlist' %}
+    <form id="ajax-filters-form" x-init x-target.replace="ajax-filters-form ajax-books ajax-filters ajax-pagination" method="get" action="{% url 'status' status.slug %}" @change="$el.requestSubmit()">
+      <dl id="ajax-filters" class="filters">
         <div>
-          <dt>Formats</dt>
+          <dt>Types</dt>
           <dd>
             <div>
               <label>
-                <input type="radio" name="format" value="all" {% if not format_filters %}checked{% endif %}>
+                <input type="radio" name="type" value="all" {% if filter_queries.type %}checked{% endif %}>
                 All
               </label>
             </div>
-            {% for format in formats %}
-              {% if format_filters|get_item:format.slug %}
+            <div>
+              <label>
+                <input type="radio" name="type" value="textual" {% if filter_queries.type == 'textual' %}checked{% endif %}>
+                Textual
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" name="type" value="visual" {% if filter_queries.type == 'visual' %}checked{% endif %}>
+                Visual
+              </label>
+              <div class="sub-filters">
+                <label>
+                  <input type="radio" name="type" value="comic" {% if filter_queries.type == 'comic' %}checked{% endif %}>
+                  Comics
+                </label>
+                <label>
+                  <input type="radio" name="type" value="photo" {% if filter_queries.type == 'photo' %}checked{% endif %}>
+                  Photo Books
+                </label>
+                <label>
+                  <input type="radio" name="type" value="picture" {% if filter_queries.type == 'picture' %}checked{% endif %}>
+                  Picture Books
+                </label>
+              </div>
+            </div>
+          </dd>
+        </div>
+        <div>
+          <dt>Genres</dt>
+          <dd>
+            <div>
+              <label>
+                <input type="radio" name="genre" value="all" {% if filter_queries.genre == 'all' %}checked{% endif %}>
+                All
+              </label>
+            </div>
+            {% for genre in genres %}
+              {% if not genre.parent %}
                 <div>
                   <label>
-                    <input type="radio" name="format" value="{{ format.slug }}" {% if format.slug in format_filters %}checked{% endif %}>
+                    <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == filter_queries.genre %}checked{% endif %}>
+                    {{ genre.name }}
+                  </label>
+                  {% if has_sub_genres|get_item:genre.slug %}
+                    <div class="sub-filters">
+                      {% for sub_genre in genres %}
+                        {% if sub_genre.parent == genre %}
+                          <label>
+                            <input type="radio" name="genre" value="{{ sub_genre.slug }}" {% if sub_genre.slug == filter_queries.genre %}checked{% endif %}>
+                            {{ sub_genre.name }}
+                          </label>
+                        {% endif %}
+                      {% endfor %}
+                    </div>{# / Sub genre #}
+                  {% endif %}
+                </div>{# / Parent genre #}
+              {% endif %}
+            {% endfor %}
+          </dd>
+        </div>
+        {% if status.slug != 'wishlist' %}
+          <div>
+            <dt>Formats</dt>
+            <dd>
+              <div>
+                <label>
+                  <input type="radio" name="format" value="all" {% if filter_queries.format == 'all' %}checked{% endif %}>
+                  All
+                </label>
+              </div>
+              {% for format in formats %}
+                <div>
+                  <label>
+                    <input type="radio" name="format" value="{{ format.slug }}" {% if format.slug == filter_queries.format %}checked{% endif %}>
                     {{ format.name }}
                   </label>
                 </div>
-              {% endif %}
-            {% endfor %}
-          </dd>
-        </div>
-        <div>
-          <dt>Locations</dt>
-          <dd>
-            <div>
-              <label>
-                <input type="radio" name="location" value="all" {% if not location_filters %}checked{% endif %}>
-                All
-              </label>
-            </div>
-            {% for location in locations %}
-              {% if location_filters|get_item:location.slug %}
+              {% endfor %}
+            </dd>
+          </div>
+          <div>
+            <dt>Locations</dt>
+            <dd>
+              <div>
+                <label>
+                  <input type="radio" name="location" value="all" {% if filter_queries.location == 'all' %}checked{% endif %}>
+                  All
+                </label>
+              </div>
+              {% for location in locations %}
                 <div>
                   <label>
-                    <input type="radio" name="location" value="{{ location.slug }}" {% if location.slug in location_filters %}checked{% endif %}>
+                    <input type="radio" name="location" value="{{ location.slug }}" {% if location.slug in filter_queries.location %}checked{% endif %}>
                     {{ location.name }}
                   </label>
                 </div>
-              {% endif %}
-            {% endfor %}
-          </dd>
-        </div>
-      {% endif %}
-    </dl>
+              {% endfor %}
+            </dd>
+          </div>
+        {% endif %}
+      </dl>
+    </form>
 
     <ul id="ajax-books">
       {% for book, form in forms %}
@@ -212,7 +210,7 @@
 
     <div id="ajax-pagination">
       {% if page_obj.has_previous %}
-      <form x-init x-target.replace="ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
+      <form x-init x-target.replace="ajax-filters-form ajax-books ajax-filters ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
         {% csrf_token %}
         <button>
           Previous
@@ -225,7 +223,7 @@
       <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
 
       {% if page_obj.has_next %}
-      <form x-init x-target.replace="ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
+      <form x-init x-target.replace="ajax-filters-form ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
         {% csrf_token %}
         <button>
           Next
