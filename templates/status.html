@@ -42,39 +42,39 @@
       </dl>
     {% endif %}
 
-    <dl class="filters" x-show="openFilters" x-transition x-cloak>
-      <div x-show="filterMatchesAny('type', 'textual') && filterMatchesAny('type', 'visual')">
+    <dl id="ajax-filters" class="filters">
+      <div>
         <dt>Types</dt>
         <dd>
           <div>
             <label>
-              <input type="radio" name="type" value="all" x-model="filters.type" checked>
-              All (<span x-text="filterCount('type', 'all')"></span>)
+              <input type="radio" name="type" value="all" {% if not type_filter %}checked{% endif %}>
+              All
             </label>
           </div>
           <div>
-            <label x-show="filterCount('type', 'textual') > 0">
-              <input type="radio" name="type" value="textual" x-model="filters.type">
-              Textual (<span x-text="filterCount('type', 'textual')"></span>)
+            <label>
+              <input type="radio" name="type" value="textual" {% if type_filter == 'textual' %}checked{% endif %}>
+              Textual
             </label>
           </div>
-          <div x-show="filterMatchesAny('type', 'visual')" x-bind:class="{ 'selected': filters.type === 'visual' || filters.type === 'comic' || filters.type === 'picture' || filters.type === 'photo' }">
-            <label class="parent" x-show="filterCount('type', 'visual') > 0">
-              <input type="radio" name="type" value="visual" x-model="filters.type">
-              Visual (<span x-text="filterCount('type', 'visual')"></span>)
+          <div>
+            <label>
+              <input type="radio" name="type" value="visual" {% if type_filter == 'visual' %}checked{% endif %}>
+              Visual
             </label>
-            <div class="sub-filter">
-              <label x-show="filterCount('type', 'comic')">
-                <input type="radio" name="type" value="comic" x-model="filters.type">
-                Comics (<span x-text="filterCount('type', 'comic')"></span>)
+            <div class="sub-filters">
+              <label>
+                <input type="radio" name="type" value="comic" {% if type_filter == 'comic' %}checked{% endif %}>
+                Comics
               </label>
-              <label x-show="filterCount('type', 'photo')">
-                <input type="radio" name="type" value="photo" x-model="filters.type">
-                Photo Books (<span x-text="filterCount('type', 'photo')"></span>)
+              <label>
+                <input type="radio" name="type" value="photo" {% if type_filter == 'photo' %}checked{% endif %}>
+                Photo Books
               </label>
-              <label x-show="filterCount('type', 'picture')">
-                <input type="radio" name="type" value="picture" x-model="filters.type">
-                Picture Books (<span x-text="filterCount('type', 'picture')"></span>)
+              <label>
+                <input type="radio" name="type" value="picture" {% if type_filter == 'picture' %}checked{% endif %}>
+                Picture Books
               </label>
             </div>
           </div>
@@ -85,52 +85,53 @@
         <dd>
           <div>
             <label>
-              <input type="radio" name="genre" value="all" x-model="filters.genre" checked>
-              All (<span x-text="filterCount('genre', 'all')"></span>)
+              <input type="radio" name="genre" value="all" {% if not genre_filter %}checked{% endif %}>
+              All
             </label>
           </div>
           {% for genre in genres %}
             {% if not genre.parent %}
-              <div x-show="filterMatchesAny('genre', '{{ genre.slug }}')" :class="{ 'selected': isSubGenreSelected('{{ genre.slug }}') }">
-                <label class="parent" x-show="filterCount('genre', '{{ genre.slug }}') > 0">
-                  <input type="radio" name="genre" value="{{ genre.slug }}" x-model="filters.genre">
-                  {{ genre.name }} (<span x-text="filterCount('genre', '{{ genre.slug }}')"></span>)
+              <div>
+                <label>
+                  <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == genre_filter %}checked{% endif %}>
+                  {{ genre.name }}
                 </label>
-
                 {% if has_sub_genres|get_item:genre.slug %}
                   <div class="sub-filters">
                     {% for sub_genre in genres %}
                       {% if sub_genre.parent == genre %}
-                        <label x-show="filterCount('genre', '{{ sub_genre.slug }}') > 0">
-                          <input type="radio" name="genre" value="{{ sub_genre.slug }}" x-model="filters.genre">
-                          {{ sub_genre.name }} (<span x-text="filterCount('genre', '{{ sub_genre.slug }}')"></span>)
+                        <label>
+                          <input type="radio" name="genre" value="{{ sub_genre.slug }}" {% if sub_genre.slug == genre_filter %}checked{% endif %}>
+                          {{ sub_genre.name }}
                         </label>
                       {% endif %}
                     {% endfor %}
-                  </div>{# / Sub genres #}
+                  </div>{# / Sub genre #}
                 {% endif %}
               </div>{# / Parent genre #}
             {% endif %}
           {% endfor %}
         </dd>
       </div>
-      {% if status.slug != 'wishlist' %}{# Personal Copies #}
+      {% if status.slug != 'wishlist' %}
         <div>
           <dt>Formats</dt>
           <dd>
             <div>
               <label>
-                <input type="radio" name="format" value="all" x-model="filters.format">
-                All (<span x-text="filterCount('format', 'all')"></span>)
+                <input type="radio" name="format" value="all" {% if not format_filters %}checked{% endif %}>
+                All
               </label>
             </div>
             {% for format in formats %}
-              <div x-show="filterMatchesAny('format', '{{ format.slug }}')">
-                <label>
-                  <input type="radio" name="format" value="{{ format.slug }}" x-model="filters.format">
-                  {{ format.name }} (<span x-text="filterCount('format', '{{ format.slug }}')"></span>)
-                </label>
-              </div>
+              {% if format_filters|get_item:format.slug %}
+                <div>
+                  <label>
+                    <input type="radio" name="format" value="{{ format.slug }}" {% if format.slug in format_filters %}checked{% endif %}>
+                    {{ format.name }}
+                  </label>
+                </div>
+              {% endif %}
             {% endfor %}
           </dd>
         </div>
@@ -139,71 +140,28 @@
           <dd>
             <div>
               <label>
-                <input type="radio" name="location" value="all" x-model="filters.location">
-                All (<span x-text="filterCount('location', 'all')"></span>)
+                <input type="radio" name="location" value="all" {% if not location_filters %}checked{% endif %}>
+                All
               </label>
             </div>
             {% for location in locations %}
-              <div x-show="filterMatchesAny('location', '{{ location.slug }}')">
-                <label>
-                  <input type="radio" name="location" value="{{ location.slug }}" x-model="filters.location">
-                  {{ location.name }} (<span x-text="filterCount('location', '{{ location.slug }}')"></span>)
-                </label>
-              </div>
+              {% if location_filters|get_item:location.slug %}
+                <div>
+                  <label>
+                    <input type="radio" name="location" value="{{ location.slug }}" {% if location.slug in location_filters %}checked{% endif %}>
+                    {{ location.name }}
+                  </label>
+                </div>
+              {% endif %}
             {% endfor %}
           </dd>
         </div>
-      {% endif %}{# / Personal Copies #}
+      {% endif %}
     </dl>
-    <ul>
-      <template x-for="book in filteredBooks" :key="book.id">
-        <li class="book">
-          <a :href="book.url">
-            <template x-if="book.cover">
-              <img :src="book.cover"
-                  :alt="`Cover of ${book.title}`"
-                  width="150"
-                  height="auto"
-                  :title="book.title">
-            </template>
-            <template x-if="!book.cover">
-              <div class="no-cover">
-                {# https://remixicon.com/icon/book-line #}
-                <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
-              </div>
-            </template>
-          </a>
-          <div class="title" :title="book.title" x-text="book.title"></div>
-          <div class="actions">
-            <template x-if="book.previous_status !== 'null'">
-              <form :action="book.update_url" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="status_change" value="true">
-                <input type="hidden" name="status" :value="book.previous_status">
-                <div x-html="book.form"></div>
-                <button class="svg previous-status">Previous status</button>
-              </form>
-            </template>
-            <template x-if="book.previous_status === 'null'"><span class="empty left"></span></template>
-            <button class="svg adjust-status" @click="openStatusModal = book.id">
-              Adjust status
-            </button>
-            <template x-if="book.next_status !== 'null'">
-              <form :action="book.update_url" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="status" :value="book.next_status">
-                <input type="hidden" name="status_change" value="true">
-                <div x-html="book.form"></div>
-                <button class="svg next-status">Next status</button>
-              </form>
-            </template>
-            <template x-if="book.next_status === 'null'"><span class="empty right"></span></template>
-          </div>
-          {% include "components/status-modal.html" %}
-        </li>
-      </template>
+
+    <ul id="ajax-books">
       {% for book, form in forms %}
-        <li x-ignore>
+        <li>
           <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
@@ -252,6 +210,32 @@
       {% endfor %}
     </ul>
 
+    <div id="ajax-pagination">
+      {% if page_obj.has_previous %}
+      <form x-init x-target.replace="ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
+        {% csrf_token %}
+        <button>
+          Previous
+        </button>
+      </form>
+      {% else %}
+      <button disabled>Previous</button>
+      {% endif %}
+
+      <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+
+      {% if page_obj.has_next %}
+      <form x-init x-target.replace="ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
+        {% csrf_token %}
+        <button>
+          Next
+        </button>
+      </form>
+      {% else %}
+      <button disabled>Next</button>
+      {% endif %}
+    </div>
+
     {% include "components/add-book-modal.html" %}
   </div>
 
@@ -268,100 +252,6 @@
       openStatusModal: null,
       openNewBookModal: false,
       openFilters: false,
-      genres: [
-        {% for genre in genres %}
-          {
-            id: {{ genre.id }},
-            name: '{{ genre.name }}',
-            slug: '{{ genre.slug }}',
-            parent: {% if genre.parent %}'{{ genre.parent.slug }}'{% else %}null{% endif %}
-          }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ],
-      books: [
-        {% for book, form in forms %}
-          {
-            form: `{{ form }}`,
-            id: "{{ book.id }}",
-            title: "{{ book }}",
-            status: "{{ book.status }}",
-            previous_status: "{{ book.status|get_previous_status|default_if_none:'null' }}",
-            next_status: "{{ book.status|get_next_status|default_if_none:'null' }}",
-            url: "{% url 'book_detail' book.slug %}",
-            update_url: "{% url 'book_update' book.slug %}",
-            archive_url: "{% url 'book_archive' book.slug %}",
-            format: [{% for format in book.format.all %}{ id: {{ format.id }}, slug: "{{ format.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
-            location: [{% for location in book.location.all %}{ id: {{ location.id }}, slug: "{{ location.slug }}" }{% if not forloop.last %},{% endif %}{% endfor %}],
-            type: "{{ book.type.slug }}",
-            parent_type: {% if book.type.parent %}"{{ book.type.parent.slug }}"{% else %}null{% endif %},
-            genre: "{{ book.genre.slug }}",
-            parent_genre: {% if book.genre.parent %}"{{ book.genre.parent.slug }}"{% else %}null{% endif %},
-            {% if book.covers.all %}
-              {% with book.covers.all|first as cover %}
-                cover: "{{ cover.thumbnail.url|safe }}",
-              {% endwith %}
-            {% else %}
-              cover: null,
-            {% endif %}
-          }{% if not forloop.last %},{% endif %}
-        {% endfor %}
-      ],
-      filters: {
-				type: 'all',
-				location: 'all',
-				format: 'all',
-        genre: 'all',
-			},
-      resetFilters: function() {
-        this.filters = {
-          type: 'all',
-          location: 'all',
-          format: 'all',
-          genre: 'all',
-        };
-      },
-      filterMatchesAny(filterType, filter) {
-        return this.books.some(book => {
-          if (Array.isArray(book[filterType])) {
-            return book[filterType].some(b => b.slug === filter);
-          } else {
-            return book[filterType] === filter || book['parent_' + filterType] === filter;
-          }
-        });
-      },
-      getParentGenre: function(slug) {
-        let genre = this.genres.find(g => g.slug === slug);
-          return genre ? genre.parent : null;
-      },
-      isSubGenreSelected: function(parentGenre) {
-        // Check if the selected genre is a sub-genre of the current parent genre
-        return this.getParentGenre(this.filters.genre) == parentGenre;
-      },
-      get filteredBooks() {
-				return this.books.filter(book => {
-          const formatMatch = this.filters.format === 'all' || book.format.some(format => format.slug === this.filters.format);
-          const locationMatch = this.filters.location === 'all' || book.location.some(location => location.slug === this.filters.location);
-          const typeMatch = this.filters.type === 'all' || book.type === this.filters.type || book.parent_type === this.filters.type;
-          const genreMatch = this.filters.genre === 'all' || book.genre === this.filters.genre || book.parent_genre === this.filters.genre;
-          return formatMatch && locationMatch && typeMatch && genreMatch;
-        });
-			},
-      get filterCount() {
-        return (filterType, filterValue) => {
-          switch (filterType) {
-            case 'type':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.type === filterValue || book.parent_type === filterValue).length;
-            case 'location':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.location.some(location => location.slug === filterValue)).length;
-            case 'format':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.format.some(format => format.slug === filterValue)).length;
-            case 'genre':
-              return filterValue === 'all' ? this.books.length : this.books.filter(book => book.genre === filterValue || book.parent_genre === filterValue).length;
-            default:
-              return this.books.length;
-          }
-        };
-      },
       init() {
         document.documentElement.classList.add('alpine');
       }

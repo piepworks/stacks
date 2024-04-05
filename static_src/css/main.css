@@ -342,3 +342,13 @@ hr {
 [x-cloak] {
   display: none !important;
 }
+
+[aria-busy]::before {
+  /* https://alpine-ajax.js.org/examples/loading/ */
+  display: none !important;
+}
+
+#ajax-pagination {
+  display: flex;
+  gap: 1rem;
+}

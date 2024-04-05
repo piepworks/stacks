@@ -9,6 +9,7 @@ from django.http import FileResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
+from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
@@ -58,7 +59,28 @@ def status(request, status):
         .order_by("-updated_at")
         .prefetch_related("covers", "author", "format")
     )
-    forms = [(book, BookStatusForm(instance=book)) for book in books]
+
+    # Get filter parameters from request
+    type_parameter = request.GET.get("type", "all")
+    location_parameter = request.GET.getlist("location", "all")
+    format_parameter = request.GET.getlist("format", "all")
+    genre_parameter = request.GET.get("genre", "all")
+
+    # Apply filters to the books queryset
+    if type_parameter != "all":
+        books = books.filter(type__slug=type_parameter)
+    if genre_parameter != "all":
+        books = books.filter(genre__slug=genre_parameter)
+    if location_parameter != "all":
+        books = books.filter(location__slug__in=location_parameter)
+    if format_parameter != "all":
+        books = books.filter(format__slug__in=format_parameter)
+
+    paginator = Paginator(books, 2)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
+    forms = [(book, BookStatusForm(instance=book)) for book in page_obj]
 
     # If status is `finished`, get counts of how many (unique?) Books have
     # associated BookReadings that have end dates in each year and are also
@@ -83,6 +105,28 @@ def status(request, status):
         genre.slug: BookGenre.objects.filter(parent=genre).exists() for genre in genres
     }
 
+    # Determine which filter options have matching books
+    types = BookType.objects.all()
+    has_sub_types = {
+        type.slug: BookType.objects.filter(parent=type).exists() for type in types
+    }
+    locations = BookLocation.objects.all()
+    formats = BookFormat.objects.all()
+    type_filters = {
+        type.slug: books.filter(type__slug=type.slug).exists() for type in types
+    }
+    location_filters = {
+        location.slug: books.filter(location__slug=location.slug).exists()
+        for location in locations
+    }
+    format_filters = {
+        format.slug: books.filter(format__slug=format.slug).exists()
+        for format in formats
+    }
+    genre_filters = {
+        genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
+    }
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
         "status_counts": {
@@ -94,11 +138,17 @@ def status(request, status):
             "name": Book(status=status).get_status_display(),
         },
         "forms": forms,
-        "formats": BookFormat.objects.all(),
-        "types": BookType.objects.all(),
-        "locations": BookLocation.objects.all(),
+        "formats": formats,
+        "types": types,
+        "has_sub_types": has_sub_types,
+        "locations": locations,
         "genres": genres,
         "has_sub_genres": has_sub_genres,
+        "page_obj": page_obj,
+        "type_filters": type_filters,
+        "location_filters": location_filters,
+        "format_filters": format_filters,
+        "genre_filters": genre_filters,
     }
 
     return render(request, "status.html", context)
