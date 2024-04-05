@@ -293,7 +293,7 @@ fieldset > .radio {
     border-color: rgb(255 255 255 / 20%);
   }
 
-  .book {
+  .book-detail & .book {
     height: 150px;
   }
 
