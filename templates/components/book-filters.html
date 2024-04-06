@@ -20,7 +20,7 @@
           </div>
         {% endif %}
         {% if filter_counts.type.visual|get_item:'count' > 0 %}
-          <div>
+          <div {% if filter_queries.type == 'visual' or filter_queries.type == 'comic' or filter_queries.type == 'photo' or filter_queries.type == 'picture' %}class="selected"{% endif %}>
             <label class="parent">
               <input type="radio" name="type" value="visual" {% if filter_queries.type == 'visual' %}checked{% endif %}>
               Visual
