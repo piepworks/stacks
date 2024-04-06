@@ -10,47 +10,36 @@
             All
           </label>
         </div>
-        {% if filter_counts.type.textual|get_item:'count' > 0 %}
-          <div>
-            <label>
-              <input type="radio" name="type" value="textual" {% if filter_queries.type == 'textual' %}checked{% endif %}>
-              Textual
-              ({{ filter_counts.type.textual|get_item:'count' }})
-            </label>
-          </div>
-        {% endif %}
-        {% if filter_counts.type.visual|get_item:'count' > 0 %}
-          <div {% if filter_queries.type == 'visual' or filter_queries.type == 'comic' or filter_queries.type == 'photo' or filter_queries.type == 'picture' %}class="selected"{% endif %}>
-            <label class="parent">
-              <input type="radio" name="type" value="visual" {% if filter_queries.type == 'visual' %}checked{% endif %}>
-              Visual
-              ({{ filter_counts.type.visual|get_item:'count' }})
-            </label>
-            <div class="sub-filters">
-              {% if filter_counts.type.visual|get_item:'sub_items'|get_item:'comic' > 0 %}
-                <label>
-                  <input type="radio" name="type" value="comic" {% if filter_queries.type == 'comic' %}checked{% endif %}>
-                  Comics
-                  ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'comic' }})
+
+        {% for type in types %}
+          {% if not type.parent %}
+            {% if filter_counts.type|get_item:type.slug|get_item:'count' > 0 %}
+              {% filter_matches_any type "type" filter_queries as is_selected %}
+              <div{% if is_selected %} class="selected"{% endif %}>
+                <label class="parent">
+                  <input type="radio" name="type" value="{{ type.slug }}" {% if type.slug == filter_queries.type %}checked{% endif %}>
+                  {{ type.name }}
+                  ({{ filter_counts.type|get_item:type.slug|get_item:'count' }})
                 </label>
-              {% endif %}
-              {% if filter_counts.type.visual|get_item:'sub_items'|get_item:'photo' > 0 %}
-                <label>
-                  <input type="radio" name="type" value="photo" {% if filter_queries.type == 'photo' %}checked{% endif %}>
-                  Photo Books
-                  ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'photo' }})
-                </label>
-              {% endif %}
-              {% if filter_counts.type.visual|get_item:'sub_items'|get_item:'picture' > 0 %}
-                <label>
-                  <input type="radio" name="type" value="picture" {% if filter_queries.type == 'picture' %}checked{% endif %}>
-                  Picture Books
-                  ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'picture' }})
-                </label>
-              {% endif %}
-            </div>
-          </div>
-        {% endif %}
+                {% if has_sub_types|get_item:type.slug %}
+                  <div class="sub-filters">
+                    {% for sub_type in types %}
+                      {% if sub_type.parent == type %}
+                        {% if filter_counts.type|get_item:type.slug|get_item:'sub_items'|get_item:sub_type.slug > 0 %}
+                          <label>
+                            <input type="radio" name="type" value="{{ sub_type.slug }}" {% if sub_type.slug == filter_queries.type %}checked{% endif %}>
+                            {{ sub_type.name }}
+                            ({{ filter_counts.type|get_item:type.slug|get_item:'sub_items'|get_item:sub_type.slug }})
+                          </label>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>{# / Sub type #}
+                {% endif %}
+              </div>{# / Parent type #}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
       </dd>
     </div>
     <div>
