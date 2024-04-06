@@ -129,11 +129,11 @@ def status(request, status):
         genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
     }
 
+    status_counts = {status["status"]: status["count"] for status in status_counts}
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
-        "status_counts": {
-            status["status"]: status["count"] for status in status_counts
-        },
+        "status_counts": status_counts,
         "finished_counts": finished_counts if status == "finished" else None,
         "status": {
             "slug": status,
@@ -152,6 +152,8 @@ def status(request, status):
         "format_filters": format_filters,
         "genre_filters": genre_filters,
         "filter_queries": filter_queries,
+        "filter_active": status_counts[status] != books.count(),
+        "filter_request": any(value != "all" for value in filter_queries.values()),
     }
 
     return render(request, "status.html", context)
