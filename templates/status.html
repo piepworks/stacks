@@ -99,7 +99,7 @@
     <div id="ajax-pagination">
       {% if page_obj.has_other_pages %}
         {% if page_obj.has_previous %}
-        <form x-init x-target.replace="ajax-filter-toggle ajax-filter-form ajax-books ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
+        <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
           {% csrf_token %}
           <button>
             Previous
@@ -112,7 +112,7 @@
         <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
 
         {% if page_obj.has_next %}
-        <form x-init x-target.replace="ajax-filter-toggle ajax-filter-form ajax-books ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
+        <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
           {% csrf_token %}
           <button>
             Next
