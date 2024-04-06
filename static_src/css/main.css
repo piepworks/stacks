@@ -351,4 +351,10 @@ hr {
 #ajax-pagination {
   display: flex;
   gap: 1rem;
+  align-items: center;
+
+  p {
+    opacity: 0.5;
+    margin: 0;
+  }
 }
