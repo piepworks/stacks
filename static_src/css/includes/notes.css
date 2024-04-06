@@ -24,6 +24,10 @@
       }
     }
 
+    hr {
+      margin: var(--pico-typography-spacing-vertical) 0;
+    }
+
     blockquote {
       &:first-child {
         margin-top: 0;
