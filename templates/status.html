@@ -97,8 +97,6 @@
     </ul>
 
     <div id="ajax-pagination">
-      <p><pre>{{ filter_counts|pprint }}</pre></p>
-
       {% if page_obj.has_other_pages %}
         {% if page_obj.has_previous %}
         <form x-init x-target.replace="ajax-filter-toggle ajax-filter-form ajax-books ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
