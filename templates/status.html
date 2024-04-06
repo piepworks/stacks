@@ -209,32 +209,34 @@
     </ul>
 
     <div id="ajax-pagination">
-      {% if page_obj.has_previous %}
-      <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
-        {% csrf_token %}
-        <button>
-          Previous
-        </button>
-      </form>
-      {% else %}
-      <button disabled>Previous</button>
-      {% endif %}
+      {% if page_obj.has_other_pages %}
+        {% if page_obj.has_previous %}
+        <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}">
+          {% csrf_token %}
+          <button>
+            Previous
+          </button>
+        </form>
+        {% else %}
+        <button disabled>Previous</button>
+        {% endif %}
 
-      <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+        <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
 
-      {% if page_obj.has_next %}
-      <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
-        {% csrf_token %}
-        <button>
-          Next
-        </button>
-      </form>
-      {% else %}
-      <button disabled>Next</button>
-      {% endif %}
-    </div>
+        {% if page_obj.has_next %}
+        <form x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" x-merge="update" method="post" action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}">
+          {% csrf_token %}
+          <button>
+            Next
+          </button>
+        </form>
+        {% else %}
+        <button disabled>Next</button>
+        {% endif %}
+      </div>
 
-    {% include "components/add-book-modal.html" %}
+      {% include "components/add-book-modal.html" %}
+    {% endif %}
   </div>
 
   <hr>
