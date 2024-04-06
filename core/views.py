@@ -28,6 +28,7 @@ from .forms import (
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
+from .filter_helpers import get_filter_counts
 from .models import (
     Book,
     Author,
@@ -151,34 +152,9 @@ def status(request, status):
 
     status_counts = {status["status"]: status["count"] for status in status_counts}
 
-    # Create a dictionary for the child types
-    child_type_counts = {
-        type.slug: books.filter(type__slug=type.slug).count()
-        for type in types
-        if type.parent is not None
-    }
-
-    # Create a dictionary for the parent types
-    parent_type_counts = {
-        parent_type.slug: {
-            "count": books.filter(type__slug=parent_type.slug).count()
-            + sum(
-                child_type_counts[child_type.slug]
-                for child_type in types
-                if child_type.parent == parent_type
-            ),
-            "sub_types": {
-                child_type.slug: child_type_counts[child_type.slug]
-                for child_type in types
-                if child_type.parent == parent_type
-            },
-        }
-        for parent_type in types
-        if parent_type.parent is None
-    }
-
     filter_counts = {
-        "type": parent_type_counts,
+        "type": get_filter_counts(books, types, "type"),
+        "genre": get_filter_counts(books, genres, "genre"),
         "location": {
             location.slug: books.filter(location__slug=location.slug).count()
             for location in locations
@@ -186,9 +162,6 @@ def status(request, status):
         "format": {
             format.slug: books.filter(format__slug=format.slug).count()
             for format in formats
-        },
-        "genre": {
-            genre.slug: books.filter(genre__slug=genre.slug).count() for genre in genres
         },
     }
 

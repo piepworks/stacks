@@ -210,7 +210,7 @@
     </ul>
 
     <div id="ajax-pagination">
-      <p>{{ filter_counts }}</p>
+      <p><pre>{{ filter_counts|pprint }}</pre></p>
 
       {% if page_obj.has_other_pages %}
         {% if page_obj.has_previous %}
