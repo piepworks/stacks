@@ -61,6 +61,46 @@ def status(request, status):
         .prefetch_related("covers", "author", "format")
     )
 
+    # Determine which filter options have matching books
+    genres = BookGenre.objects.all()
+    has_sub_genres = {
+        genre.slug: BookGenre.objects.filter(parent=genre).exists() for genre in genres
+    }
+    types = BookType.objects.all()
+    has_sub_types = {
+        type.slug: BookType.objects.filter(parent=type).exists() for type in types
+    }
+    locations = BookLocation.objects.all()
+    formats = BookFormat.objects.all()
+    type_filters = {
+        type.slug: books.filter(type__slug=type.slug).exists() for type in types
+    }
+    location_filters = {
+        location.slug: books.filter(location__slug=location.slug).exists()
+        for location in locations
+    }
+    format_filters = {
+        format.slug: books.filter(format__slug=format.slug).exists()
+        for format in formats
+    }
+    genre_filters = {
+        genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
+    }
+
+    # Get filter counts before applying filters
+    filter_counts = {
+        "type": get_filter_counts(books, types, "type"),
+        "genre": get_filter_counts(books, genres, "genre"),
+        "location": {
+            location.slug: books.filter(location__slug=location.slug).count()
+            for location in locations
+        },
+        "format": {
+            format.slug: books.filter(format__slug=format.slug).count()
+            for format in formats
+        },
+    }
+
     # Get filter parameters from request
     filter_queries = {
         "type": request.GET.get("type", "all"),
@@ -122,51 +162,11 @@ def status(request, status):
             .annotate(count=models.Count("readings__end_date__year"))
         )
 
-    genres = BookGenre.objects.all()
-    has_sub_genres = {
-        genre.slug: BookGenre.objects.filter(parent=genre).exists() for genre in genres
-    }
-
-    # Determine which filter options have matching books
-    types = BookType.objects.all()
-    has_sub_types = {
-        type.slug: BookType.objects.filter(parent=type).exists() for type in types
-    }
-    locations = BookLocation.objects.all()
-    formats = BookFormat.objects.all()
-    type_filters = {
-        type.slug: books.filter(type__slug=type.slug).exists() for type in types
-    }
-    location_filters = {
-        location.slug: books.filter(location__slug=location.slug).exists()
-        for location in locations
-    }
-    format_filters = {
-        format.slug: books.filter(format__slug=format.slug).exists()
-        for format in formats
-    }
-    genre_filters = {
-        genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
-    }
-
     status_counts = {
         status["status"]: status["count"]
         for status in Book.objects.filter(archived=False)
         .values("status")
         .annotate(count=models.Count("status"))
-    }
-
-    filter_counts = {
-        "type": get_filter_counts(books, types, "type"),
-        "genre": get_filter_counts(books, genres, "genre"),
-        "location": {
-            location.slug: books.filter(location__slug=location.slug).count()
-            for location in locations
-        },
-        "format": {
-            format.slug: books.filter(format__slug=format.slug).count()
-            for format in formats
-        },
     }
 
     context = {

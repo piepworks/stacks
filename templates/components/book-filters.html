@@ -21,7 +21,7 @@
         {% endif %}
         {% if filter_counts.type.visual|get_item:'count' > 0 %}
           <div>
-            <label>
+            <label class="parent">
               <input type="radio" name="type" value="visual" {% if filter_queries.type == 'visual' %}checked{% endif %}>
               Visual
               ({{ filter_counts.type.visual|get_item:'count' }})
@@ -66,7 +66,7 @@
           {% if not genre.parent %}
             {% if filter_counts.genre|get_item:genre.slug|get_item:'count' > 0 %}
               <div>
-                <label>
+                <label class="parent">
                   <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == filter_queries.genre %}checked{% endif %}>
                   {{ genre.name }}
                   ({{ filter_counts.genre|get_item:genre.slug|get_item:'count' }})
