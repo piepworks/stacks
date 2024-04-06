@@ -14,30 +14,30 @@
           <label>
             <input type="radio" name="type" value="textual" {% if filter_queries.type == 'textual' %}checked{% endif %}>
             Textual
-            (<span>{{ filter_counts.type.textual|get_item:'count' }}</span>)
+            ({{ filter_counts.type.textual|get_item:'count' }})
           </label>
         </div>
         <div>
           <label>
             <input type="radio" name="type" value="visual" {% if filter_queries.type == 'visual' %}checked{% endif %}>
             Visual
-            (<span>{{ filter_counts.type.visual|get_item:'count' }}</span>)
+            ({{ filter_counts.type.visual|get_item:'count' }})
           </label>
           <div class="sub-filters">
             <label>
               <input type="radio" name="type" value="comic" {% if filter_queries.type == 'comic' %}checked{% endif %}>
               Comics
-              (<span>{{ filter_counts.type.visual|get_item:'sub_items'|get_item:'comic' }}</span>)
+              ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'comic' }})
             </label>
             <label>
               <input type="radio" name="type" value="photo" {% if filter_queries.type == 'photo' %}checked{% endif %}>
               Photo Books
-              (<span>{{ filter_counts.type.visual|get_item:'sub_items'|get_item:'photo' }}</span>)
+              ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'photo' }})
             </label>
             <label>
               <input type="radio" name="type" value="picture" {% if filter_queries.type == 'picture' %}checked{% endif %}>
               Picture Books
-              (<span>{{ filter_counts.type.visual|get_item:'sub_items'|get_item:'picture' }}</span>)
+              ({{ filter_counts.type.visual|get_item:'sub_items'|get_item:'picture' }})
             </label>
           </div>
         </div>
@@ -58,7 +58,7 @@
               <label>
                 <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == filter_queries.genre %}checked{% endif %}>
                 {{ genre.name }}
-                (<span>{{ filter_counts.genre|get_item:genre.slug|get_item:'count' }}</span>)
+                ({{ filter_counts.genre|get_item:genre.slug|get_item:'count' }})
               </label>
               {% if has_sub_genres|get_item:genre.slug %}
                 <div class="sub-filters">
@@ -67,7 +67,7 @@
                       <label>
                         <input type="radio" name="genre" value="{{ sub_genre.slug }}" {% if sub_genre.slug == filter_queries.genre %}checked{% endif %}>
                         {{ sub_genre.name }}
-                        (<span>{{ filter_counts.genre|get_item:genre.slug|get_item:'sub_items'|get_item:sub_genre.slug }}</span>)
+                        ({{ filter_counts.genre|get_item:genre.slug|get_item:'sub_items'|get_item:sub_genre.slug }})
                       </label>
                     {% endif %}
                   {% endfor %}
@@ -93,7 +93,7 @@
               <label>
                 <input type="radio" name="format" value="{{ format.slug }}" {% if format.slug == filter_queries.format %}checked{% endif %}>
                 {{ format.name }}
-                (<span>{{ filter_counts.format|get_item:format.slug }}</span>)
+                ({{ filter_counts.format|get_item:format.slug }})
               </label>
             </div>
           {% endfor %}
@@ -113,7 +113,7 @@
               <label>
                 <input type="radio" name="location" value="{{ location.slug }}" {% if location.slug in filter_queries.location %}checked{% endif %}>
                 {{ location.name }}
-                (<span>{{ filter_counts.location|get_item:location.slug }}</span>)
+                ({{ filter_counts.location|get_item:location.slug }})
               </label>
             </div>
           {% endfor %}
