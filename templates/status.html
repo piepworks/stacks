@@ -29,6 +29,8 @@
       </div>
     </header>
 
+    {% include "components/add-book-modal.html" %}
+
     {% if finished_counts %}
       <dl class="finished-counts">
         {% for count in finished_counts reversed %}
@@ -124,7 +126,7 @@
     </div>
     {% endif %}
   </div>
-  {% include "components/add-book-modal.html" %}
+
   <hr>
 
   {% include "components/search-form.html" %}
