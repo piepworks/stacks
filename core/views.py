@@ -193,6 +193,7 @@ def status(request, status):
         "filter_active": status_counts[status] != books.count(),
         "filter_request": any(value != "all" for value in filter_queries.values()),
         "filter_counts": filter_counts,
+        "filtered_books_count": books.count(),
     }
 
     return render(request, "status.html", context)

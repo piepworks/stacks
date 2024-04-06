@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load get_next_status get_previous_status %}
+{% load get_next_status get_previous_status get_item %}
 
 {% block body_tag %}
   class="status"
@@ -22,7 +22,7 @@
       </div>
       <div id="ajax-filter-toggle" class="filter-toggle">
         {% if filter_request %}
-          <p><a href="{{ request.path }}">Reset filters</a></p>
+          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a href="{{ request.path }}">Reset filters</a></p>
         {% endif %}
         <button class="svg no-filter" disabled x-ignore>Show filters</button>
         <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
@@ -139,7 +139,7 @@
     Alpine.data('bookList', () => ({
       openStatusModal: null,
       openNewBookModal: false,
-      openFilters: true,
+      openFilters: false,
       init() {
         document.documentElement.classList.add('alpine');
       }
