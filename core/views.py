@@ -190,7 +190,7 @@ def status(request, status):
         "format_filters": format_filters,
         "genre_filters": genre_filters,
         "filter_queries": filter_queries,
-        "filter_active": status_counts[status] != books.count(),
+        "filter_active": status_counts.get(status, 0) != books.count(),
         "filter_request": any(value != "all" for value in filter_queries.values()),
         "filter_counts": filter_counts,
         "filtered_books_count": books.count(),
