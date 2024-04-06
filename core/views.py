@@ -14,6 +14,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
+from django.db.models import Q
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -69,10 +70,29 @@ def status(request, status):
     }
 
     # Apply filters to the books queryset
-    if filter_queries["format"] != "all":
-        books = books.filter(type__slug=filter_queries["format"])
-    if filter_queries["genre"] != "all":
-        books = books.filter(genre__slug=filter_queries["genre"])
+    try:
+        if filter_queries["type"] != "all":
+            # Get the type
+            type = BookType.objects.get(slug=filter_queries["type"])
+            print(type)
+
+            # If the type is a parent, also check for child types within this type
+            if not type.parent:
+                child_types = BookType.objects.filter(parent=type)
+                books = books.filter(Q(type=type) | Q(type__in=child_types))
+            else:
+                books = books.filter(type=type)
+        if filter_queries["genre"] != "all":
+            # Get the genre
+            genre = BookGenre.objects.get(slug=filter_queries["genre"])
+            # If the genre has a parent, also check for sub-genres within this genre
+            if not genre.parent:
+                child_genres = BookGenre.objects.filter(parent=genre)
+                books = books.filter(Q(genre=genre) | Q(genre__in=child_genres))
+            else:
+                books = books.filter(genre=genre)
+    except (BookType.DoesNotExist, BookGenre.DoesNotExist):
+        raise Http404()
     if filter_queries["location"] != "all":
         books = books.filter(location__slug=filter_queries["location"])
     if filter_queries["format"] != "all":
@@ -131,6 +151,47 @@ def status(request, status):
 
     status_counts = {status["status"]: status["count"] for status in status_counts}
 
+    # Create a dictionary for the child types
+    child_type_counts = {
+        type.slug: books.filter(type__slug=type.slug).count()
+        for type in types
+        if type.parent is not None
+    }
+
+    # Create a dictionary for the parent types
+    parent_type_counts = {
+        parent_type.slug: {
+            "count": books.filter(type__slug=parent_type.slug).count()
+            + sum(
+                child_type_counts[child_type.slug]
+                for child_type in types
+                if child_type.parent == parent_type
+            ),
+            "sub_types": {
+                child_type.slug: child_type_counts[child_type.slug]
+                for child_type in types
+                if child_type.parent == parent_type
+            },
+        }
+        for parent_type in types
+        if parent_type.parent is None
+    }
+
+    filter_counts = {
+        "type": parent_type_counts,
+        "location": {
+            location.slug: books.filter(location__slug=location.slug).count()
+            for location in locations
+        },
+        "format": {
+            format.slug: books.filter(format__slug=format.slug).count()
+            for format in formats
+        },
+        "genre": {
+            genre.slug: books.filter(genre__slug=genre.slug).count() for genre in genres
+        },
+    }
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
         "status_counts": status_counts,
@@ -154,6 +215,7 @@ def status(request, status):
         "filter_queries": filter_queries,
         "filter_active": status_counts[status] != books.count(),
         "filter_request": any(value != "all" for value in filter_queries.values()),
+        "filter_counts": filter_counts,
     }
 
     return render(request, "status.html", context)
