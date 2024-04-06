@@ -233,13 +233,11 @@
         </form>
         {% else %}
         <button disabled>Next</button>
-        {% endif %}
-      </div>
-
-      {% include "components/add-book-modal.html" %}
+      {% endif %}
+    </div>
     {% endif %}
   </div>
-
+  {% include "components/add-book-modal.html" %}
   <hr>
 
   {% include "components/search-form.html" %}
