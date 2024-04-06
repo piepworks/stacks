@@ -54,7 +54,6 @@ def status(request, status):
     if status not in dict(Book._meta.get_field("status").choices):
         raise Http404()
 
-    status_counts = Book.objects.values("status").annotate(count=models.Count("status"))
     books = (
         Book.objects.filter(status=status)
         .filter(archived=False)
@@ -150,7 +149,12 @@ def status(request, status):
         genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
     }
 
-    status_counts = {status["status"]: status["count"] for status in status_counts}
+    status_counts = {
+        status["status"]: status["count"]
+        for status in Book.objects.filter(archived=False)
+        .values("status")
+        .annotate(count=models.Count("status"))
+    }
 
     filter_counts = {
         "type": get_filter_counts(books, types, "type"),
