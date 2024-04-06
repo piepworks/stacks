@@ -189,7 +189,7 @@
             {% else %}
               <span class="empty left"></span>
             {% endif %}
-            <button disabled class="svg adjust-status">
+            <button class="svg adjust-status" @click="openStatusModal = {{ book.id }}">
               Adjust status
             </button>
             {% if book.status|get_next_status != None %}
@@ -204,6 +204,7 @@
                 <span class="empty right"></span>
             {% endif %}
           </div>
+          {% include "components/status-modal.html" %}
         </li>
       {% endfor %}
     </ul>

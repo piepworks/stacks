@@ -1,12 +1,12 @@
-<dialog x-show="openStatusModal === book.id" x-htmldialog="openStatusModal = null" x-transition>
+<dialog x-show="openStatusModal === {{ book.id }}" x-htmldialog="openStatusModal = null" x-transition>
   <article @click.outside="openStatusModal = null">
     <header>
       <button aria-label="Close" rel="prev" @click="openStatusModal = null"></button>
       <p>
-        <b>Adjust status for <i x-text="book.title"></i></b>
+        <b>Adjust status for {{ book.title }}</b>
       </p>
     </header>
-    <form method="post" :action="book.update_url">
+    <form method="post" action="{% url 'book_update' book.slug %}">
       {% csrf_token %}
       <input type="hidden" name="status_change" value="true">
       <fieldset>
@@ -16,17 +16,17 @@
               <input type="radio"
                      name="status"
                      value="{{ status.0 }}"
-                     :checked="book.status === '{{ status.0 }}'">
+                     {% if book.status == status.0 %}checked{% endif %}>
               {{ status.1 }}
             </label>
           {% endfor %}
         </div>
-        <div x-show="false" x-html="book.form"></div>
+        {{ form }}
       </fieldset>
       <button type="submit">Save</button>
     </form>
 
-    <form :action="book.archive_url" method="post" @submit="confirm('Are you sure?')">
+    <form action="{% url 'book_archive' book.slug %}" method="post" @submit.prevent="if (confirm('Are you sure?')) { $el.submit() }">
       {% csrf_token %}
       <button class="secondary">Archive</button>
     </form>
