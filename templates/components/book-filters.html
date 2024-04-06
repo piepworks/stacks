@@ -65,7 +65,8 @@
         {% for genre in genres %}
           {% if not genre.parent %}
             {% if filter_counts.genre|get_item:genre.slug|get_item:'count' > 0 %}
-              <div{% if genre|filter_matches_any:filter_queries %} class="selected"{% endif %}>
+              {% filter_matches_any genre "genre" filter_queries as is_selected %}
+              <div{% if is_selected %} class="selected"{% endif %}>
                 <label class="parent">
                   <input type="radio" name="genre" value="{{ genre.slug }}" {% if genre.slug == filter_queries.genre %}checked{% endif %}>
                   {{ genre.name }}
