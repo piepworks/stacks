@@ -138,7 +138,7 @@ def status(request, status):
     if filter_queries["format"] != "all":
         books = books.filter(format__slug=filter_queries["format"])
 
-    paginator = Paginator(books, 20)
+    paginator = Paginator(books, 50)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
