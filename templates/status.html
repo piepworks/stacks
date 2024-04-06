@@ -42,7 +42,7 @@
       </dl>
     {% endif %}
 
-    <form x-show="openFilters" id="ajax-filters-form" x-init x-target.replace="ajax-filter-toggle ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" method="get" action="{% url 'status' status.slug %}" @change="$el.requestSubmit()">
+    <form x-show="openFilters" id="ajax-filters-form" x-init x-target.replace="ajax-filter-toggle ajax-filter-toggle ajax-filters-form ajax-books ajax-filters ajax-pagination" method="get" action="{% url 'status' status.slug %}" @change="$el.requestSubmit()" x-transition>
       <dl id="ajax-filters" class="filters">
         <div>
           <dt>Types</dt>
