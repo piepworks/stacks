@@ -106,19 +106,31 @@
       <h2>Readings</h2>
       <a class="svg add-item" href="{% url 'reading_new' book.slug %}">Start a new reading</a>
     </header>
-    {# TODO: probably put this on another page #}
-    {% comment %}
-    <form method="post">
-      {{ reading_form }}
-      <button type="submit">Save</button>
-    </form>
-    {% endcomment %}
     {% if readings %}
-      <ul>
-        {% for reading in readings %}
-          <li><a href="{% url 'reading_update' book.slug reading.id %}">Started on {{ reading.start_date|date:"F j, Y" }}</a></li>
-        {% endfor %}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Finished</th>
+            <th>Rating</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reading in readings %}
+            <tr>
+              <td>{{ reading.start_date|date:"F j, Y" }}</td>
+              <td>{{ reading.end_date|date:"F j, Y"|default:'None' }}</td>
+              <td>{{ reading.finished|yesno:"Yes,No" }}</td>
+              <td>{{ reading.rating }}</td>
+              <td><a href="{% url 'reading_update' book.slug reading.id %}">Edit</a></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No readings yet</p>
     {% endif %}
   </section>
 
