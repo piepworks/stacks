@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 import bleach
 import markdown
@@ -142,8 +143,6 @@ def status(request, status):
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
-    forms = [(book, BookStatusForm(instance=book)) for book in page_obj]
-
     # If status is `finished`, get counts of how many (unique?) Books have
     # associated BookReadings that have end dates in each year and are also
     # marked finished
@@ -161,6 +160,24 @@ def status(request, status):
             .values("readings__end_date__year")
             .annotate(count=models.Count("readings__end_date__year"))
         )
+
+        # Sort finished books by the most recent reading's end date if it exists.
+        # All books in this status should have at least one reading with an end date,
+        # but I don't want to require that for dumping things into this status.
+        page_obj = sorted(
+            page_obj,
+            key=lambda book: (
+                book.readings.filter(finished=True).latest("end_date").end_date
+                if book.readings.filter(finished=True).exists()
+                and book.readings.filter(finished=True).latest("end_date").end_date
+                is not None
+                else datetime.min.date()
+            ),
+            reverse=True,
+        )
+
+    # Get the books and their forms for the page
+    forms = [(book, BookStatusForm(instance=book)) for book in page_obj]
 
     status_counts = {
         status["status"]: status["count"]
