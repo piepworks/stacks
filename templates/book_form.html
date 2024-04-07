@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}
     {% if action == 'new' %}
@@ -7,6 +8,11 @@
     Editing {{ book }}
     {% endif %}
 {% endblock title %}
+
+{% block head_src %}
+  <link href="{% static 'css/vendor/tom-select.css' %}" rel="stylesheet">
+  <script src="{% static 'js/vendor/tom-select.complete.min.js' %}"></script>
+{% endblock head_src %}
 
 {% block body_tag %}class="form-page"{% endblock body_tag %}
 

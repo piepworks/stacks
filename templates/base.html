@@ -13,15 +13,10 @@
     <meta name="theme-color" content="#ffffff">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-
-    {# TODO: include Tom Select only where needed #}
-    <link href="{% static 'css/vendor/tom-select.css' %}" rel="stylesheet">
-    <script src="{% static 'js/vendor/tom-select.complete.min.js' %}"></script>
-
-    {# <script defer src="{% static 'js/vendor/alpine-morph-3.13.8.min.js' %}"></script> #}
     <script defer src="{% static 'js/vendor/alpine-ajax-0.5.0.min.js' %}"></script>
     <script defer src="{% static 'js/vendor/alpinejs-dialog-2.0.1.min.js' %}"></script>
     <script defer src="{% static 'js/vendor/alpinejs-3.13.8.min.js' %}"></script>
+    {% block head_src %}{% endblock head_src %}
   </head>
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
