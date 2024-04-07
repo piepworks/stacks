@@ -101,11 +101,13 @@
 
   <hr>
 
-  <section>
-    <header class="actions-inline">
+  <header class="actions-inline">
+    <div>
       <h2>Readings</h2>
       <a class="svg add-item" href="{% url 'reading_new' book.slug %}">Start a new reading</a>
-    </header>
+    </div>
+  </header>
+  <section class="overflow-auto">
     {% if readings %}
       <table>
         <thead>
