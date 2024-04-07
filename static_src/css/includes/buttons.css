@@ -69,6 +69,15 @@ button.svg {
     }
   }
 
+  &.delete,
+  &.archive {
+    background-color: rgba(255 99 71 / 0.75);
+
+    &:hover {
+      background-color: tomato;
+    }
+  }
+
   &.edit {
     /* https://remixicon.com/icon/pencil-line */
     mask: 0 0
@@ -77,15 +86,10 @@ button.svg {
   }
 
   &.delete {
-    background-color: rgba(255 99 71 / 0.75);
     /* https://remixicon.com/icon/delete-bin-6-line */
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M7 4V2H17V4H22V6H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V6H2V4H7ZM6 6V20H18V6H6ZM9 9H11V17H9V9ZM13 9H15V17H13V9Z'%3E%3C/path%3E%3C/svg%3E")
       no-repeat;
-
-    &:hover {
-      background-color: tomato;
-    }
   }
 
   &.previous-status {
@@ -137,6 +141,13 @@ button.svg {
     /* https://remixicon.com/icon/filter-off-line */
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M6.92893 0.514648L21.0711 14.6568L19.6569 16.071L15.834 12.2486L15 13.4999V21.9999H9V13.4999L4 5.99993H3V3.99993L7.585 3.99965L5.51472 1.92886L6.92893 0.514648ZM9.585 5.99965L6.4037 5.99993L11 12.8944V19.9999H13V12.8944L14.392 10.8066L9.585 5.99965ZM21 3.99993V5.99993H20L18.085 8.87193L16.643 7.42893L17.5963 5.99993H15.213L13.213 3.99993H21Z'%3E%3C/path%3E%3C/svg%3E")
+      no-repeat;
+  }
+
+  &.archive {
+    /* https://remixicon.com/icon/archive-stack-line */
+    mask: 0 0
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M4 5H20V3H4V5ZM20 9H4V7H20V9ZM3 11H10V13H14V11H21V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V11ZM16 13V15H8V13H5V19H19V13H16Z'%3E%3C/path%3E%3C/svg%3E")
       no-repeat;
   }
 }
