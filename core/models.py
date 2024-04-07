@@ -243,6 +243,12 @@ class BookReading(models.Model):
     def __str__(self):
         return f"Reading of {self.book} / Starting on {self.start_date}"
 
+    @property
+    def duration(self):
+        if self.end_date:
+            return (self.end_date - self.start_date).days
+        return None
+
 
 class BookNote(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="notes")

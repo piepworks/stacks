@@ -358,3 +358,7 @@ hr {
     margin: 0;
   }
 }
+
+small {
+  opacity: 0.5;
+}

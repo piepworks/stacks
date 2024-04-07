@@ -11,10 +11,6 @@ nav ol {
     border-radius: 0;
     border-bottom: 2px solid transparent;
     white-space: nowrap;
-
-    small {
-      opacity: 0.5;
-    }
   }
 
   .active a,

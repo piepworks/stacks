@@ -3,10 +3,6 @@
   flex-direction: column;
   margin-bottom: 2rem;
 
-  small {
-    opacity: 0.5;
-  }
-
   dt {
     display: inline-block;
     background: rgb(0 0 0 / 30%);
