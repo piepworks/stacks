@@ -85,7 +85,7 @@ class BookCoverForm(forms.ModelForm):
 
 
 class BookNoteForm(forms.ModelForm):
-    text = forms.CharField(widget=forms.Textarea(attrs={"rows": 3}))
+    text = forms.CharField(widget=forms.Textarea(attrs={"rows": 3, "x-model": "note"}))
 
     class Meta:
         model = BookNote
