@@ -169,6 +169,10 @@ main header:not(dialog header) {
     padding: 0.25rem 1rem;
   }
 
+  .svg {
+    padding: 1rem;
+  }
+
   .inner {
     display: flex;
     gap: 0.5rem;
@@ -323,6 +327,10 @@ fieldset > .radio {
 
   table td {
     white-space: nowrap;
+
+    a.svg {
+      display: flex;
+    }
   }
 }
 
