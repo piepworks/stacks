@@ -4,6 +4,7 @@
 @import url('includes/buttons.css');
 @import url('includes/notes.css');
 @import url('includes/filters.css');
+@import url('includes/stars.css');
 
 .ol-results main,
 .search main,
