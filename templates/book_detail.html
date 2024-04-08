@@ -125,13 +125,17 @@
               <td>{{ reading.start_date|date:"F j, Y" }}</td>
               <td>{{ reading.end_date|date:"F j, Y"|default:'None' }}{% if reading.duration %} <small>({{ reading.duration }} days)</small>{% endif %}</td>
               <td>{{ reading.finished|yesno:"Yes,No" }}</td>
-              <td class="rating">
-                {% for _ in reading.rating|times %}
-                  <div class="star filled"></div>
-                {% endfor %}
-                {% for _ in reading.rating|remaining_stars|times %}
-                  <div class="star"></div>
-                {% endfor %}
+              <td>
+                {% if reading.rating %}
+                  <div class="rating">
+                    {% for _ in reading.rating|times %}
+                      <div class="star filled"></div>
+                    {% endfor %}
+                    {% for _ in reading.rating|remaining_stars|times %}
+                      <div class="star"></div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
               </td>
               <td><a class="svg edit" href="{% url 'reading_update' book.slug reading.id %}">Edit</a></td>
             </tr>
