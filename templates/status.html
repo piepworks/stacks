@@ -32,7 +32,7 @@
     {% include "components/add-book-modal.html" %}
 
     {% if finished_counts %}
-      <dl class="finished-counts">
+      <dl class="finished-counts overflow-auto">
         {% for count in finished_counts reversed %}
           <div>
             <dt>{{ count.readings__end_date__year }}</dt>
