@@ -1,5 +1,6 @@
 import os
 import requests
+import datetime
 import pillow_avif  # noqa: F401 (ignore "unused import" error)
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
@@ -170,10 +171,45 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-    # Create a slug based on the title field if none is provided
     def save(self, *args, **kwargs):
+        # Create a slug based on the title field if none is provided
         if not self.slug:
             self.slug = slugify(self.title)
+
+        if self.pk:
+            old_status = Book.objects.get(pk=self.pk).status
+            new_status = self.status
+
+            if old_status != new_status:
+                # Add a BookReading with the current date as a start date
+                if new_status == "reading":
+                    BookReading.objects.create(
+                        book=self, start_date=datetime.date.today()
+                    )
+
+                # Add the current date as an `end_date` to the most recent BookReading (if any) and mark it `finished`
+                elif new_status == "finished":
+                    reading = (
+                        BookReading.objects.filter(book=self, end_date=None)
+                        .order_by("-start_date")
+                        .first()
+                    )
+                    if reading:
+                        reading.end_date = datetime.date.today()
+                        reading.finished = True
+                        reading.save()
+
+                # Add an `end_date` to the latest BookReading (if any) but don't mark it `finished`
+                elif new_status == "dnf":
+                    reading = (
+                        BookReading.objects.filter(book=self, end_date=None)
+                        .order_by("-start_date")
+                        .first()
+                    )
+                    if reading:
+                        reading.end_date = datetime.date.today()
+                        reading.save()
+
         super().save(*args, **kwargs)
 
     @property
