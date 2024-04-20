@@ -381,6 +381,7 @@ hr {
   }
 }
 
-small {
+a small,
+td small {
   opacity: 0.5;
 }

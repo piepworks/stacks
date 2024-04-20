@@ -17,6 +17,7 @@ from environs import Env
 import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 from warnings import filterwarnings
+from django.forms.renderers import DjangoTemplates
 
 env = Env()
 # Read .env into os.environ
@@ -96,12 +97,17 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "config.urls"
 
+
+class CustomFormTemplates(DjangoTemplates):
+    field_template_name = "forms/field.html"
+
+
+FORM_RENDERER = "config.settings.CustomFormTemplates"
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            str(BASE_DIR.joinpath("templates")),
-        ],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
