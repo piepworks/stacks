@@ -11,9 +11,9 @@
 {% block content %}
   <h1>
     {% if action == 'new' %}
-      Add a cover to {{ book }}
+      Add a cover to <a href="{{ book.get_absolute_url }}">{{ book }}</a>
     {% else %}
-      Edit cover for {{ book }}
+      Edit cover for <a href="{{ book.get_absolute_url }}">{{ book }}</a>
     {% endif %}
   </h1>
 
