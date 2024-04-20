@@ -89,6 +89,18 @@ class BookAdmin(admin.ModelAdmin):
     authors_list.short_description = "Authors"
 
 
+class BookCoverAdmin(admin.ModelAdmin):
+    list_display = ("book", "image_tag", "updated_at")
+    readonly_fields = ("image_tag",)
+
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html(f'<img src="{obj.image.url}" width="150" />')
+        return "-"
+
+    image_tag.short_description = "Cover"
+
+
 class BookTypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug", "parent")
@@ -135,7 +147,7 @@ admin.site.unregister(Group)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(BookFormat, BookFormatAdmin)
-admin.site.register(BookCover)
+admin.site.register(BookCover, BookCoverAdmin)
 admin.site.register(BookReading)
 admin.site.register(BookNote)
 admin.site.register(BookType, BookTypeAdmin)
