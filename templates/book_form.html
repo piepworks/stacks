@@ -62,8 +62,21 @@
 
 {% block page_js %}
 <script>
-  new TomSelect('#id_format', {});
-  new TomSelect('#id_location', {});
+  new TomSelect('#id_format', {
+    plugins: {
+      remove_button:{
+        title:'Remove this item',
+      }
+    },
+  });
+
+  new TomSelect('#id_location', {
+    plugins: {
+      remove_button:{
+        title:'Remove this item',
+      }
+    },
+  });
 
   new TomSelect('#id_author', {
     create: function(input, callback) {
@@ -103,6 +116,11 @@
         });
     },
     createOnBlur: true,
+    plugins: {
+      remove_button:{
+        title:'Remove this item',
+      }
+    },
   });
 </script>
 {% endblock page_js %}
