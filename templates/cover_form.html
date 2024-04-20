@@ -19,7 +19,13 @@
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form }}
+    {% for field in form %}
+      <div>
+        <label>
+          {{ field.as_field_group }}
+        </label>
+      </div>
+    {% endfor %}
     <input type="submit" value="Save">
   </form>
 {% endblock content %}
