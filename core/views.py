@@ -289,7 +289,9 @@ def book_detail(request, slug):
 
     # Apply Markdown formatting and convert URLs in notes to clickable links
     for note in notes:
-        note.text_html = bleach.linkify(markdown.markdown(note.text))
+        note.text_html = bleach.linkify(
+            markdown.markdown(note.text, extensions=["fenced_code", "smarty"])
+        )
 
     return render(
         request,
