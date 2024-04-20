@@ -15,7 +15,7 @@
     <form action="{% url 'book_delete' book.slug %}" method="post">
       {% csrf_token %}
       <div class="inner">
-        <a class="svg search" href="https://trey-books.netlify.app?q={{ book }} {{ book.author.first }}" title="Search trey-books">Search</a>
+        <a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a>
         <a class="svg edit" href="{% url 'book_update' book.slug %}">Edit</a>
         <button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button>
       </div>
