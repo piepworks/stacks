@@ -2,10 +2,6 @@ from django.http import HttpResponsePermanentRedirect
 
 
 class FlyDomainRedirectMiddleware:
-    # This is to catch visits from the “Starter” domain created by Fly.io
-    # that is apparently impossible to remove. And I get an email every time
-    # some sketchy bot tries to visit it. Let’s just tell them to stop.
-    #
     # Adapted from:
     # https://adamj.eu/tech/2020/03/02/how-to-make-django-redirect-www-to-your-bare-domain/
 
