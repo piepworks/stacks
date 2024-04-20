@@ -3,7 +3,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic.base import TemplateView
-from config.settings import ALLOWED_HOSTS
 from core import views
 
 admin.site.site_header = "Stacks Admin"
@@ -72,11 +71,7 @@ urlpatterns = [
     # -----------
     path("favicon.ico", views.favicon),
     path("accounts/", include("django.contrib.auth.urls")),
-    path(
-        settings.ADMIN_URL,
-        admin.site.urls,
-        {"extra_context": {"ALLOWED_HOST": ALLOWED_HOSTS[0]}},
-    ),
+    path(settings.ADMIN_URL, admin.site.urls),
 ]
 
 if settings.DEBUG:

@@ -10,6 +10,7 @@ from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.utils.text import slugify
+from django.urls import reverse
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
@@ -71,6 +72,9 @@ class Author(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("author_detail", args=(self.slug,))
 
 
 class BookFormat(models.Model):
@@ -211,6 +215,9 @@ class Book(models.Model):
                         reading.save()
 
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("book_detail", args=(self.slug,))
 
     @property
     def status_display(self):
