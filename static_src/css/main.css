@@ -61,7 +61,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      opacity: 0;
+      transition: opacity var(--pico-transition);
+
+      @media (min-width: 1024px) {
+        opacity: 0;
+      }
 
       form {
         display: flex;
