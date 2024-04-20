@@ -79,7 +79,10 @@ class BookCoverForm(forms.ModelForm):
 
         if not image and url:
             self.instance.book = self.book
-            self.instance.save_cover_from_url(url)
+            success = self.instance.save_cover_from_url(url)
+
+            if not success:
+                self.add_error("url", "Failed to save cover from URL")
 
         return cleaned_data
 

@@ -254,7 +254,10 @@ class BookCover(models.Model):
 
     def save_cover_from_url(self, url):
         if url != "":
-            r = requests.get(url)
+            try:
+                r = requests.get(url, headers={"User-Agent": "Stacks"})
+            except requests.exceptions.RequestException:
+                return False
 
             if r.status_code == 200:
                 img_tmp = NamedTemporaryFile(delete=True)
@@ -262,6 +265,7 @@ class BookCover(models.Model):
                 img_tmp.flush()
 
                 self.image.save(os.path.basename(url), File(img_tmp), save=True)
+                return True
             else:
                 return False
         else:
