@@ -27,10 +27,10 @@
       {% for cover in book.covers.all %}
         <div>
           <a href="{{ cover.image.url }}" target="_blank">
-            <img width="300"
-                height="auto"
-                alt="{{ cover }}"
-                src="{{ cover.image.url }}">
+            <img src="{{ cover.image.url }}"
+                width="{{ cover.image.width }}"
+                height="{{ cover.image.height }}"
+                alt="{{ cover }}">
           </a>
           <div class="actions">
             <a href="{% url 'cover_update' book.slug cover.id %}" class="svg edit">Edit</a>

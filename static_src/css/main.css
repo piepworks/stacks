@@ -333,6 +333,10 @@ fieldset > .radio {
       gap: 2rem;
       margin: 0 0 2rem;
     }
+
+    img {
+      max-width: 300px;
+    }
   }
 
   table td {

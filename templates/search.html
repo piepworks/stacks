@@ -18,8 +18,8 @@
             {% with book.covers.all|first as cover %}
               <img src="{{ cover.thumbnail.url }}"
                   alt="{{ cover }}"
-                  width="150"
-                  height="auto"
+                  width="{{ cover.thumbnail.width }}"
+                  height="{{ cover.thumbnail.height }}"
                   title="{{ book }}">
             {% endwith %}
           {% else %}
