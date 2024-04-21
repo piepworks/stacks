@@ -1,10 +1,5 @@
-# fly.toml app configuration file generated for tp-stacks on 2024-03-04T07:45:27-05:00
-#
-# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
-#
-
 app = 'tp-stacks'
-primary_region = 'ewr'
+primary_region = "yyz"
 console_command = '/code/manage.py shell'
 
 [build]
