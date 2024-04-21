@@ -17,6 +17,7 @@ flake8
 gunicorn
 ipython
 markdown
+model-bakery
 pillow
 pillow-avif-plugin
 pip-lock

@@ -63,6 +63,7 @@ django==5.0.4
     #   django-extensions
     #   django-htmx
     #   django-storages
+    #   model-bakery
 django-appconf==1.0.6
     # via django-imagekit
 django-bleach==3.1.0
@@ -131,6 +132,8 @@ matplotlib-inline==0.1.6
     # via ipython
 mccabe==0.7.0
     # via flake8
+model-bakery==1.17.0
+    # via -r requirements/requirements.in
 mypy-extensions==1.0.0
     # via black
 nodeenv==1.8.0

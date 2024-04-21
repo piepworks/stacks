@@ -1,4 +1,7 @@
 import pytest
+import datetime
+from model_bakery import baker
+from core.models import Book, BookFormat, BookLocation, BookReading
 
 
 @pytest.fixture
@@ -43,3 +46,77 @@ def test_superuser_not_staff(create_superuser):
 def test_superuser_not_superuser(create_superuser):
     with pytest.raises(ValueError):
         create_superuser("superuser@example.com", "", is_superuser=False)
+
+
+@pytest.mark.django_db
+def test_book_creation_without_genre():
+    book = baker.make(Book)
+    assert book.genre is None
+
+
+@pytest.mark.django_db
+def test_book_creation_with_multiple_formats():
+    format1 = baker.make(BookFormat)
+    format2 = baker.make(BookFormat)
+    book = baker.make(Book)
+    book.format.set([format1, format2])
+    assert book.format.count() == 2
+
+
+@pytest.mark.django_db
+def test_book_creation_with_multiple_locations():
+    location1 = baker.make(BookLocation)
+    location2 = baker.make(BookLocation)
+    book = baker.make(Book)
+    book.location.set([location1, location2])
+    assert book.location.count() == 2
+
+
+@pytest.mark.django_db
+def test_book_is_not_archived_by_default():
+    book = baker.make(Book)
+    assert book.archived is False
+
+
+@pytest.mark.django_db
+def test_book_slug_creation_on_save():
+    book = baker.make(Book, title="Test Book", slug=None)
+    assert book.slug == "test-book"
+
+
+@pytest.mark.django_db
+def test_book_status_update():
+    book = baker.make(Book, status="available")
+    book.status = "unavailable"
+    book.save()
+    assert book.status == "unavailable"
+
+
+@pytest.mark.django_db
+def test_book_status_update_to_reading_creates_bookreading():
+    book = baker.make(Book, title="Test Book")
+    book.status = "reading"
+    book.save()
+    assert BookReading.objects.filter(book=book).exists()
+
+
+@pytest.mark.django_db
+def test_book_status_update_to_finished_updates_bookreading():
+    book = baker.make(Book, title="Test Book", status="reading")
+    baker.make(BookReading, book=book, start_date=datetime.date.today())
+    book.status = "finished"
+    book.save()
+    reading = BookReading.objects.get(book=book)
+    assert reading.end_date is not None
+    assert reading.finished is True
+
+
+@pytest.mark.django_db
+def test_book_status_update_to_dnf_updates_bookreading():
+    book = baker.make(Book, title="Test Book", status="reading")
+    baker.make(BookReading, book=book, start_date=datetime.date.today())
+    book.status = "dnf"
+    book.save()
+    reading = BookReading.objects.get(book=book)
+    assert reading.end_date is not None
+    assert reading.finished is False
