@@ -98,7 +98,7 @@ def test_book_status_update():
 
 @pytest.mark.django_db
 def test_book_status_update_to_reading_creates_bookreading():
-    book = baker.make(Book, title="Test Book")
+    book = baker.make(Book, title="Test Book", status="backlog")
     book.status = "reading"
     book.save()
     assert BookReading.objects.filter(book=book).exists()
