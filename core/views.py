@@ -58,7 +58,7 @@ def status(request, status):
     books = (
         Book.objects.filter(status=status, archived=False)
         .order_by("-updated_at")
-        .prefetch_related("covers", "author", "format")
+        .prefetch_related("covers", "author", "format", "genre", "location", "type")
     )
 
     # Check if genres/types have sub-genres/types
