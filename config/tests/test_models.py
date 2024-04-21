@@ -1,7 +1,11 @@
 import pytest
 import datetime
+import io
+from PIL import Image
+from unittest import mock
 from model_bakery import baker
-from core.models import Book, BookFormat, BookLocation, BookReading
+from requests.exceptions import RequestException
+from core.models import Book, BookFormat, BookLocation, BookReading, BookCover
 
 
 @pytest.fixture
@@ -120,3 +124,41 @@ def test_book_status_update_to_dnf_updates_bookreading():
     reading = BookReading.objects.get(book=book)
     assert reading.end_date is not None
     assert reading.finished is False
+
+
+@pytest.mark.django_db
+def test_save_cover_from_url_with_empty_url():
+    book_cover = baker.make(BookCover)
+    assert book_cover.save_cover_from_url("") is False
+
+
+@pytest.mark.django_db
+@mock.patch("requests.get", side_effect=RequestException)
+def test_save_cover_from_url_with_request_exception(mock_get):
+    book_cover = baker.make(BookCover)
+    assert book_cover.save_cover_from_url("http://example.com/image.jpg") is False
+
+
+@pytest.mark.django_db
+@mock.patch("requests.get", return_value=mock.Mock(status_code=404))
+def test_save_cover_from_url_with_non_200_status_code(mock_get):
+    book_cover = baker.make(BookCover)
+    assert book_cover.save_cover_from_url("http://example.com/image.jpg") is False
+
+
+@pytest.mark.django_db
+@mock.patch("requests.get")
+def test_save_cover_from_url_with_200_status_code(mock_get):
+    # Create a mock image
+    img = Image.new("RGB", (60, 30), color="red")
+    img_byte_arr = io.BytesIO()
+    img.save(img_byte_arr, format="JPEG")
+    img_byte_arr = img_byte_arr.getvalue()
+
+    # Mock the response of requests.get
+    mock_get.return_value.status_code = 200
+    mock_get.return_value.content = img_byte_arr
+
+    book_cover = baker.make(BookCover)
+    assert book_cover.save_cover_from_url("http://example.com/image.jpg") is True
+    assert book_cover.image is not None
