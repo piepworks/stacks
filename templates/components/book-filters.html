@@ -21,7 +21,7 @@
                   {{ type.name }}
                   ({{ filter_counts.type|get_item:type.slug|get_item:'count' }})
                 </label>
-                {% if has_sub_types|get_item:type.slug %}
+                {% if type.has_sub_type %}
                   <div class="sub-filters">
                     {% for sub_type in types %}
                       {% if sub_type.parent == type %}
@@ -61,7 +61,7 @@
                   {{ genre.name }}
                   ({{ filter_counts.genre|get_item:genre.slug|get_item:'count' }})
                 </label>
-                {% if has_sub_genres|get_item:genre.slug %}
+                {% if genre.has_sub_genre %}
                   <div class="sub-filters">
                     {% for sub_genre in genres %}
                       {% if sub_genre.parent == genre %}

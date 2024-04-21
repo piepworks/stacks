@@ -15,7 +15,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, OuterRef, Exists, Count
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -56,50 +56,62 @@ def status(request, status):
         raise Http404()
 
     books = (
-        Book.objects.filter(status=status)
-        .filter(archived=False)
+        Book.objects.filter(status=status, archived=False)
         .order_by("-updated_at")
         .prefetch_related("covers", "author", "format")
     )
 
+    # Check if genres/types have sub-genres/types
+    sub_genre_exists = BookGenre.objects.filter(parent=OuterRef("pk")).values("pk")
+    sub_type_exists = BookType.objects.filter(parent=OuterRef("pk")).values("pk")
+
+    genres = BookGenre.objects.all().annotate(has_sub_genre=Exists(sub_genre_exists))
+    types = BookType.objects.all().annotate(has_sub_type=Exists(sub_type_exists))
+
     # Determine which filter options have matching books
-    genres = BookGenre.objects.all()
-    has_sub_genres = {
-        genre.slug: BookGenre.objects.filter(parent=genre).exists() for genre in genres
-    }
-    types = BookType.objects.all()
-    has_sub_types = {
-        type.slug: BookType.objects.filter(parent=type).exists() for type in types
-    }
+
     locations = BookLocation.objects.all()
     formats = BookFormat.objects.all()
+
+    # Fetch all books once
+    all_books = list(
+        books.values("type__slug", "location__slug", "format__slug", "genre__slug")
+    )
+
     type_filters = {
-        type.slug: books.filter(type__slug=type.slug).exists() for type in types
+        type.slug: any(book["type__slug"] == type.slug for book in all_books)
+        for type in types
     }
     location_filters = {
-        location.slug: books.filter(location__slug=location.slug).exists()
+        location.slug: any(
+            book["location__slug"] == location.slug for book in all_books
+        )
         for location in locations
     }
     format_filters = {
-        format.slug: books.filter(format__slug=format.slug).exists()
+        format.slug: any(book["format__slug"] == format.slug for book in all_books)
         for format in formats
     }
     genre_filters = {
-        genre.slug: books.filter(genre__slug=genre.slug).exists() for genre in genres
+        genre.slug: any(book["genre__slug"] == genre.slug for book in all_books)
+        for genre in genres
     }
+
+    location_counts = BookLocation.objects.annotate(book_count=Count("books")).values(
+        "slug", "book_count"
+    )
+    format_counts = BookFormat.objects.annotate(book_count=Count("books")).values(
+        "slug", "book_count"
+    )
 
     # Get filter counts before applying filters
     filter_counts = {
         "type": get_filter_counts(books, types, "type"),
         "genre": get_filter_counts(books, genres, "genre"),
         "location": {
-            location.slug: books.filter(location__slug=location.slug).count()
-            for location in locations
+            location["slug"]: location["book_count"] for location in location_counts
         },
-        "format": {
-            format.slug: books.filter(format__slug=format.slug).count()
-            for format in formats
-        },
+        "format": {format["slug"]: format["book_count"] for format in format_counts},
     }
 
     # Get filter parameters from request
@@ -115,8 +127,6 @@ def status(request, status):
         if filter_queries["type"] != "all":
             # Get the type
             type = BookType.objects.get(slug=filter_queries["type"])
-            print(type)
-
             # If the type is a parent, also check for child types within this type
             if not type.parent:
                 child_types = BookType.objects.filter(parent=type)
@@ -197,10 +207,10 @@ def status(request, status):
         "forms": forms,
         "formats": formats,
         "types": types,
-        "has_sub_types": has_sub_types,
+        "has_sub_types": None,
         "locations": locations,
         "genres": genres,
-        "has_sub_genres": has_sub_genres,
+        "has_sub_genres": None,
         "page_obj": page_obj,
         "type_filters": type_filters,
         "location_filters": location_filters,
