@@ -19,7 +19,7 @@ shell:
 
 # Run all the tests as fast as possible (other than the standalone Playwright ones: `just playwright`)
 pytest:
-  pytest -n auto inventory/tests --runplaywright
+  pytest -n auto config/tests
 
 playwright:
   npx playwright test
@@ -44,9 +44,7 @@ generate-django-key:
 
 # Run the coverage report
 coverage:
-  .venv/bin/coverage run .venv/bin/pytest
-  .venv/bin/coverage report
-  .venv/bin/coverage html
+  .venv/bin/pytest -n auto --cov=core --cov-report=html
 
 # Open the coverage report in Firefox
 coverage-html:

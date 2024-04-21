@@ -23,7 +23,9 @@ pillow-avif-plugin
 pip-lock
 pip-tools
 pre-commit
+pytest-cov
 pytest-django
+pytest-xdist
 requests
 sentry-sdk
 whitenoise
