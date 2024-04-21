@@ -196,6 +196,8 @@ def status(request, status):
         .annotate(count=models.Count("status"))
     }
 
+    books_count = books.count()
+
     context = {
         "statuses": Book._meta.get_field("status").choices,
         "status_counts": status_counts,
@@ -215,10 +217,10 @@ def status(request, status):
         "format_filters": format_filters,
         "genre_filters": genre_filters,
         "filter_queries": filter_queries,
-        "filter_active": status_counts.get(status, 0) != books.count(),
+        "filter_active": status_counts.get(status, 0) != books_count,
         "filter_request": any(value != "all" for value in filter_queries.values()),
         "filter_counts": filter_counts,
-        "filtered_books_count": books.count(),
+        "filtered_books_count": books_count,
     }
 
     return render(request, "status.html", context)
