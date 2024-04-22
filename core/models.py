@@ -11,9 +11,9 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.utils.text import slugify
 from django.urls import reverse
-from imagekit.models import ImageSpecField, ProcessedImageField
+from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
-from core.image_helpers import rename_image
+from core.image_helpers import rename_image, rename_image_thumbnail
 
 
 class UserManager(BaseUserManager):
@@ -231,11 +231,13 @@ class BookCover(models.Model):
         format="JPEG",
         options={"quality": 70},
     )
-    thumbnail = ImageSpecField(
-        source="image",
+    thumbnail = ProcessedImageField(
+        upload_to=rename_image_thumbnail,
         processors=[ResizeToFit(width=300, upscale=False)],
         format="JPEG",
         options={"quality": 60},
+        blank=True,
+        null=True,
     )
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     description = models.CharField(
@@ -265,6 +267,7 @@ class BookCover(models.Model):
                 img_tmp.flush()
 
                 self.image.save(os.path.basename(url), File(img_tmp), save=True)
+                self.thumbnail.save(os.path.basename(url), File(img_tmp), save=True)
                 return True
             else:
                 return False

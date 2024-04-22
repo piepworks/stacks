@@ -7,3 +7,10 @@ def rename_image(instance, filename):
     new_filename = slugify(instance.book.title.replace("/", ""))
 
     return f"stacks/covers/{new_filename}_{uuid.uuid4()}.{extension}"
+
+
+def rename_image_thumbnail(instance, filename):
+    extension = filename.split(".")[-1]
+    new_filename = slugify(instance.book.title.replace("/", ""))
+
+    return f"stacks/covers/{new_filename}_{uuid.uuid4()}_thumbnail.{extension}"

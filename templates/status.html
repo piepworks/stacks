@@ -52,11 +52,19 @@
           <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
-                <img src="{{ cover.thumbnail.url }}"
+                {% if cover.thumbnail %}
+                  <img src="{{ cover.thumbnail.url }}"
                     alt="{{ cover }}"
                     height="{{ cover.thumbnail.height }}"
                     width="{{ cover.thumbnail.width }}"
                     title="{{ book }}">
+                {% else %}
+                  .<img src="{{ cover.image.url }}"
+                    alt="{{ cover }}"
+                    height="{{ cover.image.height }}"
+                    width="{{ cover.image.width }}"
+                    title="{{ book }}">
+                {% endif %}
               {% endwith %}
             {% else %}
               <div class="no-cover">
