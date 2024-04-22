@@ -10,7 +10,6 @@ django-extensions
 django-htmx
 django-imagekit
 django-storages
-django-versatileimagefield
 djlint
 environs[django]
 Faker
