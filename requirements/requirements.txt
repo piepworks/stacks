@@ -65,6 +65,7 @@ django==5.0.4
     #   django-extensions
     #   django-htmx
     #   django-storages
+    #   django-versatileimagefield
     #   model-bakery
 django-appconf==1.0.6
     # via django-imagekit
@@ -83,6 +84,8 @@ django-htmx==1.17.3
 django-imagekit==5.0.0
     # via -r requirements/requirements.in
 django-storages==1.14.2
+    # via -r requirements/requirements.in
+django-versatileimagefield==3.1
     # via -r requirements/requirements.in
 djlint==1.34.1
     # via -r requirements/requirements.in
@@ -162,6 +165,7 @@ pilkit==3.0
 pillow==10.3.0
     # via
     #   -r requirements/requirements.in
+    #   django-versatileimagefield
     #   pilkit
 pillow-avif-plugin==1.4.3
     # via -r requirements/requirements.in
@@ -210,6 +214,8 @@ python-dateutil==2.9.0.post0
     #   faker
 python-dotenv==1.0.1
     # via environs
+python-magic==0.4.27
+    # via django-versatileimagefield
 pyyaml==6.0.1
     # via
     #   djlint
