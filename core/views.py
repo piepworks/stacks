@@ -15,7 +15,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
-from django.db.models import Q, OuterRef, Exists, Count
+from django.db.models import Q, OuterRef, Exists
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -97,21 +97,12 @@ def status(request, status):
         for genre in genres
     }
 
-    location_counts = BookLocation.objects.annotate(book_count=Count("books")).values(
-        "slug", "book_count"
-    )
-    format_counts = BookFormat.objects.annotate(book_count=Count("books")).values(
-        "slug", "book_count"
-    )
-
     # Get filter counts before applying filters
     filter_counts = {
         "type": get_filter_counts(books, types, "type"),
         "genre": get_filter_counts(books, genres, "genre"),
-        "location": {
-            location["slug"]: location["book_count"] for location in location_counts
-        },
-        "format": {format["slug"]: format["book_count"] for format in format_counts},
+        "location": get_filter_counts(books, locations, "location"),
+        "format": get_filter_counts(books, formats, "format"),
     }
 
     # Get filter parameters from request
