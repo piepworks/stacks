@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load get_next_status get_previous_status get_item days_since %}
+{% load get_next_status get_previous_status get_item days_ago %}
 
 {% block body_tag %}
   class="status"
@@ -54,7 +54,7 @@
               {% with book.readings.all|first as reading %}
                 <div class="extra-info">
                   <small class="days-ago" title="{{ reading.start_date }}">
-                    {{ reading.start_date|days_since }}
+                    {{ reading.start_date|days_ago }}
                   </small>
                 </div>
               {% endwith %}
