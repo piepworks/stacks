@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load get_next_status get_previous_status get_item %}
+{% load get_next_status get_previous_status get_item days_since %}
 
 {% block body_tag %}
   class="status"
@@ -49,6 +49,18 @@
     <ul id="ajax-books">
       {% for book, form in forms %}
         <li>
+          {% if status.slug == 'reading' %}
+            {% if book.readings.all %}
+              {% with book.readings.all|first as reading %}
+                <div class="extra-info">
+                  <small class="days-ago" title="{{ reading.start_date }}">
+                    {{ reading.start_date|days_since }}
+                  </small>
+                </div>
+              {% endwith %}
+            {% endif %}
+          {% endif %}
+
           <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
