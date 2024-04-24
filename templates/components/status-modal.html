@@ -16,7 +16,7 @@
               <input type="radio"
                      name="status"
                      value="{{ status.0 }}"
-                     {% if book.status == status.0 %}checked{% endif %}>
+                     {% if book.status == status.0 %}checked autofocus{% endif %}>
               {{ status.1 }}
             </label>
           {% endfor %}

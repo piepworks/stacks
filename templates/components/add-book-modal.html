@@ -10,7 +10,7 @@
     <form method="get" action="{% url 'open_library_search' %}">
       <fieldset>
         <input type="hidden" name="status" value="{{ status.slug }}">
-        <input type="text" name="q" required>
+        <input type="text" name="q" autofocus required>
       </fieldset>
       <button type="submit">Search Open Library</button>
     </form>
