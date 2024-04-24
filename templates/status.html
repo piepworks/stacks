@@ -75,6 +75,20 @@
             {% endif %}
           {% endif %}
 
+          {% if status.slug == 'dnf' %}
+            {% if book.readings.all %}
+              {% with book.readings.all|first as reading %}
+                {% if reading.end_date %}
+                  <div class="extra-info">
+                    <small class="month-year" title="{{ reading.end_date }}">
+                      {{ reading.end_date|date:"F Y" }}
+                    </small>
+                  </div>
+                {% endif %}
+              {% endwith %}
+            {% endif %}
+          {% endif %}
+
           <a href="{% url 'book_detail' book.slug %}">
             {% if book.covers.all %}
               {% with book.covers.all|first as cover %}
