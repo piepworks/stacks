@@ -1,4 +1,3 @@
-from datetime import datetime
 import json
 import bleach
 import markdown
@@ -15,7 +14,7 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
-from django.db.models import Q, OuterRef, Exists
+from django.db.models import Q, OuterRef, Exists, Subquery
 from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -35,6 +34,7 @@ from .models import (
     Author,
     BookCover,
     BookFormat,
+    BookReading,
     BookType,
     BookLocation,
     BookGenre,
@@ -140,6 +140,16 @@ def status(request, status):
     if filter_queries["format"] != "all":
         books = books.filter(format__slug=filter_queries["format"])
 
+    # Sort these statuses by the end date of their latest reading
+    if status in ["finished", "dnf"]:
+        latest_bookreading = BookReading.objects.filter(
+            Q(book=OuterRef("pk"))
+            & (Q(finished=True) if status == "finished" else Q(finished=False))
+        ).order_by("-start_date")
+        books = books.annotate(
+            latest_reading_end_date=Subquery(latest_bookreading.values("end_date")[:1])
+        ).order_by("-latest_reading_end_date")
+
     paginator = Paginator(books, 50)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
@@ -160,34 +170,6 @@ def status(request, status):
             )
             .values("readings__end_date__year")
             .annotate(count=models.Count("readings__end_date__year"))
-        )
-
-        # Sort finished books by the most recent reading's end date if it exists.
-        # All books in this status should have at least one reading with an end date,
-        # but I don't want to require that for dumping things into this status.
-        page_obj = sorted(
-            page_obj,
-            key=lambda book: (
-                book.readings.filter(finished=True).latest("end_date").end_date
-                if book.readings.filter(finished=True).exists()
-                and book.readings.filter(finished=True).latest("end_date").end_date
-                is not None
-                else datetime.min.date()
-            ),
-            reverse=True,
-        )
-
-    # Sort dnf books by the most recent dnf reading's end date if it exists.
-    if status == "dnf":
-        page_obj = sorted(
-            page_obj,
-            key=lambda book: (
-                book.readings.latest("end_date").end_date
-                if book.readings.exists()
-                and book.readings.latest("end_date").end_date is not None
-                else datetime.min.date()
-            ),
-            reverse=True,
         )
 
     # Get the books and their forms for the page
