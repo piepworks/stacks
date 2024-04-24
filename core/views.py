@@ -177,6 +177,19 @@ def status(request, status):
             reverse=True,
         )
 
+    # Sort dnf books by the most recent dnf reading's end date if it exists.
+    if status == "dnf":
+        page_obj = sorted(
+            page_obj,
+            key=lambda book: (
+                book.readings.latest("end_date").end_date
+                if book.readings.exists()
+                and book.readings.latest("end_date").end_date is not None
+                else datetime.min.date()
+            ),
+            reverse=True,
+        )
+
     # Get the books and their forms for the page
     forms = [(book, BookStatusForm(instance=book)) for book in page_obj]
 
