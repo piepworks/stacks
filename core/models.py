@@ -223,6 +223,10 @@ class Book(models.Model):
     def status_display(self):
         return self.get_status_display()
 
+    @property
+    def latest_reading(self):
+        return BookReading.objects.filter(book=self).order_by("-start_date").first()
+
 
 class BookCover(models.Model):
     image = ProcessedImageField(
@@ -285,7 +289,7 @@ class BookReading(models.Model):
 
     class Meta:
         unique_together = ["book", "start_date"]
-        ordering = ["-created_at"]
+        ordering = ["-start_date"]
 
     def __str__(self):
         return f"Reading of {self.book} / Starting on {self.start_date}"

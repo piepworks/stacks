@@ -61,31 +61,13 @@
             {% endif %}
           {% endif %}
 
-          {% if status.slug == 'finished' %}
-            {% if book.readings.all %}
-              {% with book.readings.all|first as reading %}
-                {% if reading.end_date %}
-                  <div class="extra-info">
-                    <small class="month-year" title="{{ reading.end_date }}">
-                      {{ reading.end_date|date:"F Y" }}
-                    </small>
-                  </div>
-                {% endif %}
-              {% endwith %}
-            {% endif %}
-          {% endif %}
-
-          {% if status.slug == 'dnf' %}
-            {% if book.readings.all %}
-              {% with book.readings.all|first as reading %}
-                {% if reading.end_date %}
-                  <div class="extra-info">
-                    <small class="month-year" title="{{ reading.end_date }}">
-                      {{ reading.end_date|date:"F Y" }}
-                    </small>
-                  </div>
-                {% endif %}
-              {% endwith %}
+          {% if status.slug == 'finished' or status.slug == 'dnf' %}
+            {% if book.latest_reading %}
+              <div class="extra-info">
+                <small class="month-year" title="{{ book.latest_reading.end_date }}">
+                  {{ book.latest_reading.end_date|date:"F Y" }}
+                </small>
+              </div>
             {% endif %}
           {% endif %}
 
