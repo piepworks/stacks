@@ -150,8 +150,8 @@
 
   <hr>
 
+  <h2>Notes</h2>
   <section class="notes">
-    <h2>Notes</h2>
     <form x-data="{ note: ''}" x-init x-target="ajax-notes" @ajax:success="note = ''" action="{% url 'note_new' book.slug %}" method="post">
       {% csrf_token %}
       {{ note_form.text }}
@@ -180,20 +180,20 @@
   {% if status_changes %}
   <hr>
 
-  <section class="status-changes">
-    <h2>Status Changes</h2>
+  <h2>Status Changes</h2>
+  <section class="status-changes overflow-auto">
     <table>
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Status</th>
+          <th>When</th>
+          <th>What</th>
         </tr>
       </thead>
       <tbody>
         {% for status_change in status_changes %}
           <tr>
-            <td>{{ status_change.changed_at|date:"F j, Y" }} at {{ status_change.changed_at|date:"g:i A" }}</td>
-            <td>{{ status_change.old_status }} &rarr; {{ status_change.new_status }}</td>
+            <td title="{{ status_change.changed_at }}">{{ status_change.changed_at|timesince }} <span class="subdued">ago</span></td>
+            <td>{{ status_change.old_status }} <span class="subdued">→</span> {{ status_change.new_status }}</td>
           </tr>
         {% endfor %}
       </tbody>

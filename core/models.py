@@ -332,6 +332,9 @@ class BookStatusChange(models.Model):
     new_status = models.CharField(max_length=200)
     changed_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-changed_at"]
+
 
 @receiver(pre_save, sender=Book)
 def track_status_changes(sender, instance, **kwargs):
