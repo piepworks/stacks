@@ -331,8 +331,6 @@ class BookStatusChange(models.Model):
     old_status = models.CharField(max_length=200)
     new_status = models.CharField(max_length=200)
     changed_at = models.DateTimeField(auto_now_add=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 @receiver(pre_save, sender=Book)
