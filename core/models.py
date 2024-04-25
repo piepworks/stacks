@@ -11,6 +11,8 @@ from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
 from django.utils.text import slugify
 from django.urls import reverse
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
@@ -318,3 +320,30 @@ class BookNote(models.Model):
 
     def __str__(self):
         return f"Note for {self.book} / Created {date(self.created_at, 'Y-m-d')}"
+
+
+class BookStatusChange(models.Model):
+    book = models.ForeignKey(
+        Book,
+        on_delete=models.CASCADE,
+        related_name="status_changes",
+    )
+    old_status = models.CharField(max_length=200)
+    new_status = models.CharField(max_length=200)
+    changed_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+
+@receiver(pre_save, sender=Book)
+def track_status_changes(sender, instance, **kwargs):
+    try:
+        old_instance = sender.objects.get(pk=instance.pk)
+        if old_instance.status != instance.status:
+            BookStatusChange.objects.create(
+                book=old_instance,
+                old_status=old_instance.status,
+                new_status=instance.status,
+            )
+    except sender.DoesNotExist:
+        pass

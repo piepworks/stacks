@@ -176,4 +176,28 @@
       {% endif %}
     </div>
   </section>
+
+  {% if status_changes %}
+  <hr>
+
+  <section class="status-changes">
+    <h2>Status Changes</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for status_change in status_changes %}
+          <tr>
+            <td>{{ status_change.changed_at|date:"F j, Y" }} at {{ status_change.created_at|date:"g:i A" }}</td>
+            <td>{{ status_change.old_status }} &rarr; {{ status_change.new_status }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
 {% endblock content %}

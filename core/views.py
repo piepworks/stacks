@@ -282,6 +282,7 @@ def book_new(request):
 def book_detail(request, slug):
     book = Book.objects.get(slug=slug)
     notes = book.notes.all()
+    status_changes = book.status_changes.all()
 
     # Apply Markdown formatting and convert URLs in notes to clickable links
     for note in notes:
@@ -301,6 +302,7 @@ def book_detail(request, slug):
             "reading_form": BookReadingForm(instance=book),
             "note_form": BookNoteForm(instance=book),
             "readings": book.readings.all(),
+            "status_changes": status_changes,
             "notes": notes,
         },
     )
