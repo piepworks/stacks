@@ -20,7 +20,7 @@
   <ul>
     {% for book in books %}
       <li class="book">
-        <a href="{% url 'book_detail' book.slug %}">
+        <a href="{{ book.get_absolute_url }}">
           {% if book.covers.all %}
             {% with book.covers.all|first as cover %}
               <img src="{{ cover.thumbnail.url }}"

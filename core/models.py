@@ -219,7 +219,7 @@ class Book(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("book_detail", args=(self.slug,))
+        return reverse("book_detail", args=(self.pk,))
 
     @property
     def status_display(self):

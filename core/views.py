@@ -233,7 +233,7 @@ def book_new(request):
                 new_cover.save_cover_from_url(cover)
 
             messages.success(request, f"{book} added")
-            return redirect("book_detail", slug=book.slug)
+            return redirect("book_detail", pk=book.pk)
     else:
         olid = request.GET.get("olid", "")
         cover = request.GET.get("cover", "")
@@ -279,8 +279,8 @@ def book_new(request):
 
 
 @login_required
-def book_detail(request, slug):
-    book = Book.objects.get(slug=slug)
+def book_detail(request, pk):
+    book = Book.objects.get(pk=pk)
     notes = book.notes.all()
     status_changes = book.status_changes.all()
 
@@ -309,8 +309,8 @@ def book_detail(request, slug):
 
 
 @login_required
-def book_update(request, slug):
-    book = Book.objects.get(slug=slug)
+def book_update(request, pk):
+    book = Book.objects.get(pk=pk)
     old_status = book.status
 
     if request.method == "POST":
@@ -330,7 +330,7 @@ def book_update(request, slug):
                 f"{book} updated",
             )
 
-            return redirect("book_detail", slug=book.slug)
+            return redirect(book.get_absolute_url())
     else:
         form = BookForm(instance=book)
 
@@ -347,8 +347,8 @@ def book_update(request, slug):
 
 @require_POST
 @login_required
-def book_delete(request, slug):
-    book = get_object_or_404(Book, slug=slug)
+def book_delete(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     status = book.status
     book.delete()
     messages.success(request, f"{book} deleted")
@@ -357,8 +357,8 @@ def book_delete(request, slug):
 
 @require_POST
 @login_required
-def book_archive(request, slug):
-    book = get_object_or_404(Book, slug=slug)
+def book_archive(request, pk):
+    book = get_object_or_404(Book, pk=pk)
     status = book.status
     book.archived = True
     book.save()
@@ -453,8 +453,8 @@ def author_detail(request, slug):
 
 
 @login_required
-def cover_new(request, slug):
-    book = Book.objects.get(slug=slug)
+def cover_new(request, pk):
+    book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
         form = BookCoverForm(request.POST, request.FILES, book=book)
@@ -464,7 +464,7 @@ def cover_new(request, slug):
             cover.book = book
             cover.save()
             messages.success(request, "Cover added")
-            return redirect("book_detail", slug=slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookCoverForm(book=book)
@@ -481,8 +481,8 @@ def cover_new(request, slug):
 
 
 @login_required
-def cover_update(request, slug, cover_pk):
-    book = Book.objects.get(slug=slug)
+def cover_update(request, pk, cover_pk):
+    book = Book.objects.get(pk=pk)
     cover = BookCover.objects.get(pk=cover_pk, book=book)
 
     if request.method == "POST":
@@ -491,7 +491,7 @@ def cover_update(request, slug, cover_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Cover updated")
-            return redirect("book_detail", slug=slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookCoverForm(instance=cover)
@@ -509,16 +509,16 @@ def cover_update(request, slug, cover_pk):
 
 @require_POST
 @login_required
-def cover_delete(request, slug, cover_pk):
-    cover = BookCover.objects.get(pk=cover_pk, book=Book.objects.get(slug=slug))
+def cover_delete(request, pk, cover_pk):
+    cover = BookCover.objects.get(pk=cover_pk, book=Book.objects.get(pk=pk))
     cover.delete()
     messages.success(request, "Cover deleted")
-    return redirect("book_detail", slug=slug)
+    return redirect("book_detail", pk=pk)
 
 
 @login_required
-def reading_new(request, slug):
-    book = Book.objects.get(slug=slug)
+def reading_new(request, pk):
+    book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
         form = BookReadingForm(request.POST)
@@ -528,7 +528,7 @@ def reading_new(request, slug):
             reading.book = book
             reading.save()
             messages.success(request, "Reading added")
-            return redirect("book_detail", slug=slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookReadingForm()
@@ -545,8 +545,8 @@ def reading_new(request, slug):
 
 
 @login_required
-def reading_update(request, slug, reading_pk):
-    book = Book.objects.get(slug=slug)
+def reading_update(request, pk, reading_pk):
+    book = Book.objects.get(pk=pk)
     reading = book.readings.get(pk=reading_pk)
 
     if request.method == "POST":
@@ -555,7 +555,7 @@ def reading_update(request, slug, reading_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Reading updated")
-            return redirect("book_detail", slug=slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookReadingForm(instance=reading)
@@ -574,16 +574,16 @@ def reading_update(request, slug, reading_pk):
 
 @require_POST
 @login_required
-def reading_delete(request, slug, reading_pk):
-    reading = Book.objects.get(slug=slug).readings.get(pk=reading_pk)
+def reading_delete(request, pk, reading_pk):
+    reading = Book.objects.get(pk=pk).readings.get(pk=reading_pk)
     reading.delete()
     messages.success(request, "Reading deleted")
-    return redirect("book_detail", slug=slug)
+    return redirect("book_detail", pk=pk)
 
 
 @login_required
-def note_new(request, slug):
-    book = Book.objects.get(slug=slug)
+def note_new(request, pk):
+    book = Book.objects.get(pk=pk)
 
     if request.method == "POST":
         form = BookNoteForm(request.POST)
@@ -593,7 +593,7 @@ def note_new(request, slug):
             note.book = book
             note.save()
             messages.success(request, "Note added")
-            return redirect("book_detail", slug=book.slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookNoteForm()
@@ -610,8 +610,8 @@ def note_new(request, slug):
 
 
 @login_required
-def note_update(request, slug, note_pk):
-    book = Book.objects.get(slug=slug)
+def note_update(request, pk, note_pk):
+    book = Book.objects.get(pk=pk)
     note = book.notes.get(pk=note_pk)
 
     if request.method == "POST":
@@ -620,7 +620,7 @@ def note_update(request, slug, note_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Note updated")
-            return redirect("book_detail", slug=slug)
+            return redirect(book.get_absolute_url())
 
     else:
         form = BookNoteForm(instance=note)
@@ -639,11 +639,11 @@ def note_update(request, slug, note_pk):
 
 @require_POST
 @login_required
-def note_delete(request, slug, note_pk):
-    note = Book.objects.get(slug=slug).notes.get(pk=note_pk)
+def note_delete(request, pk, note_pk):
+    note = Book.objects.get(pk=pk).notes.get(pk=note_pk)
     note.delete()
     messages.success(request, "Note deleted")
-    return redirect("book_detail", slug=slug)
+    return redirect("book_detail", pk=pk)
 
 
 # ----------------------------------
