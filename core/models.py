@@ -9,7 +9,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
-from django.utils.text import slugify
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -184,10 +183,6 @@ class Book(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Create a slug based on the title field if none is provided
-        if not self.slug:
-            self.slug = slugify(self.title)
-
         if self.pk:
             old_status = Book.objects.get(pk=self.pk).status
             new_status = self.status

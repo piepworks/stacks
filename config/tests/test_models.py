@@ -83,12 +83,6 @@ def test_book_is_not_archived_by_default():
 
 
 @pytest.mark.django_db
-def test_book_slug_creation_on_save():
-    book = baker.make(Book, title="Test Book", slug=None)
-    assert book.slug == "test-book"
-
-
-@pytest.mark.django_db
 def test_book_status_update():
     book = baker.make(Book, status="available")
     book.status = "unavailable"
