@@ -217,7 +217,7 @@ def status(request, status):
 @login_required
 def book_new(request):
     if request.method == "POST":
-        form = BookForm(request.POST)
+        form = BookForm(request.POST, user=request.user)
 
         if form.is_valid():
             book = form.save(commit=False)
@@ -245,7 +245,7 @@ def book_new(request):
         title = request.GET.get("title", "")
         year = request.GET.get("year", "")
 
-        form = BookForm()
+        form = BookForm(user=request.user)
 
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
@@ -317,7 +317,7 @@ def book_update(request, pk):
     old_status = book.status
 
     if request.method == "POST":
-        form = BookForm(request.POST, instance=book)
+        form = BookForm(request.POST, instance=book, user=request.user)
         if form.is_valid():
             form.save()
 
@@ -335,7 +335,7 @@ def book_update(request, pk):
 
             return redirect(book.get_absolute_url())
     else:
-        form = BookForm(instance=book)
+        form = BookForm(instance=book, user=request.user)
 
     return render(
         request,

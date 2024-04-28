@@ -14,8 +14,10 @@ class RegisterForm(UserCreationForm):
 
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
         super(BookForm, self).__init__(*args, **kwargs)
         self.fields["author"].label = "Author(s)"
+        self.fields["author"].queryset = Author.objects.filter(user=self.user)
         self.fields["location"].label = "Location(s)"
 
     class Meta:
