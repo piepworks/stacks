@@ -193,3 +193,37 @@ def test_filtering_by_subgenre_and_subtype(
     assert response.status_code == 200
     assert book1 not in [book for book, form in response.context["forms"]]
     assert book3 in [book for book, form in response.context["forms"]]
+
+
+@pytest.mark.django_db
+def test_book_new(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    # Create an existing author
+    baker.make("Author", name="Ursula K. Le Guin", user=user)
+
+    response = client.get(
+        reverse("book_new") + "?status=reading&authors=Octavia Butler,Ursula K. Le Guin"
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_book_new_post(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    # Create an existing author
+    author = baker.make("Author", name="Ursula K. Le Guin", user=user)
+
+    response = client.post(
+        reverse("book_new"),
+        {
+            "title": "The Dispossessed",
+            "author": [author.pk],
+            "status": "reading",
+            "olid": "",
+        },
+    )
+
+    assert response.status_code == 302
+    assert Book.objects.filter(title="The Dispossessed", user=user).exists()
