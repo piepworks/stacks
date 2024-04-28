@@ -70,6 +70,7 @@ urlpatterns = [
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),
+    path("register/", views.register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
 ]
