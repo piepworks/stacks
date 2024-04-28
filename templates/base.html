@@ -26,9 +26,9 @@
             <li><a class="svg stack" href="{% block stack_link %}{% url 'status' 'reading' %}{% endblock stack_link %}">Stacks</a></li>
           </ul>
           <ul>
-            <li>
-                <a class="svg admin" href="{% url 'admin:core_book_changelist' %}">Admin</a>
-            </li>
+            {% if user.is_superuser %}
+              <li><a class="svg admin" href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
             <li>
               <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
                 {% csrf_token %}

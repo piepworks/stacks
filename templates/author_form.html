@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {% if action == 'new' %}
+    Add a new author
+    {% else %}
+    Editing {{ author }}
+    {% endif %}
+{% endblock title %}
+
+{% block body_tag %}class="form-page"{% endblock body_tag %}
+
+
+{% block content %}
+  <header>
+    <h1>
+      {% if action == 'new' %}
+        Add a new author
+      {% else %}
+        Editing <a href="{{ author.get_absolute_url }}">{{ author }}</a>
+      {% endif %}
+    </h1>
+  </header>
+
+  <form method="post">
+    {% csrf_token %}
+    <fieldset>
+      {% for field in form %}
+        <div>
+          <label>
+            {{ field.as_field_group }}
+          </label>
+        </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit">Save</button>
+  </form>
+{% endblock content %}

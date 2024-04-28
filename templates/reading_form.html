@@ -24,7 +24,7 @@
   </form>
 
   {% if action != 'new' %}
-    <form method="post" action="{% url 'reading_delete' book.slug reading.id %}" onsubmit="return confirm('Are you sure you want to delete this reading?')">
+    <form method="post" action="{% url 'reading_delete' book.pk reading.id %}" onsubmit="return confirm('Are you sure you want to delete this reading?')">
       {% csrf_token %}
       <button class="svg delete">Delete</button>
     </form>

@@ -66,7 +66,9 @@ def test_status_view_invalid_status(client_logged_in, setup_staticfiles_storage)
 
 
 @pytest.fixture
-def book_data():
+def book_data(client_logged_in):
+    client, user = client_logged_in
+
     type1 = baker.make(BookType, slug="type1")
     type2 = baker.make(BookType, slug="type2", parent=type1)
     genre1 = baker.make(BookGenre, slug="genre1")
@@ -76,6 +78,7 @@ def book_data():
     location2 = baker.make(BookLocation, slug="location2")
     book1 = baker.make(
         Book,
+        user=user,
         title="Book 1",
         type=type1,
         genre=genre1,
@@ -84,6 +87,7 @@ def book_data():
     book1.location.add(location1)
     book2 = baker.make(
         Book,
+        user=user,
         title="Book 2",
         type=type2,
         genre=genre2,
@@ -92,11 +96,13 @@ def book_data():
     book2.location.add(location2)
     book3 = baker.make(
         Book,
+        user=user,
         title="Book 3",
         type=type2,
         genre=genre3,
         status="reading",
     )
+
     return (
         type1,
         type2,
@@ -187,3 +193,37 @@ def test_filtering_by_subgenre_and_subtype(
     assert response.status_code == 200
     assert book1 not in [book for book, form in response.context["forms"]]
     assert book3 in [book for book, form in response.context["forms"]]
+
+
+@pytest.mark.django_db
+def test_book_new(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    # Create an existing author
+    baker.make("Author", name="Ursula K. Le Guin", user=user)
+
+    response = client.get(
+        reverse("book_new") + "?status=reading&authors=Octavia Butler,Ursula K. Le Guin"
+    )
+    assert response.status_code == 200
+
+
+@pytest.mark.django_db
+def test_book_new_post(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    # Create an existing author
+    author = baker.make("Author", name="Ursula K. Le Guin", user=user)
+
+    response = client.post(
+        reverse("book_new"),
+        {
+            "title": "The Dispossessed",
+            "author": [author.pk],
+            "status": "reading",
+            "olid": "",
+        },
+    )
+
+    assert response.status_code == 302
+    assert Book.objects.filter(title="The Dispossessed", user=user).exists()

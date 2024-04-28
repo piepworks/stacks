@@ -65,11 +65,10 @@ class BookAuthorInline(admin.TabularInline):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "slug", "authors_list", "formats_list")
-    list_filter = ("archived", "status")
+    list_display = ("title", "authors_list", "formats_list")
+    list_filter = ("user", "archived", "status")
     inlines = [BookAuthorInline, BookCoverInline]
     exclude = ("author",)
-    prepopulated_fields = {"slug": ("title",)}
     actions = ["archive_books", "unarchive_books"]
 
     def archive_books(self, request, queryset):
@@ -122,8 +121,9 @@ class BookLocationAdmin(admin.ModelAdmin):
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    prepopulated_fields = {"slug": ("name",)}
-    list_display = ("name", "slug", "book_count")
+    list_display = ("name", "book_count")
+
+    list_filter = ("user",)
 
     def book_count(self, obj):
         return obj.book_set.count()

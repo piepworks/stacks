@@ -9,7 +9,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.template.defaultfilters import date
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files import File
-from django.utils.text import slugify
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
@@ -67,16 +66,19 @@ class User(AbstractUser):
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authors")
     bio = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "name"),)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("author_detail", args=(self.slug,))
+        return reverse("author_detail", args=(self.pk,))
 
 
 class BookFormat(models.Model):
@@ -130,7 +132,7 @@ class BookLocation(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     author = models.ManyToManyField(Author)
     published_year = models.IntegerField(blank=True, null=True)
     status = models.CharField(
@@ -167,6 +169,7 @@ class Book(models.Model):
     location = models.ManyToManyField(
         BookLocation,
         related_name="books",
+        help_text="For digital or audio books, choose the device or platform",
         blank=True,
     )
     archived = models.BooleanField(default=False)
@@ -174,14 +177,13 @@ class Book(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = (("user", "title"),)
+
     def __str__(self):
         return self.title
 
     def save(self, *args, **kwargs):
-        # Create a slug based on the title field if none is provided
-        if not self.slug:
-            self.slug = slugify(self.title)
-
         if self.pk:
             old_status = Book.objects.get(pk=self.pk).status
             new_status = self.status
@@ -219,7 +221,7 @@ class Book(models.Model):
         super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("book_detail", args=(self.slug,))
+        return reverse("book_detail", args=(self.pk,))
 
     @property
     def status_display(self):

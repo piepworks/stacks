@@ -11,12 +11,18 @@
 
 {% block content %}
   <header class="actions">
-    <h1><a href="{% url 'admin:core_book_change' book.id %}">{{ book }}</a></h1>
-    <form action="{% url 'book_delete' book.slug %}" method="post">
+    <h1>
+      {% if user.is_superuser %}
+        <a href="{% url 'admin:core_book_change' book.id %}">{{ book }}</a>
+      {% else %}
+        {{ book }}
+      {% endif %}
+    </h1>
+    <form action="{% url 'book_delete' book.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">
         <a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a>
-        <a class="svg edit" href="{% url 'book_update' book.slug %}">Edit</a>
+        <a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a>
         <button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button>
       </div>
     </form>
@@ -34,8 +40,8 @@
               title="{{ book }}">
           </a>
           <div class="actions">
-            <a href="{% url 'cover_update' book.slug cover.id %}" class="svg edit">Edit</a>
-            <form action="{% url 'cover_delete' book.slug cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
+            <a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a>
+            <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
               {% csrf_token %}
               <button class="svg delete">Delete</button>
             </form>
@@ -43,7 +49,7 @@
         </div>
       {% endfor %}
       <div class="another">
-        <a class="svg add-item" href="{% url 'cover_new' book.slug %}">Add cover</a>
+        <a class="svg add-item" href="{% url 'cover_new' book.pk %}">Add cover</a>
       </div>
     </section>
     {% else %}
@@ -51,7 +57,7 @@
         {# https://remixicon.com/icon/book-line #}
         <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
         <p>No cover found for this book.</p>
-        <a class="svg add-item" href="{% url 'cover_new' book.slug %}">Add cover</a>
+        <a class="svg add-item" href="{% url 'cover_new' book.pk %}">Add cover</a>
       </div>
     {% endif %}
 
@@ -73,11 +79,11 @@
             {% if book.author.all.count > 1 %}
               <ul>
                 {% for author in book.author.all %}
-                  <li><a href="{% url 'author_detail' author.slug %}">{{ author }}</a></li>
+                  <li><a href="{{ author.get_absolute_url }}">{{ author }}</a></li>
                 {% endfor %}
               </ul>
             {% else %}
-              <a href="{% url 'author_detail' book.author.first.slug %}">{{ book.author.first }}</a>
+              <a href="{{ book.author.first.get_absolute_url }}">{{ book.author.first }}</a>
             {% endif %}
           </td>
           <td>{{ book.published_year }}</td>
@@ -105,7 +111,7 @@
   <header class="actions-inline">
     <div>
       <h2>Readings</h2>
-      <a class="svg add-item" href="{% url 'reading_new' book.slug %}">Start a new reading</a>
+      <a class="svg add-item" href="{% url 'reading_new' book.pk %}">Start a new reading</a>
     </div>
   </header>
   <section class="overflow-auto">
@@ -138,7 +144,7 @@
                   </div>
                 {% endif %}
               </td>
-              <td><a class="svg edit" href="{% url 'reading_update' book.slug reading.id %}">Edit</a></td>
+              <td><a class="svg edit" href="{% url 'reading_update' book.pk reading.id %}">Edit</a></td>
             </tr>
           {% endfor %}
         </tbody>
@@ -152,7 +158,7 @@
 
   <h2>Notes</h2>
   <section class="notes">
-    <form x-data="{ note: ''}" x-init x-target="ajax-notes" @ajax:success="note = ''" action="{% url 'note_new' book.slug %}" method="post">
+    <form x-data="{ note: ''}" x-init x-target="ajax-notes" @ajax:success="note = ''" action="{% url 'note_new' book.pk %}" method="post">
       {% csrf_token %}
       {{ note_form.text }}
       <button type="submit">Save a new note</button>
@@ -164,7 +170,7 @@
             <div class="note">
               <div class="datetime">
                 <small>
-                  <a href="{% url 'note_update' book.slug note.id %}">
+                  <a href="{% url 'note_update' book.pk note.id %}">
                     {{ note.created_at|date:"F j, Y" }}
                     at {{ note.created_at|date:"g:i A" }}
                   </a>

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import MultipleHiddenInput
-from .models import User, Book, BookCover, BookReading, BookNote
+from .models import User, Book, BookCover, BookReading, BookNote, Author
 
 
 class RegisterForm(UserCreationForm):
@@ -14,8 +14,10 @@ class RegisterForm(UserCreationForm):
 
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user")
         super(BookForm, self).__init__(*args, **kwargs)
         self.fields["author"].label = "Author(s)"
+        self.fields["author"].queryset = Author.objects.filter(user=self.user)
         self.fields["location"].label = "Location(s)"
 
     class Meta:
@@ -93,3 +95,12 @@ class BookNoteForm(forms.ModelForm):
     class Meta:
         model = BookNote
         exclude = ("book", "page", "percentage", "created_at", "updated_at")
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = (
+            "name",
+            "bio",
+        )

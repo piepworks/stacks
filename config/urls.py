@@ -16,60 +16,63 @@ urlpatterns = [
     # Book CRUD
     # ---------
     path("book/new", views.book_new, name="book_new"),  # C
-    path("book/<slug:slug>", views.book_detail, name="book_detail"),  # R
-    path("book/<slug:slug>/update", views.book_update, name="book_update"),  # U
-    path("book/<slug:slug>/delete", views.book_delete, name="book_delete"),  # D
-    path("book/<slug:slug>/archive", views.book_archive, name="book_archive"),
+    path("book/<int:pk>", views.book_detail, name="book_detail"),  # R
+    path("book/<int:pk>/update", views.book_update, name="book_update"),  # U
+    path("book/<int:pk>/delete", views.book_delete, name="book_delete"),  # D
+    path("book/<int:pk>/archive", views.book_archive, name="book_archive"),
     # Book Search
     # -----------
     path("search", views.search, name="search"),
     path("ol", views.open_library_search, name="open_library_search"),
     # Authors
     # -------
-    path("author/new", views.author_new, name="author_new"),
-    path("author/<slug:slug>", views.author_detail, name="author_detail"),
+    path("author/new", views.author_new, name="author_new"),  # C
+    path("author/<int:pk>", views.author_detail, name="author_detail"),  # R
+    path("author/<int:pk>/update", views.author_update, name="author_update"),  # U
+    path("author/<int:pk>/delete", views.book_delete, name="author_delete"),  # D
     # Book Covers
     # -----------
-    path("book/<slug:slug>/cover/new", views.cover_new, name="cover_new"),
+    path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),
     path(
-        "book/<slug:slug>/cover/<int:cover_pk>/update",
+        "book/<int:pk>/cover/<int:cover_pk>/update",
         views.cover_update,
         name="cover_update",
     ),
     path(
-        "book/<slug:slug>/cover/<int:cover_pk>/delete",
+        "book/<int:pk>/cover/<int:cover_pk>/delete",
         views.cover_delete,
         name="cover_delete",
     ),
     # Book Readings
     # -------------
-    path("book/<slug:slug>/reading/new", views.reading_new, name="reading_new"),
+    path("book/<int:pk>/reading/new", views.reading_new, name="reading_new"),
     path(
-        "book/<slug:slug>/reading/<int:reading_pk>/update",
+        "book/<int:pk>/reading/<int:reading_pk>/update",
         views.reading_update,
         name="reading_update",
     ),
     path(
-        "book/<slug:slug>/reading/<int:reading_pk>/delete",
+        "book/<int:pk>/reading/<int:reading_pk>/delete",
         views.reading_delete,
         name="reading_delete",
     ),
     # Book Notes
     # ----------
-    path("book/<slug:slug>/note/new", views.note_new, name="note_new"),
+    path("book/<int:pk>/note/new", views.note_new, name="note_new"),
     path(
-        "book/<slug:slug>/note/<int:note_pk>/update",
+        "book/<int:pk>/note/<int:note_pk>/update",
         views.note_update,
         name="note_update",
     ),
     path(
-        "book/<slug:slug>/note/<int:note_pk>/delete",
+        "book/<int:pk>/note/<int:note_pk>/delete",
         views.note_delete,
         name="note_delete",
     ),
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),
+    path("register/", views.register, name="register"),
     path("accounts/", include("django.contrib.auth.urls")),
     path(settings.ADMIN_URL, admin.site.urls),
 ]

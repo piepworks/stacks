@@ -6,7 +6,7 @@
         <b>Adjust status for {{ book.title }}</b>
       </p>
     </header>
-    <form method="post" action="{% url 'book_update' book.slug %}">
+    <form method="post" action="{% url 'book_update' book.pk %}">
       {% csrf_token %}
       <input type="hidden" name="status_change" value="true">
       <fieldset>
@@ -26,7 +26,7 @@
       <button type="submit">Save</button>
     </form>
 
-    <form action="{% url 'book_archive' book.slug %}" method="post" @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
+    <form action="{% url 'book_archive' book.pk %}" method="post" @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
       {% csrf_token %}
       <button class="svg archive">Archive</button>
     </form>
