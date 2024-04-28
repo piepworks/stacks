@@ -3,7 +3,7 @@
   background: var(--pico-form-element-background-color) !important;
   border-color: var(--pico-form-element-border-color) !important;
   border-radius: var(--pico-border-radius) !important;
-  padding-bottom: 4px !important;
+  padding-bottom: 4px !important; /* Half the default padding */
 
   &,
   input {

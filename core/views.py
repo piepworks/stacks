@@ -453,7 +453,6 @@ def author_detail(request, pk):
     )
 
 
-# MARK: author_update
 @login_required
 def author_update(request, pk):
     author = Author.objects.get(pk=pk)
