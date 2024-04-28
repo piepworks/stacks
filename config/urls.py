@@ -27,7 +27,7 @@ urlpatterns = [
     # Authors
     # -------
     path("author/new", views.author_new, name="author_new"),
-    path("author/<slug:slug>", views.author_detail, name="author_detail"),
+    path("author/<int:pk>", views.author_detail, name="author_detail"),
     # Book Covers
     # -----------
     path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),

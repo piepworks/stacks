@@ -76,7 +76,7 @@ class Author(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("author_detail", args=(self.slug,))
+        return reverse("author_detail", args=(self.pk,))
 
 
 class BookFormat(models.Model):

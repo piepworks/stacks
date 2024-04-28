@@ -438,8 +438,8 @@ def author_new(request):
 
 
 @login_required
-def author_detail(request, slug):
-    author = Author.objects.get(slug=slug)
+def author_detail(request, pk):
+    author = Author.objects.get(pk=pk)
     books = Book.objects.filter(author=author)
 
     return render(
