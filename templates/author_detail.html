@@ -8,11 +8,18 @@
 {% block body_tag %}class="author-detail"{% endblock body_tag %}
 
 {% block content %}
-  <header class="actions-inline">
+  <header class="actions">
     <h1>{{ author }}</h1>
     {% if user.is_superuser %}
       <a href="{% url 'admin:core_author_change' author.id %}">Edit</a>
     {% endif %}
+    <form action="{% url 'author_delete' author.pk %}" method="post">
+      {% csrf_token %}
+      <div class="inner">
+        <a class="svg edit" href="{% url 'author_update' author.pk %}">Edit</a>
+        <button class="svg delete" onclick="return confirm('Are you sure you want to delete this author?')">Delete</button>
+      </div>
+    </form>
   </header>
 
   <div class="author-bio">

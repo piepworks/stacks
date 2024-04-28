@@ -26,8 +26,10 @@ urlpatterns = [
     path("ol", views.open_library_search, name="open_library_search"),
     # Authors
     # -------
-    path("author/new", views.author_new, name="author_new"),
-    path("author/<int:pk>", views.author_detail, name="author_detail"),
+    path("author/new", views.author_new, name="author_new"),  # C
+    path("author/<int:pk>", views.author_detail, name="author_detail"),  # R
+    path("author/<int:pk>/update", views.author_update, name="author_update"),  # U
+    path("author/<int:pk>/delete", views.book_delete, name="author_delete"),  # D
     # Book Covers
     # -----------
     path("book/<int:pk>/cover/new", views.cover_new, name="cover_new"),

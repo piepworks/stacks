@@ -25,6 +25,7 @@ from .forms import (
     BookReadingForm,
     BookCoverForm,
     BookNoteForm,
+    AuthorForm,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -451,6 +452,33 @@ def author_detail(request, pk):
         {
             "author": author,
             "books": books,
+        },
+    )
+
+
+# MARK: author_update
+@login_required
+def author_update(request, pk):
+    author = Author.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = AuthorForm(request.POST, instance=author)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Author updated")
+            return redirect(author.get_absolute_url())
+
+    else:
+        form = AuthorForm(instance=author)
+
+    return render(
+        request,
+        "author_form.html",
+        {
+            "author": author,
+            "form": form,
+            "action": "update",
         },
     )
 

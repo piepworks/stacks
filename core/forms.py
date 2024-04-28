@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import MultipleHiddenInput
-from .models import User, Book, BookCover, BookReading, BookNote
+from .models import User, Book, BookCover, BookReading, BookNote, Author
 
 
 class RegisterForm(UserCreationForm):
@@ -93,3 +93,12 @@ class BookNoteForm(forms.ModelForm):
     class Meta:
         model = BookNote
         exclude = ("book", "page", "percentage", "created_at", "updated_at")
+
+
+class AuthorForm(forms.ModelForm):
+    class Meta:
+        model = Author
+        fields = (
+            "name",
+            "bio",
+        )
