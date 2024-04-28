@@ -67,10 +67,14 @@ class User(AbstractUser):
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authors")
+    slug = models.SlugField()
     bio = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "slug"),)
 
     def __str__(self):
         return self.name
@@ -130,7 +134,8 @@ class BookLocation(models.Model):
 
 class Book(models.Model):
     title = models.CharField(max_length=100)
-    slug = models.SlugField(unique=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
+    slug = models.SlugField()
     author = models.ManyToManyField(Author)
     published_year = models.IntegerField(blank=True, null=True)
     status = models.CharField(
@@ -173,6 +178,9 @@ class Book(models.Model):
     olid = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = (("user", "slug"),)
 
     def __str__(self):
         return self.title

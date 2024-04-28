@@ -219,6 +219,7 @@ def book_new(request):
 
         if form.is_valid():
             book = form.save(commit=False)
+            book.user = request.user
 
             if (olid := request.POST.get("olid")) != "":
                 book.olid = olid
@@ -431,6 +432,7 @@ def author_new(request):
     slug = slugify(author["name"])
     a = Author.objects.create(
         name=author["name"],
+        user=request.user,
         slug=slug,
     )
     messages.success(request, f"Author {author['name']} added")
