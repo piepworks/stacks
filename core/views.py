@@ -56,7 +56,7 @@ def status(request, status):
         raise Http404()
 
     books = (
-        Book.objects.filter(status=status, archived=False)
+        Book.objects.filter(status=status, archived=False, user=request.user)
         .order_by("-updated_at")
         .prefetch_related("covers", "author", "format", "genre", "location", "type")
     )
@@ -165,6 +165,7 @@ def status(request, status):
     if status == "finished":
         finished_counts = (
             Book.objects.filter(
+                user=request.user,
                 readings__end_date__isnull=False,
                 readings__finished=True,
             )
@@ -177,7 +178,7 @@ def status(request, status):
 
     status_counts = {
         status["status"]: status["count"]
-        for status in Book.objects.filter(archived=False)
+        for status in Book.objects.filter(user=request.user, archived=False)
         .values("status")
         .annotate(count=models.Count("status"))
     }
