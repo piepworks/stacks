@@ -11,7 +11,13 @@
 
 {% block content %}
   <header class="actions">
-    <h1><a href="{% url 'admin:core_book_change' book.id %}">{{ book }}</a></h1>
+    <h1>
+      {% if user.is_superuser %}
+        <a href="{% url 'admin:core_book_change' book.id %}">{{ book }}</a>
+      {% else %}
+        {{ book }}
+      {% endif %}
+    </h1>
     <form action="{% url 'book_delete' book.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">
