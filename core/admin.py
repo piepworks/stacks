@@ -66,7 +66,7 @@ class BookAuthorInline(admin.TabularInline):
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "authors_list", "formats_list")
-    list_filter = ("archived", "status")
+    list_filter = ("user", "archived", "status")
     inlines = [BookAuthorInline, BookCoverInline]
     exclude = ("author",)
     actions = ["archive_books", "unarchive_books"]
@@ -122,6 +122,8 @@ class BookLocationAdmin(admin.ModelAdmin):
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("name", "book_count")
+
+    list_filter = ("user",)
 
     def book_count(self, obj):
         return obj.book_set.count()
