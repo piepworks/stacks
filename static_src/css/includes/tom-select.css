@@ -3,6 +3,7 @@
   background: var(--pico-form-element-background-color) !important;
   border-color: var(--pico-form-element-border-color) !important;
   border-radius: var(--pico-border-radius) !important;
+  padding-bottom: 4px !important;
 
   &,
   input {
@@ -18,7 +19,6 @@
     background-color: var(--pico-primary) !important;
     padding-left: 0.5rem !important;
     padding-right: 0.5rem !important;
-    margin-bottom: 0 !important;
 
     .remove {
       border-color: var(--pico-primary-hover-background) !important;
