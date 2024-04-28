@@ -169,6 +169,7 @@ class Book(models.Model):
     location = models.ManyToManyField(
         BookLocation,
         related_name="books",
+        help_text="For digital or audio books, choose the device or platform",
         blank=True,
     )
     archived = models.BooleanField(default=False)
