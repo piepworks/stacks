@@ -254,14 +254,14 @@ def book_new(request):
             if not a:
                 # Don't save an empty author
                 continue
-            if not Author.objects.filter(slug=slugify(a)).exists():
+            if not Author.objects.filter(name=a, user=request.user.id).exists():
                 new_author = Author.objects.create(
                     name=a,
-                    slug=slugify(a),
+                    user=request.user,
                 )
                 author_records.append(new_author)
             else:
-                author_records.append(Author.objects.get(slug=slugify(a)))
+                author_records.append(Author.objects.get(name=a, user=request.user.id))
 
         form.fields["author"].initial = author_records
         form.fields["title"].initial = title
