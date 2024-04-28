@@ -15,7 +15,6 @@ from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import models
 from django.db.models import Q, OuterRef, Exists, Subquery
-from django.utils.text import slugify
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from .forms import (
@@ -431,11 +430,9 @@ def author_new(request):
         raise PermissionDenied()
 
     author = json.loads(request.body)
-    slug = slugify(author["name"])
     a = Author.objects.create(
         name=author["name"],
         user=request.user,
-        slug=slug,
     )
     messages.success(request, f"Author {author['name']} added")
     return JsonResponse({"id": a.pk})
