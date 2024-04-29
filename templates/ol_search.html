@@ -1,11 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}Choose a cover{% endblock title %}
+{% block title %}Choose a book{% endblock title %}
 
 {% block body_tag %}class="ol-results"{% endblock body_tag %}
 
 {% block content %}
-  <h1>Choose a cover</h1>
+  <h1>Searching for: “{{ query }}”</h1>
+  <h2>Choose a book</h2>
 
   <main>
     <p><a href="{% url 'book_new' %}">Skip this (no auto-populated fields)</a></p>
@@ -16,6 +17,7 @@
           <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}&olid={{ result.olid }}">
             <img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto">
           </a>
+          <div class="title" title="{{ result.title }}">{{ result.title }}</div>
         </li>
       {% endfor %}
     </ul>

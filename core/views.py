@@ -421,7 +421,15 @@ def open_library_search(request):
         messages.error(request, "No results from Open Library")
         return redirect(reverse("book_new") + f"?status={status}")
 
-    return render(request, "ol_search.html", {"results": results, "status": status})
+    return render(
+        request,
+        "ol_search.html",
+        {
+            "results": results,
+            "status": status,
+            "query": query,
+        },
+    )
 
 
 @require_POST

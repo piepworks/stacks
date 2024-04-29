@@ -75,7 +75,7 @@
               {% endif %}
             {% endif %}
 
-            <a href="{% url 'book_detail' book.pk %}">
+            <a href="{{ book.get_absolute_url }}">
               {% if book.covers.all %}
                 {% with book.covers.all|first as cover %}
                   <img src="{{ cover.thumbnail.url }}"
