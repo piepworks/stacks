@@ -392,3 +392,13 @@ a small,
 td small {
   opacity: 0.5;
 }
+
+.blank-state {
+  background: var(--pico-text-selection-color);
+  padding: 3rem;
+  border-radius: 0.5rem;
+
+  p:only-child {
+    margin: 0;
+  }
+}

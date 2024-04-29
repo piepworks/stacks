@@ -20,13 +20,16 @@
         <h1>{{ status.name }}</h1>
         <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">add another</a>
       </div>
-      <div id="ajax-filter-toggle" class="filter-toggle">
-        {% if filter_request %}
-          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-filter-toggle ajax-books ajax-pagination" href="{{ request.path }}">Reset filters</a></p>
-        {% endif %}
-        <button class="svg no-filter" disabled x-ignore>Show filters</button>
-        <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
-      </div>
+
+      {% if forms %}
+        <div id="ajax-filter-toggle" class="filter-toggle">
+          {% if filter_request %}
+            <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-filter-toggle ajax-books ajax-pagination" href="{{ request.path }}">Reset filters</a></p>
+          {% endif %}
+          <button class="svg no-filter" disabled x-ignore>Show filters</button>
+          <button class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
+        </div>
+      {% endif %}
     </header>
 
     {% include "components/add-book-modal.html" %}
@@ -46,79 +49,85 @@
 
     {% include "components/book-filters.html" %}
 
-    <ul id="ajax-books">
-      {% for book, form in forms %}
-        <li>
-          {% if status.slug == 'reading' %}
-            {% if book.readings.all %}
-              {% with book.readings.all|first as reading %}
+    {% if forms %}
+      <ul id="ajax-books">
+        {% for book, form in forms %}
+          <li>
+            {% if status.slug == 'reading' %}
+              {% if book.readings.all %}
+                {% with book.readings.all|first as reading %}
+                  <div class="extra-info">
+                    <small class="days-ago" title="{{ reading.start_date }}">
+                      {{ reading.start_date|days_ago }}
+                    </small>
+                  </div>
+                {% endwith %}
+              {% endif %}
+            {% endif %}
+
+            {% if status.slug == 'finished' or status.slug == 'dnf' %}
+              {% if book.latest_reading %}
                 <div class="extra-info">
-                  <small class="days-ago" title="{{ reading.start_date }}">
-                    {{ reading.start_date|days_ago }}
+                  <small class="month-year" title="{{ book.latest_reading.end_date }}">
+                    {{ book.latest_reading.end_date|date:"F Y" }}
                   </small>
                 </div>
-              {% endwith %}
+              {% endif %}
             {% endif %}
-          {% endif %}
 
-          {% if status.slug == 'finished' or status.slug == 'dnf' %}
-            {% if book.latest_reading %}
-              <div class="extra-info">
-                <small class="month-year" title="{{ book.latest_reading.end_date }}">
-                  {{ book.latest_reading.end_date|date:"F Y" }}
-                </small>
-              </div>
-            {% endif %}
-          {% endif %}
-
-          <a href="{% url 'book_detail' book.pk %}">
-            {% if book.covers.all %}
-              {% with book.covers.all|first as cover %}
-                <img src="{{ cover.thumbnail.url }}"
-                  alt="{{ cover }}"
-                  height="auto"
-                  width="150"
-                  title="{{ book }}">
-              {% endwith %}
-            {% else %}
-              <div class="no-cover">
-                {# https://remixicon.com/icon/book-line #}
-                <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
-              </div>
-            {% endif %}
-          </a>
-          <div class="title" title="{{ book }}">{{ book }}</div>
-          <div class="actions">
-            {% if book.status|get_previous_status != None %}
-              <form action="{% url 'book_update' book.pk %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="status_change" value="true">
-                <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
-                {{ form }}
-                <button class="svg previous-status">Previous status</button>
-              </form>
-            {% else %}
-              <span class="empty left"></span>
-            {% endif %}
-            <button class="svg adjust-status" @click="openStatusModal = {{ book.id }}">
-              Adjust status
-            </button>
-            {% if book.status|get_next_status != None %}
-              <form action="{% url 'book_update' book.pk %}" method="post">
-                {% csrf_token %}
-                <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
-                <input type="hidden" name="status_change" value="true">
-                {{ form }}
-                <button class="svg next-status">Next status</button>
-              </form>
-            {% else %}
-                <span class="empty right"></span>
-            {% endif %}
-          </div>
-          {% include "components/status-modal.html" %}
-        </li>
-      {% endfor %}
-    </ul>
+            <a href="{% url 'book_detail' book.pk %}">
+              {% if book.covers.all %}
+                {% with book.covers.all|first as cover %}
+                  <img src="{{ cover.thumbnail.url }}"
+                    alt="{{ cover }}"
+                    height="auto"
+                    width="150"
+                    title="{{ book }}">
+                {% endwith %}
+              {% else %}
+                <div class="no-cover">
+                  {# https://remixicon.com/icon/book-line #}
+                  <svg class="book" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18.5V5C3 3.34315 4.34315 2 6 2H20C20.5523 2 21 2.44772 21 3V21C21 21.5523 20.5523 22 20 22H6.5C4.567 22 3 20.433 3 18.5ZM19 20V17H6.5C5.67157 17 5 17.6716 5 18.5C5 19.3284 5.67157 20 6.5 20H19ZM5 15.3368C5.45463 15.1208 5.9632 15 6.5 15H19V4H6C5.44772 4 5 4.44772 5 5V15.3368Z"></path></svg>
+                </div>
+              {% endif %}
+            </a>
+            <div class="title" title="{{ book }}">{{ book }}</div>
+            <div class="actions">
+              {% if book.status|get_previous_status != None %}
+                <form action="{% url 'book_update' book.pk %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="status_change" value="true">
+                  <input type="hidden" name="status" value="{{ book.status|get_previous_status }}">
+                  {{ form }}
+                  <button class="svg previous-status">Previous status</button>
+                </form>
+              {% else %}
+                <span class="empty left"></span>
+              {% endif %}
+              <button class="svg adjust-status" @click="openStatusModal = {{ book.id }}">
+                Adjust status
+              </button>
+              {% if book.status|get_next_status != None %}
+                <form action="{% url 'book_update' book.pk %}" method="post">
+                  {% csrf_token %}
+                  <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
+                  <input type="hidden" name="status_change" value="true">
+                  {{ form }}
+                  <button class="svg next-status">Next status</button>
+                </form>
+              {% else %}
+                  <span class="empty right"></span>
+              {% endif %}
+            </div>
+            {% include "components/status-modal.html" %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <div class="blank-state">
+        <p>No books found. <a href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">Add one!</a></p>
+      </div>
+    {% endif %}
 
     <div id="ajax-pagination">
       {% if page_obj.has_other_pages %}
