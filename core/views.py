@@ -12,7 +12,7 @@ from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
-from django.db import models
+from django.db import IntegrityError, models
 from django.db.models import Q, OuterRef, Exists, Subquery
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
@@ -224,8 +224,21 @@ def book_new(request):
             if (olid := request.POST.get("olid")) != "":
                 book.olid = olid
 
-            book.save()
-            form.save_m2m()
+            try:
+                book.save()
+                form.save_m2m()
+            except IntegrityError:
+                form.add_error("title", "You already have a book with this title")
+                return render(
+                    request,
+                    "book_form.html",
+                    {
+                        "form": form,
+                        "olid": book.olid,
+                        "cover": "",
+                        "action": "new",
+                    },
+                )
 
             if cover := request.POST.get("cover"):
                 new_cover = BookCover.objects.create(
