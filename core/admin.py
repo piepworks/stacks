@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 from django.urls import reverse
 from django.contrib.auth.models import Group
+from django.db.models import Count
 from .models import (
     User,
     Book,
@@ -48,9 +49,22 @@ class UserAdmin(DjangoUserAdmin):
             },
         ),
     )
-    list_display = ("email", "first_name", "last_name", "is_staff")
-    search_fields = ("email", "first_name", "last_name")
-    ordering = ("email",)
+    list_display = ("email", "book_count", "last_login")
+    search_fields = ("email",)
+    ordering = ("-last_login",)
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        qs = qs.annotate(
+            _book_count=Count("books", distinct=True),
+        )
+        return qs
+
+    def book_count(self, obj):
+        return obj._book_count
+
+    book_count.admin_order_field = "_book_count"
+    book_count.short_description = "Books"
 
 
 class BookCoverInline(admin.TabularInline):
