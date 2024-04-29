@@ -7,7 +7,6 @@ from django.conf import settings
 from django.urls import reverse
 from django.http import FileResponse, Http404
 from django.contrib.auth.decorators import login_required
-from django.contrib.sites.shortcuts import get_current_site
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_control
@@ -709,10 +708,8 @@ def register(request):
             login(request, user)
 
             send_email_to_admin(
-                subject="New Stacks user!",
-                message=f"""{email} signed up!\n
-                    https://{get_current_site(request)}{reverse('admin:core_user_changelist')}
-                """,
+                subject=f"New Stacks user: {email}",
+                message="EOM",
             )
 
             return redirect("index")
