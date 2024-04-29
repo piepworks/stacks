@@ -699,7 +699,7 @@ def register(request):
             login(request, user)
 
             send_email_to_admin(
-                subject="New portainer_stack user!",
+                subject="New Stacks user!",
                 message=f"""{email} signed up!\n
                     https://{get_current_site(request)}{reverse('admin:core_user_changelist')}
                 """,
