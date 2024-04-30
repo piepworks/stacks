@@ -10,9 +10,13 @@ class FlyDomainRedirectMiddleware:
 
     def __call__(self, request):
         host = request.get_host().partition(":")[0]
-        if host == "tp-stacks.fly.dev" or host == "66.241.124.244":
+        if (
+            host == "tp-stacks.fly.dev"
+            or host == "stacks.treypiepmeier.com"
+            or host == "66.241.124.244"
+        ):
             return HttpResponsePermanentRedirect(
-                "https://stacks.treypiepmeier.com" + request.path
+                "https://bookstacks.app" + request.path
             )
         else:
             return self.get_response(request)
