@@ -23,10 +23,12 @@ class BookForm(forms.ModelForm):
         self.fields["genre"] = GroupedModelChoiceField(
             queryset=self.fields["genre"].queryset.order_by("parent", "name"),
             choices_groupby="parent",
+            required=False,
         )
         self.fields["type"] = GroupedModelChoiceField(
             queryset=self.fields["type"].queryset.order_by("parent", "name"),
             choices_groupby="parent",
+            required=False,
         )
 
     class Meta:
