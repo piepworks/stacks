@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import MultipleHiddenInput
 from .models import User, Book, BookCover, BookReading, BookNote, Author
+from .fields import GroupedModelChoiceField
 
 
 class RegisterForm(UserCreationForm):
@@ -19,6 +20,14 @@ class BookForm(forms.ModelForm):
         self.fields["author"].label = "Author(s)"
         self.fields["author"].queryset = Author.objects.filter(user=self.user)
         self.fields["location"].label = "Location(s)"
+        self.fields["genre"] = GroupedModelChoiceField(
+            queryset=self.fields["genre"].queryset.order_by("parent", "name"),
+            choices_groupby="parent",
+        )
+        self.fields["type"] = GroupedModelChoiceField(
+            queryset=self.fields["type"].queryset.order_by("parent", "name"),
+            choices_groupby="parent",
+        )
 
     class Meta:
         model = Book

@@ -121,7 +121,7 @@ class BookTypeAdmin(admin.ModelAdmin):
 
 class BookGenreAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
-    list_display = ("name", "slug")
+    list_display = ("__str__", "slug")
 
 
 class BookFormatAdmin(admin.ModelAdmin):
