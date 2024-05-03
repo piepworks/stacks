@@ -26,6 +26,7 @@ pre-commit
 pytest-cov
 pytest-django
 pytest-xdist
+pytz
 requests
 sentry-sdk
 whitenoise

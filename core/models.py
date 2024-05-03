@@ -12,6 +12,7 @@ from django.core.files import File
 from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
+from django.conf import settings
 from imagekit.models import ImageSpecField, ProcessedImageField
 from imagekit.processors import ResizeToFit
 from core.image_helpers import rename_image
@@ -56,6 +57,13 @@ class User(AbstractUser):
 
     username = None
     email = models.EmailField(_("email address"), unique=True)
+    timezone = models.CharField(
+        max_length=40,
+        blank=True,
+        choices=settings.TIME_ZONES,
+        default=settings.TIME_ZONE,
+    )
+
     # Add more fields here.
 
     objects = UserManager()
