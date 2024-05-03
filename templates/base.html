@@ -29,6 +29,7 @@
             {% if user.is_superuser %}
               <li><a class="svg admin" href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}
+            <li><a class="svg settings" href="{% url 'settings' %}">Settings</a></li>
             <li>
               <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
                 {% csrf_token %}

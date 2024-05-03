@@ -24,6 +24,7 @@ from .forms import (
     BookCoverForm,
     BookNoteForm,
     AuthorForm,
+    SettingsForm,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -698,6 +699,21 @@ def note_delete(request, pk, note_pk):
 # ----------------------------------
 # Standard stuff unrelated to books:
 # ----------------------------------
+
+
+@login_required
+def user_settings(request):
+    if request.method == "POST":
+        form = SettingsForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Settings updated")
+            return redirect("settings")
+    else:
+        form = SettingsForm(instance=request.user)
+        context = {"form": form}
+        return render(request, "settings.html", context)
 
 
 @require_GET

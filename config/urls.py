@@ -69,6 +69,8 @@ urlpatterns = [
         views.note_delete,
         name="note_delete",
     ),
+    # User settings
+    path("settings", views.user_settings, name="settings"),
     # Boilerplate
     # -----------
     path("favicon.ico", views.favicon),

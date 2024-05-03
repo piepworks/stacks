@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Your settings{% endblock title %}
+
+{% block content %}
+  <h1>Your settings</h1>
+
+  <form method="post">
+    {% csrf_token %}
+    {% for field in form %}
+      <div>
+        <label>
+          {{ field.as_field_group }}
+        </label>
+      </div>
+      <input type="submit" value="Save">
+    {% endfor %}
+  </form>
+{% endblock content %}
