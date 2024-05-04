@@ -120,4 +120,7 @@ class AuthorForm(forms.ModelForm):
 class SettingsForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("timezone",)
+        fields = (
+            "email",
+            "timezone",
+        )

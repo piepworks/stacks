@@ -710,6 +710,9 @@ def user_settings(request):
             form.save()
             messages.success(request, "Settings updated")
             return redirect("settings")
+        else:
+            context = {"form": form}
+            return render(request, "settings.html", context)
     else:
         form = SettingsForm(instance=request.user)
         context = {"form": form}
