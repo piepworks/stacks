@@ -3,8 +3,8 @@
 <nav class="status">
   <ol>
     {% for s in statuses %}
-      <li {% if s.0 == status.slug %}class="active"{% endif %}>
-        <a href="{% url 'status' status=s.0 %}">
+      <li{% if s.0 == status.slug %} class="active"{% endif %}>
+        <a href="{% url 'status' status=s.0 %}"{% if s.0 == status.slug %} aria-current="page"{% endif %}>
           {{ s.1 }}
           {% if status_counts|get_item:s.0 != None %}<small>({{ status_counts|get_item:s.0 }})</small>{% endif %}
         </a>
