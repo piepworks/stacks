@@ -21,7 +21,7 @@
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
       {% if user.is_authenticated %}
-        <nav>
+        <nav class="settings">
           <ul>
             <li><a class="svg stack" href="{% block stack_link %}{% url 'status' 'reading' %}{% endblock stack_link %}">Stacks</a></li>
           </ul>
@@ -29,7 +29,10 @@
             {% if user.is_superuser %}
               <li><a class="svg admin" href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}
-            <li><a class="svg settings" href="{% url 'settings' %}">Settings</a></li>
+            {% url 'settings' as settings_url %}
+            <li{% if request.path == settings_url %} class="active"{% endif %}>
+              <a{% if request.path == settings_url %} aria-current="page"{% endif %} class="svg settings" href="{% url 'settings' %}">Settings</a>
+            </li>
             <li>
               <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
                 {% csrf_token %}

@@ -1,4 +1,22 @@
-nav ol {
+nav.settings {
+  .active a {
+    background-color: black;
+
+    &:hover {
+      background-color: black;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      background-color: white;
+
+      &:hover {
+        background-color: white;
+      }
+    }
+  }
+}
+
+nav.status ol {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
 
