@@ -29,22 +29,24 @@
   {% if book.covers.all %}
     <section class="covers">
       {% for cover in book.covers.all %}
-        <div>
-          <a href="{{ cover.image.url }}" target="_blank">
-            <img src="{{ cover.image.url }}"
-              width="300"
-              height="auto"
-              alt="{{ cover }}"
-              title="{{ book }}">
-          </a>
-          <div class="actions">
-            <a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a>
-            <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
-              {% csrf_token %}
-              <button class="svg delete">Delete</button>
-            </form>
+        {% if cover.image %}
+          <div>
+            <a href="{{ cover.image.url }}" target="_blank">
+              <img src="{{ cover.image.url }}"
+                width="300"
+                height="auto"
+                alt="{{ cover }}"
+                title="{{ book }}">
+            </a>
+            <div class="actions">
+              <a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a>
+              <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
+                {% csrf_token %}
+                <button class="svg delete">Delete</button>
+              </form>
+            </div>
           </div>
-        </div>
+        {% endif %}
       {% endfor %}
       <div class="another">
         <a class="svg add-item" href="{% url 'cover_new' book.pk %}">Add cover</a>
