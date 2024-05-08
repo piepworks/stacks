@@ -60,8 +60,8 @@ button.svg {
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M13 9H21L11 24V15H4L13 0V9ZM11 11V7.22063L7.53238 13H13V17.3944L17.263 11H11Z'%3E%3C/path%3E%3C/svg%3E")
       no-repeat;
-    padding: 1rem;
     background-color: rgb(255, 191, 0); /* amber-200 */
+    margin-bottom: -1rem;
 
     &:hover {
       background-color: black;
