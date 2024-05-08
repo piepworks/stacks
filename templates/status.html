@@ -27,7 +27,7 @@
             <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-filter-toggle ajax-books ajax-pagination" href="{{ request.path }}">Reset filters</a></p>
           {% endif %}
           <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
-          <button title="Toggle filters" class="svg" :class="{'filter': openFilters, 'no-filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
+          <button title="Toggle filters" class="svg" :class="{'no-filter': openFilters, 'filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
         </div>
       {% endif %}
     </header>

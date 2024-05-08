@@ -136,6 +136,7 @@ button.svg {
   }
 
   &.filter {
+    padding: 0.75rem;
     /* https://remixicon.com/icon/filter-line */
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M21 4V6H20L15 13.5V22H9V13.5L4 6H3V4H21ZM6.4037 6L11 12.8944V20H13V12.8944L17.5963 6H6.4037Z'%3E%3C/path%3E%3C/svg%3E")
@@ -143,6 +144,7 @@ button.svg {
   }
 
   &.no-filter {
+    padding: 0.75rem;
     /* https://remixicon.com/icon/filter-off-line */
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M6.92893 0.514648L21.0711 14.6568L19.6569 16.071L15.834 12.2486L15 13.4999V21.9999H9V13.4999L4 5.99993H3V3.99993L7.585 3.99965L5.51472 1.92886L6.92893 0.514648ZM9.585 5.99965L6.4037 5.99993L11 12.8944V19.9999H13V12.8944L14.392 10.8066L9.585 5.99965ZM21 3.99993V5.99993H20L18.085 8.87193L16.643 7.42893L17.5963 5.99993H15.213L13.213 3.99993H21Z'%3E%3C/path%3E%3C/svg%3E")
