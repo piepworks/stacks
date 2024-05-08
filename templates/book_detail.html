@@ -21,6 +21,7 @@
           <a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a>
         {% endif %}
         <a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a>
+        <button class="svg archive" formaction="{% url 'book_archive' book.pk %}" onclick="return confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to talk to Trey.')">Archive</button>
         <button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button>
       </div>
     </form>
