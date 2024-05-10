@@ -74,6 +74,7 @@
       {% endblock footer %}
     </footer>
 
+    {% django_htmx_script %}
     {% block page_js %}{% endblock page_js %}
     {% if user.is_authenticated and not debug %}
       <!-- Download Canny SDK -->
