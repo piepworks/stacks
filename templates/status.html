@@ -16,23 +16,31 @@
 {% block content %}
   <div x-data="bookList">
     <header class="actions-inline">
-      <div>
+      <div x-data="{
+        close() {
+          $refs.addBook.close();
+        },
+        closeFromEvent(event) {
+          if (event.currentTarget === event.target) {
+            $refs.addBook.close();
+          }
+        },
+      }">
         <h1>{{ status.name }}</h1>
-        <a class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">add another</a>
+        <a @click.prevent="$refs.addBook.showModal()" class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a>
+        {% include "components/add-book-modal.html" %}
       </div>
 
       {% if forms %}
         <div id="ajax-filter-toggle" class="filter-toggle">
           {% if filter_request %}
-            <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a x-init x-target.replace="ajax-filter-toggle ajax-filters-form ajax-filter-toggle ajax-books ajax-pagination" href="{{ request.path }}">Reset filters</a></p>
+            <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a x-init href="{{ request.path }}">Reset filters</a></p>
           {% endif %}
           <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
           <button title="Toggle filters" class="svg" :class="{'no-filter': openFilters, 'filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
         </div>
       {% endif %}
     </header>
-
-    {% include "components/add-book-modal.html" %}
 
     {% if finished_counts %}
       <dl class="finished-counts overflow-auto">
@@ -50,9 +58,18 @@
     {% include "components/book-filters.html" %}
 
     {% if forms %}
-      <ul id="ajax-books">
+      <ul>
         {% for book, form in forms %}
-          <li>
+          <li x-data="{
+            close() {
+              $refs.statusModal_{{ book.id }}.close();
+            },
+            closeFromEvent(event) {
+              if (event.currentTarget === event.target) {
+                $refs.statusModal_{{ book.id }}.close();
+              }
+            },
+          }">
             {% if status.slug == 'reading' %}
               {% if book.readings.all %}
                 {% with book.readings.all|first as reading %}
@@ -104,7 +121,7 @@
               {% else %}
                 <span class="empty left"></span>
               {% endif %}
-              <button class="svg adjust-status" @click="openStatusModal = {{ book.id }}" title="Adjust status">
+              <button class="svg adjust-status" @click="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
                 Adjust status
               </button>
               {% if book.status|get_next_status != None %}
@@ -125,7 +142,7 @@
       </ul>
     {% else %}
       <div class="blank-state">
-        <p>No books found. <a href="{% url 'book_new' %}?status={{ status.slug }}" @click.prevent="openNewBookModal = true">Add one!</a></p>
+        <p>No books found. <a href="{% url 'book_new' %}?status={{ status.slug }}" >Add one!</a></p>
       </div>
     {% endif %}
 
@@ -168,8 +185,6 @@
 <script>
   document.addEventListener('alpine:init', () => {
     Alpine.data('bookList', () => ({
-      openStatusModal: null,
-      openNewBookModal: false,
       openFilters: false,
       init() {
         document.documentElement.classList.add('alpine');

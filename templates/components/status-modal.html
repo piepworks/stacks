@@ -1,7 +1,7 @@
-<dialog x-show="openStatusModal === {{ book.id }}" x-htmldialog="openStatusModal = null" x-transition>
-  <article @click.outside="openStatusModal = null">
+<dialog @click="closeFromEvent(event)" x-ref="statusModal_{{ book.id }}">
+  <article>
     <header>
-      <button aria-label="Close" rel="prev" @click="openStatusModal = null"></button>
+      <button aria-label="Close" rel="prev" @click="close()"></button>
       <p>
         <b>Adjust status for {{ book.title }}</b>
       </p>

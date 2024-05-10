@@ -175,6 +175,10 @@ main header:not(dialog header) {
       align-items: center;
     }
 
+    dialog form {
+      display: block;
+    }
+
     form {
       gap: 0.25rem;
     }

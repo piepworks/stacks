@@ -1,9 +1,9 @@
-<dialog x-show="openNewBookModal" x-htmldialog="openNewBookModal = false" x-transition>
-  <article @click.outside="openNewBookModal = false">
+<dialog @click="closeFromEvent(event)" x-ref="addBook">
+  <article>
     <header>
       <button aria-label="Close"
               rel="prev"
-              @click="openNewBookModal = false"></button>
+              @click="close()"></button>
       <p><b>Search to add a book to “{{ status.name }}”</b></p>
       <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
     </header>
