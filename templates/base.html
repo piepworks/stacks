@@ -72,6 +72,7 @@
       {% endblock footer %}
     </footer>
 
+    <script src="{% static 'js/vendor/htmx-1.9.11.min.js' %}" defer></script>
     {% django_htmx_script %}
     {% block page_js %}{% endblock page_js %}
     {% if user.is_authenticated and not debug %}

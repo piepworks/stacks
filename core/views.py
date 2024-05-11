@@ -210,7 +210,10 @@ def status(request, status):
         "filtered_books_count": books_count,
     }
 
-    return render(request, "status.html", context)
+    if request.htmx:
+        return render(request, "components/book-list.html", context)
+    else:
+        return render(request, "status.html", context)
 
 
 @login_required

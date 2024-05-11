@@ -1,5 +1,5 @@
 {% load get_item filter_matches_any %}
-<form x-cloak x-show="openFilters" method="get" action="{% url 'status' status.slug %}" @change="$el.requestSubmit()" x-transition>
+<form x-cloak x-show="openFilters" method="get" action="{% url 'status' status.slug %}" hx-get="{% url 'status' status.slug %}" hx-trigger="change" hx-target="#book-list" x-transition>
   <dl id="ajax-filters" class="filters">
     <div>
       <dt>Types</dt>
