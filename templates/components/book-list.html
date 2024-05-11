@@ -6,6 +6,7 @@
   hx-ext="alpine-morph"
   hx-swap="morph"
   hx-push-url="true"
+  hx-indicator=".htmx-indicator"
   x-data="{
     openFilters: false,
     topOfList() {
@@ -144,7 +145,7 @@
   {% endif %}
 
   {% if page_obj.has_other_pages %}
-    <div id="ajax-pagination">
+    <div class="pagination">
       {% if page_obj.has_previous %}
       <form method="post"
         action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}"
@@ -152,7 +153,8 @@
         @htmx:after-request="topOfList">
         {% csrf_token %}
         <button>
-          Previous
+          <div>Previous</div>
+          {% include "components/htmx-indicator.html" %}
         </button>
       </form>
       {% else %}
@@ -168,7 +170,8 @@
         @htmx:after-request="topOfList">
         {% csrf_token %}
         <button>
-          Next
+          <div>Next</div>
+          {% include "components/htmx-indicator.html" %}
         </button>
       </form>
       {% else %}

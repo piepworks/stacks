@@ -406,3 +406,62 @@ td small {
     margin: 0;
   }
 }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.htmx-indicator {
+  display: none;
+  justify-content: center;
+
+  .htmx-request& {
+    display: flex;
+  }
+
+  svg {
+    fill: white; /* moving part */
+    color: rgb(255 255 255 / 25%); /* circle */
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .htmx-indicator {
+    svg {
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+}
