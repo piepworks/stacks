@@ -643,7 +643,7 @@ def note_new(request, pk):
             note.book = book
             note.save()
             messages.success(request, "Note added")
-            return redirect(book.get_absolute_url())
+            return redirect(book.get_absolute_url() + "#heading-notes")
 
     else:
         form = BookNoteForm()
