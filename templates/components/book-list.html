@@ -1,6 +1,12 @@
 {% load get_next_status get_previous_status get_item days_ago %}
 
-<div hx-target="this" hx-ext="alpine-morph" hx-swap="morph" id="book-list" x-data="{ openFilters: false }">
+<div
+  id="book-list"
+  hx-target="this"
+  hx-ext="alpine-morph"
+  hx-swap="morph"
+  hx-push-url="true"
+  x-data="{ openFilters: false }">
   <header class="actions-inline">
     <div x-data="{
       close() {
