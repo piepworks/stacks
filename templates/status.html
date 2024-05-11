@@ -24,12 +24,7 @@
 {% block page_js %}
 <script>
   document.addEventListener('alpine:init', () => {
-    Alpine.data('bookList', () => ({
-      openFilters: false,
-      init() {
-        document.documentElement.classList.add('alpine');
-      }
-    }));
+    document.documentElement.classList.add('alpine');
   });
 </script>
 {% endblock page_js %}

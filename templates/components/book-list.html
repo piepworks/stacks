@@ -1,6 +1,6 @@
 {% load get_next_status get_previous_status get_item days_ago %}
 
-<div x-data="bookList" id="book-list">
+<div hx-target="this" hx-ext="alpine-morph" hx-swap="morph" id="book-list" x-data="{ openFilters: false }">
   <header class="actions-inline">
     <div x-data="{
       close() {
@@ -20,7 +20,7 @@
     {% if forms %}
       <div id="ajax-filter-toggle" class="filter-toggle">
         {% if filter_request %}
-          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a hx-get="{{ request.path }}" hx-target="#book-list" href="{{ request.path }}">Reset filters</a></p>
+          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a hx-get="{{ request.path }}" href="{{ request.path }}">Reset filters</a></p>
         {% endif %}
         <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
         <button title="Toggle filters" class="svg" :class="{'no-filter': openFilters, 'filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
