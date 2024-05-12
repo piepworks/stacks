@@ -139,7 +139,7 @@
           {% for reading in readings %}
             <tr>
               <td>{{ reading.start_date|date:"F j, Y" }}</td>
-              <td>{{ reading.end_date|date:"F j, Y"|default:'None' }}{% if reading.duration %} <small>({{ reading.duration }} days)</small>{% endif %}</td>
+              <td>{{ reading.end_date|date:"F j, Y"|default:'None' }}{% if reading.duration %} <small>({{ reading.duration }} day{{ reading.duration|pluralize }})</small>{% endif %}</td>
               <td>{{ reading.finished|yesno:"Yes,No" }}</td>
               <td>
                 {% if reading.rating %}

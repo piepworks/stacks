@@ -309,7 +309,8 @@ class BookReading(models.Model):
     @property
     def duration(self):
         if self.end_date:
-            return (self.end_date - self.start_date).days
+            # The minium duration is 1 day
+            return (self.end_date - self.start_date).days + 1
         return None
 
 
