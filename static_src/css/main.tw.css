@@ -1,3 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tw-base, pw-base, tw-components, pw-components, tw-utilities, pw-utilities;
+
+@layer tw-base {
+  @tailwind base;
+}
+
+@layer tw-components {
+  @tailwind components;
+}
+
+@layer tw-utilities {
+  @tailwind utilities;
+}
+
+@layer pw-base {
+  body {
+    background: theme('colors.pico-background-light');
+
+    @media (prefers-color-scheme: dark) {
+      background: theme('colors.pico-background-dark');
+    }
+  }
+}

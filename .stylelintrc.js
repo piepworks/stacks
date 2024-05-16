@@ -4,6 +4,7 @@ module.exports = {
     'declaration-empty-line-before': 'never',
     'no-descending-specificity': null,
     'media-feature-range-notation': null,
+    'function-no-unknown': [true, { ignoreFunctions: ['theme'] }],
     'at-rule-no-unknown': [
       true,
       {
