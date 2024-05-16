@@ -35,6 +35,7 @@ update-a-package package:
   .venv/bin/python -m pip install -r requirements/requirements.txt
 
 build-static-files:
+  .venv/bin/python manage.py tailwind build
   .venv/bin/python manage.py collectstatic --noinput
 
 generate-django-key:

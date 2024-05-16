@@ -4,6 +4,18 @@ module.exports = {
     'declaration-empty-line-before': 'never',
     'no-descending-specificity': null,
     'media-feature-range-notation': null,
+    'at-rule-no-unknown': [
+      true,
+      {
+        ignoreAtRules: [
+          'tailwind',
+          'apply',
+          'variants',
+          'responsive',
+          'screen',
+        ],
+      },
+    ],
   },
   ignoreFiles: ['static_src/css/vendor/**'],
 };

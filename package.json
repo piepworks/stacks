@@ -6,9 +6,9 @@
   "private": true,
   "scripts": {
     "dj": ".venv/bin/python manage.py runserver",
-    "build:postcss": "NODE_ENV=production postcss static_src/css/main.css -o static/css/main.css",
-    "watch:postcss": "postcss static_src/css/main.css -o static/css/main.css --watch --verbose",
-    "dev": "npm-run-all --parallel watch:postcss dj",
+    "watch:tailwind": "postcss static_src/css/main.tw.css -o static/css/main.css --watch --verbose",
+    "build:tailwind": "NODE_ENV=production postcss static_src/css/main.tw.css -o static/css/main.css",
+    "dev": "npm-run-all --parallel watch:tailwind dj",
     "build": "npm-run-all build:*"
   },
   "devDependencies": {
