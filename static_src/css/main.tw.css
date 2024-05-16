@@ -13,11 +13,5 @@
 }
 
 @layer pw-base {
-  body {
-    background: theme('colors.pico-background-light');
-
-    @media (prefers-color-scheme: dark) {
-      background: theme('colors.pico-background-dark');
-    }
-  }
+  /* My stuff goes here */
 }
