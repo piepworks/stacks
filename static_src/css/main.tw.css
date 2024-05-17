@@ -1,3 +1,10 @@
+@import url('includes/buttons.css') layer(pw-components);
+@import url('includes/navigation.css') layer(pw-components);
+@import url('includes/filters.css') layer(pw-components);
+@import url('includes/notes.css') layer(pw-components);
+@import url('includes/stars.css') layer(pw-components);
+@import url('includes/tom-select.css') layer(pw-components);
+
 @layer tw-base, pw-base, tw-components, pw-components, tw-utilities, pw-utilities;
 
 @layer tw-base {
@@ -14,4 +21,8 @@
 
 @layer pw-base {
   /* My stuff goes here */
+}
+
+@layer pw-components {
+  /* See also any `@import`s with `layer(pw-components) */
 }
