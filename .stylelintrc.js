@@ -17,6 +17,7 @@ module.exports = {
         ],
       },
     ],
+    'media-query-no-invalid': null,
   },
   ignoreFiles: ['static_src/css/vendor/**'],
 };

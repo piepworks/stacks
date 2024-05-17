@@ -19,7 +19,15 @@
 }
 
 @layer pw-base {
-  /* My stuff goes here */
+  h1 {
+    font-size: theme('fontSize.2xl');
+    font-weight: theme('fontWeight.bold');
+    line-height: theme('spacing.7');
+
+    @media (min-width: theme('screens.sm')) {
+      font-size: theme('fontSize.3xl');
+    }
+  }
 }
 
 @layer pw-components {
