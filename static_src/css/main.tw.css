@@ -3,7 +3,6 @@
 @import url('includes/filters.css') layer(pw-components);
 @import url('includes/notes.css') layer(pw-components);
 @import url('includes/stars.css') layer(pw-components);
-@import url('includes/tom-select.css') layer(pw-components);
 
 @layer tw-base, pw-base, tw-components, pw-components, tw-utilities, pw-utilities;
 
@@ -25,4 +24,31 @@
 
 @layer pw-components {
   /* See also any `@import`s with `layer(pw-components) */
+  .finished-counts {
+    display: flex;
+    gap: 2rem;
+    margin: 2rem 0 3rem;
+
+    > div {
+      padding: 0.25rem 1rem;
+      border-radius: 0.3rem;
+      background: rgb(0 0 0 / 10%);
+
+      @media (prefers-color-scheme: dark) {
+        background: rgb(255 255 255 / 10%);
+      }
+    }
+
+    dt {
+      font-size: 1.5rem;
+      font-weight: bold;
+      font-style: italic;
+      opacity: 0.5;
+    }
+
+    dd {
+      margin: 0;
+      opacity: 0.75;
+    }
+  }
 }
