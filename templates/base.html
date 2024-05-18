@@ -22,11 +22,11 @@
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
       {% if user.is_authenticated %}
-        <nav class="settings">
+        <nav class="settings flex justify-between py-10">
           <ul>
             <li><a class="svg stack" href="{% block stack_link %}{% url 'status' 'reading' %}{% endblock stack_link %}">Stacks</a></li>
           </ul>
-          <ul>
+          <ul class="flex space-x-3">
             {% if user.is_superuser %}
               <li><a class="svg admin" href="{% url 'admin:index' %}">Admin</a></li>
             {% endif %}
