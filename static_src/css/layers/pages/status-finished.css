@@ -1,0 +1,27 @@
+.finished-counts {
+  display: flex;
+  gap: theme(spacing.8);
+  margin: theme(spacing.8) 0 theme(spacing.12);
+
+  > div {
+    padding: theme(spacing.1) theme(spacing.4);
+    border-radius: theme(borderRadius.md);
+    background: rgb(0 0 0 / 10%);
+
+    @media (prefers-color-scheme: dark) {
+      background: rgb(255 255 255 / 10%);
+    }
+  }
+
+  dt {
+    font-size: theme(spacing.6);
+    font-weight: bold;
+    font-style: italic;
+    opacity: 0.5;
+  }
+
+  dd {
+    margin: 0;
+    opacity: theme(spacing.3);
+  }
+}

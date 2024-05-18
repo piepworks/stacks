@@ -4,5 +4,7 @@
 @import 'tailwindcss/components';
 @import 'layers/components.css';
 
+@import 'layers/pages.css';
+
 @import 'tailwindcss/utilities';
 @import 'layers/utilities.css';

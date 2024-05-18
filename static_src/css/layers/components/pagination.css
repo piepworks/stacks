@@ -1,0 +1,22 @@
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: theme(spacing.8);
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: theme(spacing.2);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  .htmx-indicator {
+    svg {
+      height: theme(spacing.4);
+      width: theme(spacing.4);
+    }
+  }
+}

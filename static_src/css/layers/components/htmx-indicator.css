@@ -1,0 +1,23 @@
+.htmx-indicator {
+  display: none;
+  justify-content: center;
+
+  .htmx-request& {
+    display: flex;
+  }
+
+  svg {
+    fill: white; /* moving part */
+    color: rgb(255 255 255 / 25%); /* circle */
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}

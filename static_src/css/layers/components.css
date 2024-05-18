@@ -1,5 +1,7 @@
-@import '../components/navigation.css';
-@import '../components/filters.css';
-@import '../components/notes.css';
-@import '../components/stars.css';
-@import '../components/buttons.css';
+@import 'components/navigation';
+@import 'components/filters';
+@import 'components/notes';
+@import 'components/stars';
+@import 'components/buttons';
+@import 'components/pagination';
+@import 'components/htmx-indicator';
