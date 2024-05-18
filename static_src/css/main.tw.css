@@ -47,7 +47,7 @@
       padding: 0;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      grid-gap: 2rem;
+      grid-gap: theme(spacing.8);
     }
 
     li {
@@ -64,8 +64,8 @@
         width: 100%;
         text-overflow: ellipsis;
         white-space: nowrap;
-        font-size: 0.75rem;
-        padding: 0.5rem 0;
+        font-size: theme(spacing.3);
+        padding: theme(spacing.2) 0;
       }
 
       img,
@@ -88,7 +88,7 @@
       }
 
       .extra-info {
-        margin-bottom: 0.5rem;
+        margin-bottom: theme(spacing.2);
         font-style: italic;
         opacity: 0.5;
       }
@@ -109,10 +109,10 @@
         }
 
         span.empty {
-          padding: 0 0.5rem;
+          padding: 0 theme(spacing.2);
 
           &.right {
-            padding-right: 0.75rem;
+            padding-right: theme(spacing.3);
           }
         }
       }
@@ -122,7 +122,7 @@
   dialog .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: theme(spacing.4);
 
     @media (min-width: 576px) {
       grid-template-columns: repeat(3, 1fr);
@@ -130,9 +130,9 @@
   }
 
   .messages {
-    border-radius: 0.25rem;
-    padding: 0.5rem 1rem;
-    margin-top: 1rem;
+    border-radius: theme(borderRadius.DEFAULT);
+    padding: theme(spacing.2) theme(spacing.4);
+    margin-top: theme(spacing.1);
     background: #70fcba; /* Jade 100 */
 
     @media (prefers-color-scheme: dark) {
@@ -160,7 +160,7 @@
         margin: 0;
 
         & + & {
-          margin-top: 0.25rem;
+          margin-top: theme(spacing.1);
         }
       }
     }
@@ -168,12 +168,12 @@
 
   .finished-counts {
     display: flex;
-    gap: 2rem;
-    margin: 2rem 0 3rem;
+    gap: theme(spacing.8);
+    margin: theme(spacing.8) 0 theme(spacing.12);
 
     > div {
-      padding: 0.25rem 1rem;
-      border-radius: 0.3rem;
+      padding: theme(spacing.1) theme(spacing.4);
+      border-radius: theme(borderRadius.md);
       background: rgb(0 0 0 / 10%);
 
       @media (prefers-color-scheme: dark) {
@@ -182,7 +182,7 @@
     }
 
     dt {
-      font-size: 1.5rem;
+      font-size: theme(spacing.6);
       font-weight: bold;
       font-style: italic;
       opacity: 0.5;
@@ -190,13 +190,13 @@
 
     dd {
       margin: 0;
-      opacity: 0.75;
+      opacity: theme(spacing.3);
     }
   }
 
   main header:not(dialog header) {
-    gap: 1rem;
-    margin: 0 0 3rem;
+    gap: theme(spacing.4);
+    margin: 0 0 theme(spacing.12);
 
     @media screen(lg) {
       &,
@@ -211,27 +211,27 @@
       }
 
       form {
-        gap: 0.25rem;
+        gap: theme(spacing.1);
       }
     }
 
     a[role='button'],
     button {
-      padding: 0.25rem 1rem;
+      padding: theme(spacing.1) theme(spacing.4);
     }
 
     .svg {
-      padding: 1rem;
+      padding: theme(spacing.4);
     }
 
     .inner {
       display: flex;
-      gap: 1rem;
+      gap: theme(spacing.4);
       align-items: center;
     }
 
     &.actions-inline {
-      gap: 1rem;
+      gap: theme(spacing.4);
       justify-content: flex-start;
       align-items: flex-end;
 
@@ -240,7 +240,7 @@
       }
 
       .status & {
-        margin: 0 0 2rem;
+        margin: 0 0 theme(spacing.8);
       }
 
       h1,
@@ -249,8 +249,8 @@
       }
 
       .svg.add-item {
-        padding: 0.75rem;
-        margin-bottom: 0.25rem;
+        padding: theme(spacing.3);
+        margin-bottom: theme(spacing.1);
       }
 
       /* Filter toggle goodies */
@@ -260,16 +260,16 @@
 
       > div {
         display: flex;
-        gap: 1rem;
+        gap: theme(spacing.4);
         align-items: flex-end;
       }
 
       .filter-toggle {
         display: flex;
         align-items: flex-end;
-        margin-right: 1rem;
+        margin-right: theme(spacing.4);
         justify-content: flex-end;
-        gap: 0.5rem;
+        gap: theme(spacing.2);
 
         p {
           margin: 0;
@@ -279,29 +279,29 @@
 
     /* Sub-headings like "Readings" */
     section & {
-      margin: 0 0 1rem;
+      margin: 0 0 theme(spacing.4);
     }
   }
 
   fieldset > div + div {
-    margin-top: 2rem;
+    margin-top: theme(spacing.8);
   }
 
   fieldset > .checkbox,
   fieldset > .radio {
-    margin-top: 1rem;
+    margin-top: theme(spacing.4);
   }
 
   .covers {
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
-    gap: 1rem;
-    margin: 0 0 2rem;
+    gap: theme(spacing.4);
+    margin: 0 0 theme(spacing.8);
 
     img {
       border: 0.25rem solid rgb(0 0 0 / 20%);
-      border-radius: 0.5rem;
+      border-radius: theme(spacing.2);
 
       @media (prefers-color-scheme: dark) {
         border-color: rgb(255 255 255 / 20%);
@@ -322,27 +322,27 @@
     > div {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: theme(spacing.2);
     }
 
     .actions {
-      padding: 0 1rem;
+      padding: 0 theme(spacing.4);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      gap: theme(spacing.4);
     }
   }
 
   .no-cover {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: theme(spacing.4);
     align-items: center;
-    margin: 2rem 0;
+    margin: theme(spacing.8) 0;
     border: 0.25rem solid rgb(0 0 0 / 20%);
-    border-radius: 0.5rem;
-    padding: 1rem 1rem 2rem;
+    border-radius: theme(spacing.2);
+    padding: theme(spacing.4) theme(spacing.4) theme(spacing.8);
 
     @media (prefers-color-scheme: dark) {
       border-color: rgb(255 255 255 / 20%);
@@ -365,14 +365,14 @@
     .covers {
       display: flex;
       flex-flow: column wrap;
-      gap: 1rem;
+      gap: theme(spacing.4);
       align-items: center;
-      margin: 3rem 0;
+      margin: theme(spacing.12) 0;
 
       @media (min-width: 576px) {
         flex-direction: row;
-        gap: 2rem;
-        margin: 0 0 2rem;
+        gap: theme(spacing.8);
+        margin: 0 0 theme(spacing.8);
       }
 
       img {
@@ -390,11 +390,11 @@
   }
 
   .search-form {
-    margin: 3rem 0;
+    margin: theme(spacing.12) 0;
   }
 
   hr {
-    margin: 3rem 0;
+    margin: theme(spacing.12) 0;
   }
 
   .alpine [x-ignore] {
@@ -413,7 +413,7 @@
 
   #ajax-pagination {
     display: flex;
-    gap: 1rem;
+    gap: theme(spacing.4);
     align-items: center;
 
     p {
@@ -430,8 +430,8 @@
 
   .blank-state {
     background: var(--pico-text-selection-color);
-    padding: 3rem;
-    border-radius: 0.5rem;
+    padding: theme(spacing.12);
+    border-radius: theme(spacing.2);
 
     p:only-child {
       margin: 0;
@@ -477,12 +477,12 @@
   .pagination {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: theme(spacing.8);
 
     button {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: theme(spacing.2);
     }
 
     p {
@@ -491,51 +491,13 @@
 
     .htmx-indicator {
       svg {
-        height: 1rem;
-        width: 1rem;
+        height: theme(spacing.4);
+        width: theme(spacing.4);
       }
     }
   }
 }
 
 @layer pw-components {
-  .finished-counts {
-    display: flex;
-    gap: 2rem;
-    margin: 2rem 0 3rem;
-
-    > div {
-      padding: 0.25rem 1rem;
-      border-radius: 0.3rem;
-      background: rgb(0 0 0 / 10%);
-
-      @media (prefers-color-scheme: dark) {
-        background: rgb(255 255 255 / 10%);
-      }
-    }
-
-    dt {
-      font-size: 1.5rem;
-      font-weight: bold;
-      font-style: italic;
-      opacity: 0.5;
-    }
-
-    dd {
-      margin: 0;
-      opacity: 0.75;
-    }
-  }
-}
-
-@layer pw-utilities {
-  .alpine [x-ignore] {
-    display: none;
-  }
-
-  /* Don't show Alpine things until Alpine is ready */
-  [x-cloak] {
-    background: tomato;
-    display: none !important;
-  }
+  /* More stuff coming soon */
 }
