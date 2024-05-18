@@ -20,6 +20,7 @@ module.exports = {
     'media-query-no-invalid': null,
     'import-notation': null,
     'value-keyword-case': null,
+    'at-rule-empty-line-before': null,
   },
   ignoreFiles: ['static_src/css/vendor/**'],
 };
