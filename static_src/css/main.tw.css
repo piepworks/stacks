@@ -68,3 +68,15 @@
     }
   }
 }
+
+@layer pw-utilities {
+  .alpine [x-ignore] {
+    display: none;
+  }
+
+  /* Don't show Alpine things until Alpine is ready */
+  [x-cloak] {
+    background: tomato;
+    display: none !important;
+  }
+}

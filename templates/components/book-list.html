@@ -30,7 +30,7 @@
     </div>
 
     {% if forms %}
-      <div id="ajax-filter-toggle" class="filter-toggle">
+      <div class="filter-toggle">
         {% if filter_request %}
           <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a hx-get="{{ request.path }}" href="{{ request.path }}">Reset filters</a></p>
         {% endif %}
