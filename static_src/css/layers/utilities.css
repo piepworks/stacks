@@ -1,1 +1,37 @@
-/* TODO */
+small,
+.subdued {
+  color: theme('colors.gray.400');
+
+  @media (prefers-color-scheme: dark) {
+    color: theme('colors.indigo.500');
+  }
+}
+
+.subdued,
+a small,
+td small {
+  opacity: 0.5;
+}
+
+hr {
+  margin: theme(spacing.12) 0;
+  border-color: theme('colors.gray.300');
+
+  @media (prefers-color-scheme: dark) {
+    border-color: theme('colors.gray.700');
+  }
+}
+
+.alpine [x-ignore] {
+  display: none;
+}
+
+[x-cloak] {
+  /* Don't show Alpine things until Alpine is ready */
+  display: none !important;
+}
+
+[aria-busy]::before {
+  /* https://alpine-ajax.js.org/examples/loading/ */
+  display: none !important;
+}

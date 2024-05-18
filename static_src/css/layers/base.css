@@ -8,15 +8,6 @@ h1 {
   }
 }
 
-small,
-.subdued {
-  color: theme('colors.gray.400');
-
-  @media (prefers-color-scheme: dark) {
-    color: theme('colors.indigo.500');
-  }
-}
-
 .ol-results main,
 .search main,
 .status main,
@@ -105,43 +96,6 @@ dialog .grid {
 
   @media (min-width: 576px) {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.messages {
-  border-radius: theme(borderRadius.DEFAULT);
-  padding: theme(spacing.2) theme(spacing.4);
-  margin-top: theme(spacing.1);
-  background: #70fcba; /* Jade 100 */
-
-  @media (prefers-color-scheme: dark) {
-    background: #00b478; /* Jade 350 */
-  }
-
-  ul {
-    color: #005f3d; /* Jade 650 */
-    margin: 0;
-
-    @media (prefers-color-scheme: dark) {
-      color: #042c1b; /* Jade 850 */
-    }
-
-    &:has(:only-child) {
-      padding: 0;
-
-      li {
-        list-style: none;
-        margin-bottom: 0;
-      }
-    }
-
-    li {
-      margin: 0;
-
-      & + & {
-        margin-top: theme(spacing.1);
-      }
-    }
   }
 }
 
@@ -372,24 +326,6 @@ fieldset > .radio {
   margin: theme(spacing.12) 0;
 }
 
-hr {
-  margin: theme(spacing.12) 0;
-}
-
-.alpine [x-ignore] {
-  display: none;
-}
-
-/* Don't show Alpine things until Alpine is ready */
-[x-cloak] {
-  display: none !important;
-}
-
-[aria-busy]::before {
-  /* https://alpine-ajax.js.org/examples/loading/ */
-  display: none !important;
-}
-
 #ajax-pagination {
   display: flex;
   gap: theme(spacing.4);
@@ -399,12 +335,6 @@ hr {
     opacity: 0.5;
     margin: 0;
   }
-}
-
-.subdued,
-a small,
-td small {
-  opacity: 0.5;
 }
 
 .blank-state {

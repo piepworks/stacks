@@ -1,5 +1,5 @@
-@import '../includes/navigation.css';
-@import '../includes/filters.css';
-@import '../includes/notes.css';
-@import '../includes/stars.css';
-@import '../includes/buttons.css';
+@import '../components/navigation.css';
+@import '../components/filters.css';
+@import '../components/notes.css';
+@import '../components/stars.css';
+@import '../components/buttons.css';
