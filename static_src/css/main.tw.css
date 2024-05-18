@@ -51,11 +51,9 @@
     }
 
     li {
-      list-style: none;
       display: flex;
       flex-direction: column;
       width: 150px;
-      text-overflow: ellipsis;
 
       &:hover .actions {
         opacity: 1;
@@ -99,9 +97,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        transition: opacity var(--pico-transition);
+        transition: opacity theme('transitionDuration.150')
+          theme('transitionTimingFunction.DEFAULT');
 
-        @media (min-width: 1024px) {
+        @media screen(lg) {
           opacity: 0;
         }
 
@@ -199,7 +198,7 @@
     gap: 1rem;
     margin: 0 0 3rem;
 
-    @media (min-width: 1024px) {
+    @media screen(lg) {
       &,
       form {
         display: flex;
