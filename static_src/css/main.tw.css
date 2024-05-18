@@ -1,8 +1,8 @@
-@import url('includes/buttons.css') layer(pw-components);
-@import url('includes/navigation.css') layer(pw-components);
-@import url('includes/filters.css') layer(pw-components);
-@import url('includes/notes.css') layer(pw-components);
-@import url('includes/stars.css') layer(pw-components);
+@import 'includes/navigation.css';
+@import 'includes/filters.css';
+@import 'includes/notes.css';
+@import 'includes/stars.css';
+@import 'includes/buttons.css';
 
 @layer tw-base, pw-base, tw-components, pw-components, tw-utilities, pw-utilities;
 
@@ -28,10 +28,18 @@
       font-size: theme('fontSize.3xl');
     }
   }
+
+  small,
+  .subdued {
+    color: theme('colors.gray.400');
+
+    @media (prefers-color-scheme: dark) {
+      color: theme('colors.indigo.500');
+    }
+  }
 }
 
 @layer pw-components {
-  /* See also any `@import`s with `layer(pw-components) */
   .finished-counts {
     display: flex;
     gap: 2rem;

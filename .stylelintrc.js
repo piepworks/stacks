@@ -18,6 +18,7 @@ module.exports = {
       },
     ],
     'media-query-no-invalid': null,
+    'import-notation': null,
   },
   ignoreFiles: ['static_src/css/vendor/**'],
 };

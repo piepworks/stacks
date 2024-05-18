@@ -1,24 +1,25 @@
 button.link {
   background: none;
   border: none;
-  color: var(--pico-primary);
+  color: theme('colors.gray.200');
   cursor: pointer;
   padding: 0;
 
   &:hover {
-    color: var(--pico-primary-hover);
+    color: theme('colors.gray.400');
     text-decoration: underline;
   }
 }
 
 a.svg,
-button.svg {
+button.svg,
+button[role='button'].svg {
   font-size: 0;
   padding: 0.75rem;
-  background-color: var(--pico-primary);
+  background-color: theme('colors.indigo.400');
 
   &:hover {
-    background-color: var(--pico-primary-hover);
+    background-color: theme('colors.indigo.200');
   }
 
   &.stack {

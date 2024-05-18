@@ -1,6 +1,6 @@
 {% load get_item %}
 
-<nav class="status">
+<nav class="status mb-10">
   <ol>
     {% for s in statuses %}
       <li{% if s.0 == status.slug %} class="active"{% endif %}>
