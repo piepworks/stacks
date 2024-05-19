@@ -1,10 +1,19 @@
-<dialog @click="closeFromEvent(event)" x-ref="statusModal_{{ book.id }}">
-  <article>
-    <header>
-      <button aria-label="Close" rel="prev" @click="close()"></button>
-      <p>
-        <b>Adjust status for {{ book.title }}</b>
-      </p>
+<dialog @click="closeFromEvent(event)" x-ref="statusModal_{{ book.id }}" class="modal">
+  <div class="modal-box">
+    <form
+      id="archive-book-{{ book.pk }}"
+      action="{% url 'book_archive' book.pk %}"
+      method="post"
+      @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
+        {% csrf_token %}
+    </form>
+
+    <form method="dialog">
+      <button aria-label="close" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+
+    <header class="mb-8">
+      <h3 class="text-left font-bold">Adjust status for {{ book.title }}</h3>
     </header>
     <form method="post" action="{% url 'book_update' book.pk %}">
       {% csrf_token %}
@@ -12,23 +21,23 @@
       <fieldset>
         <div class="grid">
           {% for status in statuses %}
-            <label>
+            <label class="flex items-center space-x-2">
               <input type="radio"
+                     class="radio radio-primary"
                      name="status"
                      value="{{ status.0 }}"
                      {% if book.status == status.0 %}checked autofocus{% endif %}>
-              {{ status.1 }}
+              <span>{{ status.1 }}</span>
             </label>
           {% endfor %}
         </div>
         {{ form }}
       </fieldset>
-      <button type="submit">Save</button>
-    </form>
 
-    <form action="{% url 'book_archive' book.pk %}" method="post" @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
-      {% csrf_token %}
-      <button class="svg archive" title="Archive this book">Archive</button>
+      <div class="modal-action items-center space-x-4 mt-8">
+        <button form="archive-book-{{ book.pk }}" class="svg archive" title="Archive this book">Archive</button>
+        <button class="btn btn-primary" type="submit">Save</button>
+      </div>
     </form>
-  </article>
+  </div>
 </dialog>
