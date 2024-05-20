@@ -10,6 +10,7 @@ playwright.env
 node_modules/
 staticfiles/
 static/css/main.css
+static/js/main.min.js
 htmlcov/
 .coverage
 .test_project/
