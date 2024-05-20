@@ -61,7 +61,6 @@ INSTALLED_APPS += [
     "django_extensions",
     "django_htmx",
     "imagekit",
-    "django_vite",
 ]
 
 # Our apps
@@ -218,10 +217,3 @@ filterwarnings(
 FORMS_URLFIELD_ASSUME_HTTPS = True
 
 BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS.extend(["p", "hr"])
-
-DJANGO_VITE = {
-    "default": {
-        "dev_mode": env.bool("DJANGO_VITE_DEV_MODE", default=False),
-        "dev_server_port": env("DJANGO_VITE_DEV_SERVER_PORT", default="5173"),
-    }
-}

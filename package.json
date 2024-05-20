@@ -8,10 +8,8 @@
     "dj": ".venv/bin/python manage.py runserver",
     "watch:tailwind": "postcss static_src/css/main.tw.css -o static/css/main.css --watch --verbose",
     "build:tailwind": "NODE_ENV=production postcss static_src/css/main.tw.css -o static/css/main.css",
-    "watch:vite": "vite -d",
-    "build:vite": "vite build",
-    "dev": "vite build && npm-run-all --parallel watch:tailwind dj",
-    "build": "npm--run-all build:*"
+    "dev": "npm-run-all --parallel watch:tailwind dj",
+    "build": "npm-run-all build:*"
   },
   "devDependencies": {
     "@playwright/test": "^1.36.0",
@@ -21,7 +19,6 @@
     "daisyui": "^4.11.1",
     "dotenv": "^16.3.1",
     "eslint": "^9.0.0",
-    "htmx.org": "^1.9.12",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.4.24",
     "postcss-cli": "^11.0.0",
@@ -30,7 +27,6 @@
     "prettier": "^3.0.2",
     "stylelint": "^16.0.1",
     "stylelint-config-standard": "^36.0.0",
-    "tailwindcss": "^3.4.3",
-    "vite": "^5.2.11"
+    "tailwindcss": "^3.4.3"
   }
 }
