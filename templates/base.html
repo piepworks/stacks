@@ -1,4 +1,4 @@
-{% load static django_htmx %}<!DOCTYPE html>
+{% load static django_htmx django_vite %}<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -13,10 +13,9 @@
     <meta name="theme-color" content="#ffffff">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script defer src="{% static 'js/vendor/htmx-1.9.12.min.js' %}"></script>
-    <script defer src="{% static 'js/vendor/htmx-1.9.12-alpine-morph.js' %}"></script>
     <script defer src="{% static 'js/vendor/alpinejs-morph-3.13.10.min.js' %}"></script>
     <script defer src="{% static 'js/vendor/alpinejs-3.13.8.min.js' %}"></script>
+    <script defer src="{% static 'js/main.min.js' %}"></script>
     {% block head_src %}{% endblock head_src %}
   </head>
   <body {% block body_tag %}{% endblock body_tag %}>
