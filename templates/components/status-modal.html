@@ -9,8 +9,8 @@
     </form>
     <form id="close-modal-{{ book.pk }}" method="dialog"></form>
 
-    <header class="mb-8 pb-5 px-4 text-center -mx-6 border-b border-gray-300 dark:border-gray-700">
-      <h3 class="font-bold">Adjust status for {{ book.title }}</h3>
+    <header>
+      <h3>Adjust status for {{ book.title }}</h3>
     </header>
     <form method="post" action="{% url 'book_update' book.pk %}">
       {% csrf_token %}
@@ -31,8 +31,8 @@
         {{ form }}
       </fieldset>
 
-      <div class="modal-action items-center justify-between mt-8">
-        <button aria-label="close" form="close-modal-{{ book.pk }}" class="border-b text-gray-400 border-gray-400 hover:border-gray-700 dark:hover:text-white hover:text-gray-700 dark:hover:border-white">Cancel</button>
+      <div class="modal-action">
+        <button class="link" aria-label="Close" form="close-modal-{{ book.pk }}">Cancel</button>
 
         <div class="flex space-x-4 items-center">
           <button form="archive-book-{{ book.pk }}" class="svg archive" title="Archive this book">Archive</button>

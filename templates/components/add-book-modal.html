@@ -1,18 +1,19 @@
-<dialog @click="closeFromEvent(event)" x-ref="addBook">
-  <article>
+<dialog @click="closeFromEvent(event)" x-ref="addBook" class="modal">
+  <div class="modal-box">
+    <form id="close-modal-add-book" method="dialog"></form>
     <header>
-      <button aria-label="Close"
-              rel="prev"
-              @click="close()"></button>
-      <p><b>Search to add a book to “{{ status.name }}”</b></p>
-      <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
+      <h3>Search to add a book to “{{ status.name }}”</h3>
+      <p>or <a class="link" href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
     </header>
     <form method="get" action="{% url 'open_library_search' %}">
       <fieldset>
         <input type="hidden" name="status" value="{{ status.slug }}">
         <input type="text" name="q" autofocus required>
       </fieldset>
-      <button type="submit">Search Open Library</button>
+      <div class="modal-action">
+        <button class="link" aria-label="Close" form="close-modal-add-book">Cancel</button>
+        <button class="btn btn-primary" type="submit">Search Open Library</button>
+      </div>
     </form>
-  </article>
+  </div>
 </dialog>

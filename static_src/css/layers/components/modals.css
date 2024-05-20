@@ -1,0 +1,24 @@
+.modal {
+  header {
+    font-weight: bold;
+    margin-bottom: theme('spacing.8');
+    padding-bottom: theme('spacing.5');
+    padding-left: theme('spacing.4');
+    padding-right: theme('spacing.4');
+    text-align: center;
+    margin-left: calc(theme('spacing.6') * -1);
+    margin-right: calc(theme('spacing.6') * -1);
+    border-bottom-width: 1px;
+    border-bottom-color: theme('borderColor.gray.300');
+
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: theme('borderColor.gray.700');
+    }
+  }
+
+  .modal-action {
+    align-items: center;
+    justify-content: space-between;
+    margin-top: theme('spacing.8');
+  }
+}
