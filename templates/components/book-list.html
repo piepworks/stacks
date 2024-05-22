@@ -6,7 +6,6 @@
   hx-ext="alpine-morph"
   hx-swap="morph"
   hx-push-url="true"
-  hx-indicator=".htmx-indicator"
   x-data="{
     openFilters: false,
     topOfList() {
@@ -150,12 +149,10 @@
       <form method="post"
         action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}"
         hx-post="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}"
-        @htmx:after-request="topOfList">
+        @htmx:after-request="topOfList"
+        x-data="{ loading: false }">
         {% csrf_token %}
-        <button>
-          <div>Previous</div>
-          {% include "components/htmx-indicator.html" %}
-        </button>
+        <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Previous</button>
       </form>
       {% else %}
       <button disabled>Previous</button>
@@ -167,12 +164,10 @@
       <form method="post"
         action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}"
         hx-post="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}"
-        @htmx:after-request="topOfList">
+        @htmx:after-request="topOfList"
+        x-data="{ loading: false }">
         {% csrf_token %}
-        <button>
-          <div>Next</div>
-          {% include "components/htmx-indicator.html" %}
-        </button>
+        <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Next</button>
       </form>
       {% else %}
       <button disabled>Next</button>

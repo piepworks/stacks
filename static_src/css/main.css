@@ -375,11 +375,6 @@ hr {
   display: none !important;
 }
 
-[aria-busy]::before {
-  /* https://alpine-ajax.js.org/examples/loading/ */
-  display: none !important;
-}
-
 #ajax-pagination {
   display: flex;
   gap: 1rem;
@@ -419,40 +414,11 @@ td small {
   border-width: 0;
 }
 
-.htmx-indicator {
-  display: none;
-  justify-content: center;
-
-  .htmx-request& {
-    display: flex;
-  }
-
-  svg {
-    fill: white; /* moving part */
-    color: rgb(255 255 255 / 25%); /* circle */
-  }
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
-}
-
 .pagination {
   display: flex;
   align-items: center;
   gap: 2rem;
-
-  button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+  margin-top: 2rem;
 
   p {
     margin: 0;
