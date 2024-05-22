@@ -48,14 +48,8 @@
       {% block header %}
       {% endblock header %}
 
-      {% if messages %}
-        <div class="messages">
-          <ul>
-            {% for message in messages %}
-              <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-          </ul>
-        </div>
+      {% if messages and 'status' not in request.path %}
+        {% include "components/messages.html" %}
       {% endif %}
     </header>
     <main class="container">

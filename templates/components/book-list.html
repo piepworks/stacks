@@ -12,6 +12,9 @@
       document.getElementById('book-list').scrollIntoView({ behavior: 'smooth' });
     },
   }">
+  {% if messages %}
+    {% include "components/messages.html" %}
+  {% endif %}
   <header class="actions-inline">
     <div x-data="{
       close() {
