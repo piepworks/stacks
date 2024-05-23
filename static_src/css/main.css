@@ -29,7 +29,9 @@
     width: 150px;
     text-overflow: ellipsis;
 
-    &:hover .actions {
+    &:hover .actions,
+    &:focus-within .actions {
+      /* focus-within propagates to the parent element */
       opacity: 1;
     }
 
@@ -40,6 +42,17 @@
       white-space: nowrap;
       font-size: 0.75rem;
       padding: 0.5rem 0;
+    }
+
+    a {
+      border-radius: 0.25rem;
+
+      &:hover img,
+      &:focus img {
+        box-shadow: 0 0 0 var(--pico-outline-width)
+          var(--pico-form-element-focus-color);
+        border-color: var(--pico-form-element-active-border-color);
+      }
     }
 
     img,
