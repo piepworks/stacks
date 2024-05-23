@@ -121,9 +121,11 @@
             {% else %}
               <span class="empty left"></span>
             {% endif %}
-            <button class="svg adjust-status" @click="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
-              Adjust status
-            </button>
+            <div class="faux-form">
+              <button class="svg adjust-status" @click="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
+                Adjust status
+              </button>
+            </div>
             {% if book.status|get_next_status != None %}
               <form action="{% url 'book_update' book.pk %}" method="post" hx-post="{% url 'book_update' book.pk %}">
                 {% csrf_token %}
