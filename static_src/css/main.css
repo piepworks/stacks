@@ -6,6 +6,10 @@
 @import url('includes/filters.css');
 @import url('includes/stars.css');
 
+:root {
+  --pico-border-radius: 0.5rem;
+}
+
 .ol-results main,
 .search main,
 .status main,
@@ -154,7 +158,7 @@ dialog .grid {
 
   > div {
     padding: 0.25rem 1rem;
-    border-radius: 0.3rem;
+    border-radius: var(--pico-border-radius);
     background: rgb(0 0 0 / 10%);
 
     @media (prefers-color-scheme: dark) {
@@ -282,7 +286,7 @@ fieldset > .radio {
 
   img {
     border: 0.25rem solid rgb(0 0 0 / 20%);
-    border-radius: 0.5rem;
+    border-radius: var(--pico-border-radius);
 
     @media (prefers-color-scheme: dark) {
       border-color: rgb(255 255 255 / 20%);
@@ -322,7 +326,7 @@ fieldset > .radio {
   align-items: center;
   margin: 2rem 0;
   border: 0.25rem solid rgb(0 0 0 / 20%);
-  border-radius: 0.5rem;
+  border-radius: var(--pico-border-radius);
   padding: 1rem 1rem 2rem;
 
   @media (prefers-color-scheme: dark) {
