@@ -90,21 +90,6 @@
         opacity: 0;
       }
 
-      .faux-form {
-        padding: 3px;
-      }
-
-      form,
-      .faux-form {
-        display: flex;
-        border-radius: 0.25rem;
-
-        &:focus-within {
-          box-shadow: 0 0 0 var(--pico-outline-width)
-            var(--pico-form-element-focus-color);
-        }
-      }
-
       span.empty {
         padding: 0 0.5rem;
 

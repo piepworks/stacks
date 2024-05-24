@@ -18,11 +18,11 @@
       {% csrf_token %}
       <div class="inner">
         {% if user.is_superuser %}
-          <a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a>
+          <div class="faux-form"><a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a></div>
         {% endif %}
-        <a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a>
-        <button class="svg archive" formaction="{% url 'book_archive' book.pk %}" onclick="return confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to talk to Trey.')">Archive</button>
-        <button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button>
+        <div class="faux-form"><a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a></div>
+        <div class="faux-form"><button class="svg archive" formaction="{% url 'book_archive' book.pk %}" onclick="return confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to talk to Trey.')">Archive</button></div>
+        <div class="faux-form"><button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button></div>
       </div>
     </form>
   </header>
@@ -40,7 +40,7 @@
                 title="{{ book }}">
             </a>
             <div class="actions">
-              <a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a>
+              <div class="faux-form"><a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a></div>
               <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
                 {% csrf_token %}
                 <button class="svg delete">Delete</button>
@@ -50,7 +50,7 @@
         {% endif %}
       {% endfor %}
       <div class="another">
-        <a class="svg add-item" href="{% url 'cover_new' book.pk %}">Add cover</a>
+        <div class="faux-form"><a class="svg add-item" href="{% url 'cover_new' book.pk %}">Add cover</a></div>
       </div>
     </section>
     {% else %}

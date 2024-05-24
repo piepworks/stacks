@@ -3,6 +3,14 @@ nav.settings {
     margin: 0;
   }
 
+  li {
+    &,
+    form {
+      display: flex;
+      align-items: center;
+    }
+  }
+
   .active a {
     background-color: black;
 
