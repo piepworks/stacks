@@ -27,7 +27,7 @@
       },
     }">
       <h1>{{ status.name }}</h1>
-      <a @click.prevent="$refs.addBook.showModal()" class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a>
+      <div class="faux-form"><a @click.prevent="$refs.addBook.showModal()" class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a></div>
       {% include "components/add-book-modal.html" %}
     </div>
 

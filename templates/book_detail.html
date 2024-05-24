@@ -120,7 +120,7 @@
   <header class="actions-inline">
     <div>
       <h2>Readings</h2>
-      <a class="svg add-item" href="{% url 'reading_new' book.pk %}">Start a new reading</a>
+      <div class="faux-form"><a class="svg add-item" href="{% url 'reading_new' book.pk %}">Start a new reading</a></div>
     </div>
   </header>
   <section class="overflow-auto">
@@ -153,7 +153,9 @@
                   </div>
                 {% endif %}
               </td>
-              <td><a class="svg edit" href="{% url 'reading_update' book.pk reading.id %}">Edit</a></td>
+              <td>
+                <div class="faux-form"><a class="svg edit" href="{% url 'reading_update' book.pk reading.id %}">Edit</a></div>
+              </td>
             </tr>
           {% endfor %}
         </tbody>
