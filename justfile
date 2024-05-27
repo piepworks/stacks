@@ -1,7 +1,14 @@
+default:
+  @just --list
+
 setup-venv:
   python3 -m venv --prompt . .venv
   .venv/bin/pip install -U pip setuptools wheel
   .venv/bin/python -m pip install -r requirements/requirements.txt
+
+reset-venv:
+  rm -rf .venv
+  just setup-venv
 
 bootstrap: setup-venv
   source ~/.nvm/nvm.sh
@@ -17,7 +24,7 @@ update-venv:
 shell:
   .venv/bin/python manage.py shell
 
-# Run all the tests as fast as possible (other than the standalone Playwright ones: `just playwright`)
+# Run all the tests (other than front-end Playwright) as fast as possible
 pytest:
   pytest -n auto config/tests
 
