@@ -1,5 +1,4 @@
 import pytest
-import datetime
 import io
 from PIL import Image
 from unittest import mock
@@ -101,7 +100,6 @@ def test_book_status_update_to_reading_creates_bookreading():
 @pytest.mark.django_db
 def test_book_status_update_to_finished_updates_bookreading():
     book = baker.make(Book, title="Test Book", status="reading")
-    baker.make(BookReading, book=book, start_date=datetime.date.today())
     book.status = "finished"
     book.save()
     reading = BookReading.objects.get(book=book)
@@ -112,7 +110,6 @@ def test_book_status_update_to_finished_updates_bookreading():
 @pytest.mark.django_db
 def test_book_status_update_to_dnf_updates_bookreading():
     book = baker.make(Book, title="Test Book", status="reading")
-    baker.make(BookReading, book=book, start_date=datetime.date.today())
     book.status = "dnf"
     book.save()
     reading = BookReading.objects.get(book=book)

@@ -192,6 +192,8 @@ class Book(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        new = not self.pk
+
         if self.pk:
             old_status = Book.objects.get(pk=self.pk).status
             new_status = self.status
@@ -227,6 +229,9 @@ class Book(models.Model):
                         reading.save()
 
         super().save(*args, **kwargs)
+
+        if new and self.status == "reading":
+            BookReading.objects.create(book=self, start_date=datetime.date.today())
 
     def get_absolute_url(self):
         return reverse("book_detail", args=(self.pk,))
