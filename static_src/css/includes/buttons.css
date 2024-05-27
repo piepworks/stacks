@@ -6,6 +6,7 @@
 .status .actions form,
 .settings form,
 .book-detail .covers .actions form,
+form.delete,
 .faux-form {
   display: inline-flex;
   border-radius: 0.25rem;
