@@ -5,6 +5,7 @@
 @import url('includes/notes.css');
 @import url('includes/filters.css');
 @import url('includes/stars.css');
+@import url('includes/djdt-pico-cooperation');
 
 :root {
   --pico-border-radius: 0.5rem;
