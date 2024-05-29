@@ -13,8 +13,8 @@
     <form action="{% url 'author_delete' author.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">
-        <a class="svg edit" href="{% url 'author_update' author.pk %}">Edit</a>
-        <button class="svg delete" onclick="return confirm('Are you sure you want to delete this author?')">Delete</button>
+        <div class="faux-form"><a class="svg edit" href="{% url 'author_update' author.pk %}">Edit</a></div>
+        <div class="faux-form"><button class="svg delete" onclick="return confirm('Are you sure you want to delete this author?')">Delete</button></div>
       </div>
     </form>
   </header>
@@ -26,17 +26,19 @@
   <ul>
     {% for book in books %}
       <li class="book">
-        <a href="{{ book.get_absolute_url }}">
-          {% if book.covers.all %}
-            {% with book.covers.all|first as cover %}
-              <img src="{{ cover.thumbnail.url }}"
-                alt="{{ cover }}"
-                height="{{ cover.thumbnail.height }}"
-                width="{{ cover.thumbnail.width }}"
-                title="{{ book }}">
-            {% endwith %}
-          {% endif %}
-        </a>
+        <div class="cover">
+          <a href="{{ book.get_absolute_url }}">
+            {% if book.covers.all %}
+              {% with book.covers.all|first as cover %}
+                <img src="{{ cover.thumbnail.url }}"
+                  alt="{{ cover }}"
+                  height="{{ cover.thumbnail.height }}"
+                  width="{{ cover.thumbnail.width }}"
+                  title="{{ book }}">
+              {% endwith %}
+            {% endif %}
+          </a>
+        </div>
         <div class="title" title="{{ book }}">{{ book }}</div>
       </li>
     {% endfor %}
