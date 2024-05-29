@@ -418,6 +418,10 @@ def open_library_search(request):
 
     results = search_open_library(query)
 
+    if "error" in results:
+        messages.error(request, results["error"])
+        return redirect(reverse("book_new") + f"?status={status}")
+
     # If results is a dict, it means there was only one result
     if isinstance(results, dict):
         messages.info(request, "Open Library didn’t have a cover for this book")
