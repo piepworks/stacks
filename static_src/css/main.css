@@ -45,6 +45,16 @@ body.home {
   }
 }
 
+.copyright {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  padding: 2rem 0;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .cover {
   a {
     border-radius: 0.25rem;
