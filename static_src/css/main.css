@@ -11,6 +11,40 @@
   --pico-border-radius: 0.5rem;
 }
 
+body.home {
+  header {
+    display: block;
+
+    .stack {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 3rem;
+      opacity: 0.75;
+      background: rgb(0 0 0 / 20%);
+
+      @media (prefers-color-scheme: dark) {
+        background: rgb(255 255 255 / 20%);
+      }
+    }
+  }
+
+  .intro {
+    margin: 3rem 0;
+    padding: 2rem;
+    background: rgb(0 0 0 / 10%);
+    border-radius: var(--pico-border-radius);
+
+    * + * {
+      margin: 0;
+      margin-top: 1rem;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      background: rgb(255 255 255 / 5%);
+    }
+  }
+}
+
 .cover {
   a {
     border-radius: 0.25rem;
