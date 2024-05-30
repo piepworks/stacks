@@ -65,11 +65,11 @@
     </main>
     <footer class="container">
       {% if user.is_authenticated and not debug %}
-        <p>
-          <a data-canny-link href="https://piepworks.canny.io/bookstacks">
+        <div class="faux-form" data-tooltip="Give feedback" data-placement="right">
+          <a class="svg megaphone" data-canny-link href="https://piepworks.canny.io/bookstacks" title="Give feedback">
             Give feedback
           </a>
-        </p>
+        </div>
       {% endif %}
 
       {% block footer %}
