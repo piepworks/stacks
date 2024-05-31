@@ -298,7 +298,7 @@ def book_new(request):
 
 @login_required
 def book_detail(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     notes = book.notes.all()
     status_changes = book.status_changes.all()
 
@@ -328,7 +328,7 @@ def book_detail(request, pk):
 
 @login_required
 def book_update(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     old_status = book.status
 
     if request.method == "POST":
@@ -366,7 +366,7 @@ def book_update(request, pk):
 @require_POST
 @login_required
 def book_delete(request, pk):
-    book = get_object_or_404(Book, pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     status = book.status
     book.delete()
     messages.success(request, f"{book} deleted")
@@ -376,7 +376,7 @@ def book_delete(request, pk):
 @require_POST
 @login_required
 def book_archive(request, pk):
-    book = get_object_or_404(Book, pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     status = book.status
     book.archived = True
     book.save()
@@ -470,7 +470,7 @@ def author_new(request):
 
 @login_required
 def author_detail(request, pk):
-    author = Author.objects.get(pk=pk)
+    author = get_object_or_404(Author, pk=pk, user=request.user)
     books = Book.objects.filter(author=author)
 
     return render(
@@ -485,7 +485,7 @@ def author_detail(request, pk):
 
 @login_required
 def author_update(request, pk):
-    author = Author.objects.get(pk=pk)
+    author = get_object_or_404(Author, pk=pk, user=request.user)
 
     if request.method == "POST":
         form = AuthorForm(request.POST, instance=author)
@@ -511,7 +511,7 @@ def author_update(request, pk):
 
 @login_required
 def cover_new(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
 
     if request.method == "POST":
         form = BookCoverForm(request.POST, request.FILES, book=book)
@@ -539,7 +539,7 @@ def cover_new(request, pk):
 
 @login_required
 def cover_update(request, pk, cover_pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     cover = BookCover.objects.get(pk=cover_pk, book=book)
 
     if request.method == "POST":
@@ -567,7 +567,7 @@ def cover_update(request, pk, cover_pk):
 @require_POST
 @login_required
 def cover_delete(request, pk, cover_pk):
-    cover = BookCover.objects.get(pk=cover_pk, book=Book.objects.get(pk=pk))
+    cover = get_object_or_404(BookCover, pk=cover_pk, book=Book.objects.get(pk=pk))
     cover.delete()
     messages.success(request, "Cover deleted")
     return redirect("book_detail", pk=pk)
@@ -575,7 +575,7 @@ def cover_delete(request, pk, cover_pk):
 
 @login_required
 def reading_new(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
 
     if request.method == "POST":
         form = BookReadingForm(request.POST)
@@ -603,7 +603,7 @@ def reading_new(request, pk):
 
 @login_required
 def reading_update(request, pk, reading_pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     reading = book.readings.get(pk=reading_pk)
 
     if request.method == "POST":
@@ -632,7 +632,8 @@ def reading_update(request, pk, reading_pk):
 @require_POST
 @login_required
 def reading_delete(request, pk, reading_pk):
-    reading = Book.objects.get(pk=pk).readings.get(pk=reading_pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    reading = book.readings.get(pk=reading_pk)
     reading.delete()
     messages.success(request, "Reading deleted")
     return redirect("book_detail", pk=pk)
@@ -640,7 +641,7 @@ def reading_delete(request, pk, reading_pk):
 
 @login_required
 def note_new(request, pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
 
     if request.method == "POST":
         form = BookNoteForm(request.POST)
@@ -668,7 +669,7 @@ def note_new(request, pk):
 
 @login_required
 def note_update(request, pk, note_pk):
-    book = Book.objects.get(pk=pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
     note = book.notes.get(pk=note_pk)
 
     if request.method == "POST":
@@ -697,7 +698,8 @@ def note_update(request, pk, note_pk):
 @require_POST
 @login_required
 def note_delete(request, pk, note_pk):
-    note = Book.objects.get(pk=pk).notes.get(pk=note_pk)
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    note = book.notes.get(pk=note_pk)
     note.delete()
     messages.success(request, "Note deleted")
     return redirect("book_detail", pk=pk)
