@@ -64,6 +64,9 @@
       {% endblock content %}
     </main>
     <footer class="container">
+      {% block footer %}
+      {% endblock footer %}
+
       {% if user.is_authenticated %}
         <div class="faux-form" data-tooltip="Give feedback" data-placement="right">
           <a class="svg megaphone" data-canny-link href="https://piepworks.canny.io/bookstacks" title="Give feedback">
@@ -72,8 +75,10 @@
         </div>
       {% endif %}
 
-      {% block footer %}
-      {% endblock footer %}
+      <div class="ko-fi">
+        <script type='text/javascript' src='https://storage.ko-fi.com/cdn/widget/Widget_2.js'></script><script type='text/javascript'>kofiwidget2.init('Support Book Stacks on Ko-fi', '#01aaff', 'Q5Q4N7SYF');kofiwidget2.draw();</script>
+      </div>
+
       <div class="copyright">Copyright © {% now "Y" %} <a href="https://piep.works">Piepworks LLC</a>. All rights reserved.</div>
     </footer>
 
