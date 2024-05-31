@@ -59,6 +59,7 @@ INSTALLED_APPS += [
     "debug_toolbar",
     "django_browser_reload",
     "django_extensions",
+    "honeypot",
     "django_htmx",
     "imagekit",
 ]
@@ -217,3 +218,5 @@ filterwarnings(
 FORMS_URLFIELD_ASSUME_HTTPS = True
 
 BLEACH_ALLOWED_TAGS = bleach.sanitizer.ALLOWED_TAGS.extend(["p", "hr"])
+
+HONEYPOT_FIELD_NAME = "phonenumber"

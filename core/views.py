@@ -16,6 +16,7 @@ from django.db import IntegrityError, models
 from django.db.models import Q, OuterRef, Exists, Subquery
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
+from honeypot.decorators import check_honeypot
 from .forms import (
     RegisterForm,
     BookForm,
@@ -735,6 +736,7 @@ def favicon(request):
     return FileResponse(file)
 
 
+@check_honeypot
 def register(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
