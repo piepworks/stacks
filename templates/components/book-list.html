@@ -11,24 +11,22 @@
     topOfList() {
       document.getElementById('book-list').scrollIntoView({ behavior: 'smooth' });
     },
+    close() {
+      $refs.addBook.close();
+    },
+    closeFromEvent(event) {
+      if (event.currentTarget === event.target) {
+        $refs.addBook.close();
+      }
+    },
   }">
   {% if messages %}
     {% include "components/messages.html" %}
   {% endif %}
   <header class="actions-inline">
-    <div x-data="{
-      close() {
-        $refs.addBook.close();
-      },
-      closeFromEvent(event) {
-        if (event.currentTarget === event.target) {
-          $refs.addBook.close();
-        }
-      },
-    }">
+    <div>
       <h1>{{ status.name }}</h1>
       <div class="faux-form"><a @click.prevent="$refs.addBook.showModal()" class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a></div>
-      {% include "components/add-book-modal.html" %}
     </div>
 
     {% if forms %}
@@ -149,7 +147,7 @@
     </ul>
   {% else %}
     <div class="blank-state">
-      <p>No books found. <a href="{% url 'book_new' %}?status={{ status.slug }}" >Add one!</a></p>
+      <p>No books found. <a @click.prevent="$refs.addBook.showModal()" href="{% url 'book_new' %}?status={{ status.slug }}" >Add one!</a></p>
     </div>
   {% endif %}
 
@@ -184,4 +182,5 @@
     {% endif %}
   </div>
   {% endif %}
+  {% include "components/add-book-modal.html" %}
 </div>
