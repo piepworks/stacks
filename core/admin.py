@@ -49,7 +49,8 @@ class UserAdmin(DjangoUserAdmin):
             },
         ),
     )
-    list_display = ("email", "book_count", "last_login")
+    list_display = ("email", "book_count", "is_active", "last_login")
+    list_filter = ("is_active",)
     search_fields = ("email",)
     ordering = ("-last_login",)
 
