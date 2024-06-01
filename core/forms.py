@@ -1,14 +1,14 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
 from django.forms.widgets import MultipleHiddenInput
+from django_registration.forms import RegistrationForm
 from .models import User, Book, BookCover, BookReading, BookNote, Author
 from .fields import GroupedModelChoiceField
 
 
-class RegisterForm(UserCreationForm):
+class RegisterForm(RegistrationForm):
     email = forms.EmailField()
 
-    class Meta:
+    class Meta(RegistrationForm.Meta):
         model = User
         fields = ("email", "password1", "password2")
 

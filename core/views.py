@@ -2,7 +2,7 @@ import json
 import bleach
 import markdown
 from django.shortcuts import get_object_or_404, render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login
 from django.conf import settings
 from django.urls import reverse
 from django.http import FileResponse, Http404
@@ -16,9 +16,13 @@ from django.db import IntegrityError, models
 from django.db.models import Q, OuterRef, Exists, Subquery
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
+from django.utils.decorators import method_decorator
+from django_registration.backends.activation.views import (
+    ActivationView as BaseActivationView,
+    RegistrationView as BaseRegistrationView,
+)
 from honeypot.decorators import check_honeypot
 from .forms import (
-    RegisterForm,
     BookForm,
     BookStatusForm,
     BookReadingForm,
@@ -31,6 +35,7 @@ from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
 from .filter_helpers import get_filter_counts
 from .models import (
+    User,
     Book,
     Author,
     BookCover,
@@ -736,30 +741,27 @@ def favicon(request):
     return FileResponse(file)
 
 
-@check_honeypot
-def register(request):
-    if request.method == "POST":
-        form = RegisterForm(request.POST)
+def account_verified(request, user_id):
+    user = get_object_or_404(User, id=user_id)
 
-        if form.is_valid():
-            form.save()
+    send_email_to_admin(
+        subject=f"New Stacks user: {user.email}",
+        message="EOM",
+    )
 
-            # Automatically log in
-            email = form.cleaned_data.get("email")
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(email=email, password=raw_password)
-            login(request, user)
+    login(request, user)
+    messages.success(request, "Your account has been activated! Enjoy!")
+    return redirect("index")
 
-            send_email_to_admin(
-                subject=f"New Stacks user: {email}",
-                message="EOM",
-            )
 
+class ActivationView(BaseActivationView):
+    def get_success_url(self, user):
+        return reverse("account-verified", args=(user.id,))
+
+
+@method_decorator(check_honeypot, name="post")
+class RegistrationView(BaseRegistrationView):
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
             return redirect("index")
-    else:
-        if request.user.is_authenticated:
-            return redirect(reverse("index"))
-
-        form = RegisterForm()
-
-    return render(request, "registration/register.html", {"form": form})
+        return super().get(request, *args, **kwargs)

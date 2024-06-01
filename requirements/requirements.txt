@@ -38,6 +38,8 @@ click==8.1.7
     #   pip-tools
 colorama==0.4.6
     # via djlint
+confusable-homoglyphs==3.3.1
+    # via django-registration
 coverage[toml]==7.5.3
     # via
     #   -r requirements/requirements.in
@@ -65,6 +67,7 @@ django==5.0.6
     #   django-extensions
     #   django-honeypot
     #   django-htmx
+    #   django-registration
     #   django-storages
     #   model-bakery
 django-appconf==1.0.6
@@ -84,6 +87,8 @@ django-honeypot==1.2.0
 django-htmx==1.17.3
     # via -r requirements/requirements.in
 django-imagekit==5.0.0
+    # via -r requirements/requirements.in
+django-registration==3.4
     # via -r requirements/requirements.in
 django-storages==1.14.3
     # via -r requirements/requirements.in
