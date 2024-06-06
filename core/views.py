@@ -24,6 +24,7 @@ from django_registration.backends.activation.views import (
     RegistrationView as BaseRegistrationView,
 )
 from honeypot.decorators import check_honeypot
+from dateutil import parser
 from .forms import (
     ImportBooksForm,
     BookForm,
@@ -228,6 +229,8 @@ def status(request, status):
 
 @login_required
 def import_books(request):
+    # TODO: Split a lot of this stuff out into utilities or something
+
     if request.method == "POST":
         form = ImportBooksForm(request.POST, request.FILES)
 
@@ -298,6 +301,7 @@ def import_books(request):
                 if additional_authors:
                     book.author.add(*additional_authors)
 
+                # Download a cover from Open Library
                 results = search_open_library(f"{book.title} {main_author.name}")
                 if results:
                     if isinstance(results, dict):
@@ -319,6 +323,43 @@ def import_books(request):
                         saved_cover = new_cover.save_cover_from_url(r["cover"])
                         if not saved_cover:
                             new_cover.delete()
+
+                # Set reading based on the status
+                if status == "reading":
+                    reading = BookReading.objects.create(
+                        book=book,
+                        start_date=row.get("Date Added"),
+                    )
+                    reading.save()
+
+                if status == "finished":
+                    try:
+                        start_date = parser.parse(row.get("Date Added"))
+                        end_date = parser.parse(row.get("Date Read"))
+
+                        if start_date > end_date:
+                            start_date = end_date
+                    except (TypeError, ValueError):
+                        start_date = None
+                        end_date = None
+
+                    reading = BookReading.objects.create(
+                        book=book,
+                        start_date=start_date,
+                        end_date=end_date,
+                        finished=True,
+                        rating=row.get("My Rating") or None,
+                    )
+                    reading.save()
+
+                # Add review as a note if there is one
+                if review := row.get("My Review"):
+                    note = book.notes.create(
+                        text=review,
+                    )
+                    note.save()
+
+                # Add a rating to the reading if there is one
 
                 count += 1
 
