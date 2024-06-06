@@ -262,20 +262,13 @@ def import_books(request):
 
             if row.get("Additional Authors", "").strip():
                 for author in row["Additional Authors"].split(","):
-                    created_additional_author = False
-                    if not Author.objects.filter(
-                        name=author, user=request.user.id
-                    ).exists():
-                        new_author, created_additional_author = (
-                            Author.objects.get_or_create(
-                                name=author,
-                                user=request.user,
-                            )
+                    new_author, created_additional_author = (
+                        Author.objects.get_or_create(
+                            name=author,
+                            user=request.user,
                         )
-                        new_author.save()
-
-                    if created_additional_author:
-                        additional_authors.append(new_author)
+                    )
+                    additional_authors.append(new_author)
 
             status = goodreads_status(
                 row["Exclusive Shelf"]
@@ -314,7 +307,7 @@ def import_books(request):
                         # Get the first one and hope for the best
                         r = results[0]
 
-                    olid = r["olid"] if r["olid"] else None
+                    olid = r.get("olid")
                     if olid:
                         book.olid = olid
                         book.save()
