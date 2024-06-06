@@ -254,12 +254,10 @@ def import_books(request):
         count = 0
 
         for row in reader:
-            print(row)
             main_author, created_author = Author.objects.get_or_create(
-                name=row["Author"], user=request.user
+                name=row["Author"],
+                user=request.user,
             )
-            # print id of main author
-            # print(main_author[0].id)
             additional_authors = []
 
             if row.get("Additional Authors", "").strip():
@@ -306,6 +304,26 @@ def import_books(request):
 
                 if additional_authors:
                     book.author.add(*additional_authors)
+
+                results = search_open_library(f"{book.title} {main_author.name}")
+                if results:
+                    if isinstance(results, dict):
+                        # If there's only one result, it's a dict
+                        r = results
+                    else:
+                        # Get the first one and hope for the best
+                        r = results[0]
+
+                    olid = r["olid"] if r["olid"] else None
+                    if olid:
+                        book.olid = olid
+                        book.save()
+
+                    if "cover" in r:
+                        new_cover = BookCover.objects.create(
+                            book=book,
+                        )
+                        new_cover.save_cover_from_url(r["cover"])
 
                 count += 1
 
