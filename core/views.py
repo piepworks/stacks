@@ -323,7 +323,9 @@ def import_books(request):
                         new_cover = BookCover.objects.create(
                             book=book,
                         )
-                        new_cover.save_cover_from_url(r["cover"])
+                        saved_cover = new_cover.save_cover_from_url(r["cover"])
+                        if not saved_cover:
+                            new_cover.delete()
 
                 count += 1
 
