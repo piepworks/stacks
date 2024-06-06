@@ -37,6 +37,7 @@ from .forms import (
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
 from .filter_helpers import get_filter_counts
+from .import_helpers import goodreads_status
 from .models import (
     User,
     Book,
@@ -254,7 +255,7 @@ def import_books(request):
 
         for row in reader:
             print(row)
-            main_author = Author.objects.get_or_create(
+            main_author, created_author = Author.objects.get_or_create(
                 name=row["Author"], user=request.user
             )
             # print id of main author
@@ -263,29 +264,50 @@ def import_books(request):
 
             if row.get("Additional Authors", "").strip():
                 for author in row["Additional Authors"].split(","):
+                    created_additional_author = False
                     if not Author.objects.filter(
                         name=author, user=request.user.id
                     ).exists():
-                        new_author = Author.objects.create(
-                            name=author,
-                            user=request.user,
+                        new_author, created_additional_author = (
+                            Author.objects.get_or_create(
+                                name=author,
+                                user=request.user,
+                            )
                         )
                         new_author.save()
 
-                    additional_authors.append(new_author)
+                    if created_additional_author:
+                        additional_authors.append(new_author)
 
-            book = Book(
-                title=row["Title"],
-                published_year=row["Original Publication Year"],
-                user=request.user,
+            status = goodreads_status(
+                row["Exclusive Shelf"]
+                if row.get("Exclusive Shelf")
+                else row.get("Bookshelves") if row.get("Bookshelves") else "to-read"
             )
-            book.save()
-            book.author.add(main_author[0].id)
+            published_year = (
+                row.get("Original Publication Year")
+                if row.get("Original Publication Year")
+                else row.get("Year Published") if row.get("Year Published") else None
+            )
 
-            if additional_authors:
-                book.author.add(*additional_authors)
+            book, created_book = Book.objects.get_or_create(
+                title=row["Title"],
+                user=request.user,
+                defaults={
+                    "status": status,
+                    "published_year": published_year,
+                },
+            )
 
-            count += 1
+            # This is a book we didn't already have
+            if created_book:
+                book.save()
+                book.author.add(main_author.id)
+
+                if additional_authors:
+                    book.author.add(*additional_authors)
+
+                count += 1
 
         messages.success(request, f"{count} books imported")
 
