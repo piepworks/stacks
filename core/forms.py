@@ -13,6 +13,10 @@ class RegisterForm(RegistrationForm):
         fields = ("email", "password1", "password2")
 
 
+class ImportBooksForm(forms.Form):
+    csv = forms.FileField(label="Choose a CSV file")
+
+
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")

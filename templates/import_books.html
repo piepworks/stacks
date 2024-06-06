@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Import Books{% endblock title %}
+
+{% block content %}
+  <header>
+    <h1>Import Books from Goodreads</h1>
+  </header>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label>
+        {{ form.csv.as_field_group }}
+      </label>
+    </div>
+    <input type="submit" value="Import">
+  </form>
+{% endblock content %}

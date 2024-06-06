@@ -1,3 +1,5 @@
+import io
+import csv
 import json
 import bleach
 import markdown
@@ -23,6 +25,7 @@ from django_registration.backends.activation.views import (
 )
 from honeypot.decorators import check_honeypot
 from .forms import (
+    ImportBooksForm,
     BookForm,
     BookStatusForm,
     BookReadingForm,
@@ -220,6 +223,73 @@ def status(request, status):
         return render(request, "components/book-list.html", context)
     else:
         return render(request, "status.html", context)
+
+
+@login_required
+def import_books(request):
+    if request.method == "POST":
+        form = ImportBooksForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            csv_file = request.FILES["csv"]
+
+            if not csv_file.name.endswith(".csv"):
+                messages.error(request, "Please choose a CSV file.")
+                return False
+
+            data_set = csv_file.read().decode("UTF-8")
+            io_string = io.StringIO(data_set)
+
+            reader = csv.DictReader(
+                io_string, skipinitialspace=True, delimiter=",", quotechar='"'
+            )
+        else:
+            messages.error(request, "Nope.")
+            reader = False
+
+        if not reader:
+            return redirect(reverse("import_books"))
+
+        count = 0
+
+        for row in reader:
+            print(row)
+            main_author = Author.objects.get_or_create(
+                name=row["Author"], user=request.user
+            )
+            # print id of main author
+            # print(main_author[0].id)
+            additional_authors = []
+
+            if row.get("Additional Authors", "").strip():
+                for author in row["Additional Authors"].split(","):
+                    if not Author.objects.filter(
+                        name=author, user=request.user.id
+                    ).exists():
+                        new_author = Author.objects.create(
+                            name=author,
+                            user=request.user,
+                        )
+                        new_author.save()
+
+                    additional_authors.append(new_author)
+
+            book = Book(
+                title=row["Title"],
+                published_year=row["Original Publication Year"],
+                user=request.user,
+            )
+            book.save()
+            book.author.add(main_author[0].id)
+
+            if additional_authors:
+                book.author.add(*additional_authors)
+
+            count += 1
+
+        messages.success(request, f"{count} books imported")
+
+    return render(request, "import_books.html", {"form": ImportBooksForm})
 
 
 @login_required
