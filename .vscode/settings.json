@@ -25,5 +25,6 @@
     "olclient",
     "openlibrary",
     "userbook"
-  ]
+  ],
+  "python.analysis.exclude": [".venv"]
 }
