@@ -364,6 +364,7 @@ def import_books(request):
                 count += 1
 
         messages.success(request, f"{count} books imported")
+        return redirect("index")
 
     return render(request, "import_books.html", {"form": ImportBooksForm})
 
