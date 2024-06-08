@@ -2,7 +2,7 @@ import requests
 
 
 def search_open_library(query):
-    querystring = f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,first_publish_year&q={query}"
+    querystring = f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,first_publish_year{query}"
 
     try:
         response = requests.get(f"https://openlibrary.org/search.json{querystring}")

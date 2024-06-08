@@ -34,6 +34,7 @@ from .forms import (
     BookNoteForm,
     AuthorForm,
     SettingsForm,
+    OpenLibrarySearchForm,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -224,6 +225,7 @@ def status(request, status):
     if request.htmx:
         return render(request, "components/book-list.html", context)
     else:
+        context["OpenLibrarySearchForm"] = OpenLibrarySearchForm
         return render(request, "status.html", context)
 
 
@@ -302,7 +304,9 @@ def import_books(request):
                     book.author.add(*additional_authors)
 
                 # Download a cover from Open Library
-                results = search_open_library(f"{book.title} {main_author.name}")
+                results = search_open_library(
+                    f"&title={book.title}&author={main_author.name}"
+                )
                 if results:
                     if isinstance(results, dict):
                         # If there's only one result, it's a dict
@@ -561,13 +565,20 @@ def search(request):
 
 @login_required
 def open_library_search(request):
-    query = request.GET.get("q")
     status = request.GET.get("status")
+    form = OpenLibrarySearchForm(request.GET or None)
 
-    if not query:
+    if form.is_valid():
+        title = form.cleaned_data.get("title")
+        author = form.cleaned_data.get("author")
+    else:
         messages.error(request, "Search for something")
         # Get back to where you once belonged
         return redirect(request.META.get("HTTP_REFERER", "status"))
+
+    query = f"&title={title}"
+    if author:
+        query += f"&author={author}"
 
     results = search_open_library(query)
 
@@ -598,9 +609,9 @@ def open_library_search(request):
         request,
         "ol_search.html",
         {
+            "form": form,
             "results": results,
             "status": status,
-            "query": query,
         },
     )
 

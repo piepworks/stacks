@@ -5,8 +5,9 @@
 {% block body_tag %}class="ol-results"{% endblock body_tag %}
 
 {% block content %}
-  <h1>Searching for: “{{ query }}”</h1>
-  <h2>Choose a book</h2>
+  <h1>Search results</h1>
+
+  <h2>Choose a cover</h2>
 
   <main>
     <p><a href="{% url 'book_new' %}">Skip this (no auto-populated fields)</a></p>
@@ -23,5 +24,8 @@
         </li>
       {% endfor %}
     </ul>
+
+    <h3>Search again</h3>
+    {% include "components/ol-search-form.html" %}
   </main>
 {% endblock content %}

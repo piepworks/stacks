@@ -7,12 +7,6 @@
       <p><b>Search to add a book to “{{ status.name }}”</b></p>
       <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
     </header>
-    <form method="get" action="{% url 'open_library_search' %}" x-data="{ loading: false }">
-      <fieldset>
-        <input type="hidden" name="status" value="{{ status.slug }}">
-        <input type="text" name="q" autofocus required>
-      </fieldset>
-      <button :aria-busy="loading" @click="loading = true" type="submit">Search Open Library</button>
-    </form>
+    {% include "components/ol-search-form.html" with form=OpenLibrarySearchForm %}
   </article>
 </dialog>

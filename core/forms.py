@@ -17,6 +17,11 @@ class ImportBooksForm(forms.Form):
     csv = forms.FileField(label="Choose a CSV file")
 
 
+class OpenLibrarySearchForm(forms.Form):
+    title = forms.CharField(label="Title")
+    author = forms.CharField(label="Author (optional)", required=False)
+
+
 class BookForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
