@@ -7,6 +7,6 @@
       <p><b>Search to add a book to “{{ status.name }}”</b></p>
       <p>or <a href="{% url 'book_new' %}?status={{ status.slug }}">add manually</a></p>
     </header>
-    {% include "components/ol-search-form.html" with form=OpenLibrarySearchForm %}
+    {% include "components/ol-search-form.html" with form=open_library_search_form %}
   </article>
 </dialog>

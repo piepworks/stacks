@@ -206,6 +206,7 @@ def status(request, status):
             "name": Book(status=status).get_status_display(),
         },
         "forms": forms,
+        "open_library_search_form": OpenLibrarySearchForm,
         "formats": formats,
         "types": types,
         "locations": locations,
@@ -225,7 +226,6 @@ def status(request, status):
     if request.htmx:
         return render(request, "components/book-list.html", context)
     else:
-        context["OpenLibrarySearchForm"] = OpenLibrarySearchForm
         return render(request, "status.html", context)
 
 
