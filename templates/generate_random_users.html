@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Celery Test{% endblock title %}
+
+{% block content %}
+<h1>Oh hi</h1>
+
+<form method="post" action="{% url 'generate_random_user' %}">
+  {% csrf_token %}
+  {{ form }}
+  <button>Submit</button>
+</form>
+{% endblock content %}

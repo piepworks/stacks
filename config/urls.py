@@ -14,6 +14,9 @@ admin.site.index_title = "Stacks innards"
 
 urlpatterns = [
     path("", views.home, name="index"),
+    path(
+        "generate/", views.GenerateRandomUserView.as_view(), name="generate_random_user"
+    ),
     path("status/<slug:status>", views.status, name="status"),
     path("import", views.import_books, name="import_books"),
     # Book CRUD
