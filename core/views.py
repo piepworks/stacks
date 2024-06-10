@@ -24,7 +24,6 @@ from django_registration.backends.activation.views import (
     RegistrationView as BaseRegistrationView,
 )
 from honeypot.decorators import check_honeypot
-from dateutil import parser
 from .forms import (
     ImportBooksForm,
     BookForm,
@@ -40,7 +39,6 @@ from .forms import (
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
 from .filter_helpers import get_filter_counts
-from .import_helpers import goodreads_status
 from .models import (
     User,
     Book,
@@ -53,7 +51,7 @@ from .models import (
     BookGenre,
 )
 from django.views.generic.edit import FormView
-from .tasks import create_random_user_accounts
+from .tasks import create_random_user_accounts, import_from_goodreads
 
 
 class GenerateRandomUserView(FormView):
@@ -248,8 +246,6 @@ def status(request, status):
 
 @login_required
 def import_books(request):
-    # TODO: Split a lot of this stuff out into utilities or something
-
     if request.method == "POST":
         form = ImportBooksForm(request.POST, request.FILES)
 
@@ -258,14 +254,14 @@ def import_books(request):
 
             if not csv_file.name.endswith(".csv"):
                 messages.error(request, "Please choose a CSV file.")
-                return False
+                return redirect(reverse("import_books"))
 
-            data_set = csv_file.read().decode("UTF-8")
-            io_string = io.StringIO(data_set)
+            data = csv_file.read().decode("utf-8")
+            reader = csv.DictReader(io.StringIO(data))
+            data_list = list(reader)
 
-            reader = csv.DictReader(
-                io_string, skipinitialspace=True, delimiter=",", quotechar='"'
-            )
+            import_from_goodreads.delay(data_list, request.user.id)
+
         else:
             messages.error(request, "Nope.")
             reader = False
@@ -273,118 +269,9 @@ def import_books(request):
         if not reader:
             return redirect(reverse("import_books"))
 
-        count = 0
-
-        for row in reader:
-            main_author, created_author = Author.objects.get_or_create(
-                name=row["Author"],
-                user=request.user,
-            )
-            additional_authors = []
-
-            if row.get("Additional Authors", "").strip():
-                for author in row["Additional Authors"].split(","):
-                    new_author, created_additional_author = (
-                        Author.objects.get_or_create(
-                            name=author,
-                            user=request.user,
-                        )
-                    )
-                    additional_authors.append(new_author)
-
-            status = goodreads_status(
-                row["Exclusive Shelf"]
-                if row.get("Exclusive Shelf")
-                else row.get("Bookshelves") if row.get("Bookshelves") else "to-read"
-            )
-            published_year = (
-                row.get("Original Publication Year")
-                if row.get("Original Publication Year")
-                else row.get("Year Published") if row.get("Year Published") else None
-            )
-
-            book, created_book = Book.objects.get_or_create(
-                title=row["Title"],
-                user=request.user,
-                defaults={
-                    "status": status,
-                    "published_year": published_year,
-                },
-            )
-
-            # This is a book we didn't already have
-            if created_book:
-                book.save()
-                book.author.add(main_author.id)
-
-                if additional_authors:
-                    book.author.add(*additional_authors)
-
-                # Download a cover from Open Library
-                results = search_open_library(
-                    f"&title={book.title}&author={main_author.name}"
-                )
-                if results:
-                    if isinstance(results, dict):
-                        # If there's only one result, it's a dict
-                        r = results
-                    else:
-                        # Get the first one and hope for the best
-                        r = results[0]
-
-                    olid = r.get("olid")
-                    if olid:
-                        book.olid = olid
-                        book.save()
-
-                    if "cover" in r:
-                        new_cover = BookCover.objects.create(
-                            book=book,
-                        )
-                        saved_cover = new_cover.save_cover_from_url(r["cover"])
-                        if not saved_cover:
-                            new_cover.delete()
-
-                # Set reading based on the status
-                if status == "reading":
-                    reading = BookReading.objects.create(
-                        book=book,
-                        start_date=row.get("Date Added"),
-                    )
-                    reading.save()
-
-                if status == "finished":
-                    try:
-                        start_date = parser.parse(row.get("Date Added"))
-                        end_date = parser.parse(row.get("Date Read"))
-
-                        if start_date > end_date:
-                            start_date = end_date
-                    except (TypeError, ValueError):
-                        start_date = None
-                        end_date = None
-
-                    reading = BookReading.objects.create(
-                        book=book,
-                        start_date=start_date,
-                        end_date=end_date,
-                        finished=True,
-                        rating=row.get("My Rating") or None,
-                    )
-                    reading.save()
-
-                # Add review as a note if there is one
-                if review := row.get("My Review"):
-                    note = book.notes.create(
-                        text=review,
-                    )
-                    note.save()
-
-                # Add a rating to the reading if there is one
-
-                count += 1
-
-        messages.success(request, f"{count} books imported")
+        messages.success(
+            request, "Import started. You will receive an email when it's done."
+        )
         return redirect("index")
 
     return render(request, "import_books.html", {"form": ImportBooksForm})
