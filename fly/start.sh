@@ -21,6 +21,9 @@ aws s3api put-bucket-lifecycle-configuration \
     --lifecycle-configuration file:///code/fly/spaces-lifecycle.json \
     --endpoint=https://nyc3.digitaloceanspaces.com
 
+# Start Celery and leave it running in the background.
+celery -A config worker -l info &
+
 if [[ -z "$DB_DIR" ]]; then
     echo "DB_DIR env var not specified - this should be a path of the directory where the database file should be stored"
     exit 1

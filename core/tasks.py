@@ -12,8 +12,8 @@ logging = get_task_logger(__name__)
 
 @shared_task
 def import_from_goodreads(data, user_id):
-    count = 0
     user = get_object_or_404(User, id=user_id)
+    count = 0
 
     for row in data:
         main_author, created_author = Author.objects.get_or_create(

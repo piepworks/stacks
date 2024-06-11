@@ -27,7 +27,7 @@ botocore==1.34.116
     #   s3transfer
 build==1.2.1
     # via pip-tools
-celery==5.4.0
+celery[redis]==5.4.0
     # via -r requirements/requirements.in
 certifi==2024.2.2
     # via
@@ -245,6 +245,10 @@ pyyaml==6.0.1
     # via
     #   djlint
     #   pre-commit
+redis==5.0.5
+    # via
+    #   -r requirements/requirements.in
+    #   celery
 regex==2023.12.25
     # via djlint
 requests[security]==2.31.0
