@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from model_bakery import baker
 from dateutil import parser
+from datetime import date
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from .models import User, Book, BookCover, BookReading, Author
@@ -99,8 +100,8 @@ def import_from_goodreads(data, user_id):
                     if start_date > end_date:
                         start_date = end_date
                 except (TypeError, ValueError):
-                    start_date = None
-                    end_date = None
+                    start_date = date.today()
+                    end_date = date.today()
 
                 reading = BookReading.objects.create(
                     book=book,
