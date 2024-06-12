@@ -37,6 +37,10 @@
                 </div>
               </li>
             {% endif %}
+            {% url 'import_books' as import_url %}
+            <li{% if request.path == import_url %} class="active"{% endif %}>
+              <div class="faux-form"><a{% if request.path == import_url %} aria-current="page"{% endif %} class="svg import" href="{% url 'import_books' %}">Import</a></div>
+            </li>
             {% url 'settings' as settings_url %}
             <li{% if request.path == settings_url %} class="active"{% endif %}>
               <div class="faux-form"><a{% if request.path == settings_url %} aria-current="page"{% endif %} class="svg settings" href="{% url 'settings' %}">Settings</a></div>
