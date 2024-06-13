@@ -1,16 +1,15 @@
 import requests
 from django.core.management.base import BaseCommand
-from django.utils.text import slugify
+from model_bakery import baker
 from faker import Faker
 from core.models import (
+    User,
     Author,
     Book,
     BookCover,
     BookReading,
     BookNote,
     BookFormat,
-    BookType,
-    BookGenre,
     BookLocation,
 )
 from core.forms import BookCoverForm
@@ -29,12 +28,11 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **kwargs):
+        trey = User.objects.get(id=1)
         fake = Faker()
         num_books_authors = kwargs["num"]
         all_formats = BookFormat.objects.all()
         all_locations = BookLocation.objects.all()
-        all_genres = BookGenre.objects.all()
-        all_types = BookType.objects.all()
 
         # Delete all BookCover records and their associated images
         for cover in BookCover.objects.all():
@@ -46,29 +44,8 @@ class Command(BaseCommand):
 
         # Create Books and Authors
         for _ in range(num_books_authors):
-            author_name = fake.unique.name()
-            author_slug = author_name.replace(" ", "-").lower()
-            Author.objects.create(name=author_name, slug=author_slug, bio=fake.text())
-
-            book_title = fake.unique.catch_phrase()
-            book_slug = slugify(book_title)
-            Book.objects.create(
-                title=book_title,
-                slug=book_slug,
-                status=fake.random_element(
-                    elements=(
-                        "wishlist",
-                        "backlog",
-                        "to-read",
-                        "reading",
-                        "finished",
-                        "dnf",
-                    )
-                ),
-                type=fake.random_element(elements=all_types),
-                genre=fake.random_element(elements=all_genres),
-                published_year=fake.year(),
-            )
+            baker.make(Author, user=trey, name=fake.name(), bio=fake.text())
+            baker.make(Book, user=trey, title=fake.sentence())
 
         for book in Book.objects.all():
             # Associate an existing Author with every Book
@@ -76,7 +53,7 @@ class Command(BaseCommand):
             book.author.add(author)
 
             # Download a Cover for every Book
-            image_url = requests.get("https://source.unsplash.com/random").url
+            image_url = requests.get("https://picsum.photos/400/600").url
             cover_form = BookCoverForm({"url": image_url}, book=book)
             if cover_form.is_valid():
                 cover = cover_form.save()
