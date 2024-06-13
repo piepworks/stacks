@@ -24,6 +24,7 @@ from django_registration.backends.activation.views import (
     RegistrationView as BaseRegistrationView,
 )
 from honeypot.decorators import check_honeypot
+from itertools import batched
 from .forms import (
     ImportBooksForm,
     BookForm,
@@ -260,7 +261,8 @@ def import_books(request):
             reader = csv.DictReader(io.StringIO(data))
             data_list = list(reader)
 
-            import_from_goodreads.delay(data_list, request.user.id)
+            for batch in batched(data_list, 100):
+                import_from_goodreads.delay(batch, request.user.id)
 
         else:
             messages.error(request, "Nope.")
