@@ -80,7 +80,7 @@ class BookAuthorInline(admin.TabularInline):
 
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ("title", "authors_list", "formats_list")
+    list_display = ("title", "authors_list", "formats_list", "imported")
     list_filter = ("user", "archived", "status")
     inlines = [BookAuthorInline, BookCoverInline]
     exclude = ("author",)
