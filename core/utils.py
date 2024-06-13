@@ -9,3 +9,9 @@ def send_email_to_admin(subject, message):
         from_email=f"{ADMIN_EMAIL_FROM}",
         recipient_list=[f"{ADMIN_EMAIL_TO}"],
     )
+
+
+def chunks(lst, n):
+    """Yield successive n-sized chunks from lst."""
+    for i in range(0, len(lst), n):
+        yield lst[i : i + n]
