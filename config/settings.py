@@ -225,4 +225,4 @@ HONEYPOT_FIELD_NAME = "phonenumber"
 # django-registration
 ACCOUNT_ACTIVATION_DAYS = 2
 
-CELERY_BROKER_URL = env("REDIS_URL", default="redis://localhost:6379/")
+CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="sqla+sqlite:///db.sqlite3")

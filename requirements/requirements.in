@@ -1,6 +1,6 @@
 black
 boto3
-celery[redis]
+celery
 coverage
 dj-database-url
 Django
@@ -30,7 +30,7 @@ pytest-cov
 pytest-django
 pytest-xdist
 pytz
-redis
 requests[security]==2.31.0
 sentry-sdk
+SQLAlchemy
 whitenoise
