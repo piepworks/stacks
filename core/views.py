@@ -36,7 +36,7 @@ from .forms import (
     OpenLibrarySearchForm,
     GenerateRandomUserForm,
 )
-from .utils import send_email_to_admin, chunks
+from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
 from .filter_helpers import get_filter_counts
 from .models import (
@@ -258,10 +258,8 @@ def import_books(request):
 
             data = csv_file.read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(data))
-            data_list = list(reader)
 
-            for chunk in list(chunks(data_list, 100)):
-                import_from_goodreads.delay(chunk, request.user.id)
+            import_from_goodreads.delay(list(reader), request.user.id)
 
         else:
             messages.error(request, "Nope.")
