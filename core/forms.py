@@ -4,14 +4,6 @@ from django_registration.forms import RegistrationForm
 from .models import User, Book, BookCover, BookReading, BookNote, Author
 from .fields import GroupedModelChoiceField
 
-from django.core.validators import MinValueValidator, MaxValueValidator
-
-
-class GenerateRandomUserForm(forms.Form):
-    total = forms.IntegerField(
-        validators=[MinValueValidator(50), MaxValueValidator(500)]
-    )
-
 
 class RegisterForm(RegistrationForm):
     email = forms.EmailField()

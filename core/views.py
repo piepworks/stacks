@@ -34,7 +34,6 @@ from .forms import (
     AuthorForm,
     SettingsForm,
     OpenLibrarySearchForm,
-    GenerateRandomUserForm,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -50,22 +49,7 @@ from .models import (
     BookLocation,
     BookGenre,
 )
-from django.views.generic.edit import FormView
-from .tasks import create_random_user_accounts, import_from_goodreads
-
-
-class GenerateRandomUserView(FormView):
-    template_name = "generate_random_users.html"
-    form_class = GenerateRandomUserForm
-
-    def form_valid(self, form):
-        total = form.cleaned_data.get("total")
-        create_random_user_accounts.delay(total)
-        messages.success(
-            self.request,
-            "We are generating your random users! Wait a moment and refresh this page.",
-        )
-        return redirect("index")
+from .tasks import import_from_goodreads
 
 
 def home(request):

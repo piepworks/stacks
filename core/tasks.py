@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from model_bakery import baker
 from dateutil import parser
 from datetime import date
 from celery import shared_task
@@ -138,10 +137,3 @@ def import_from_goodreads(data, user_id):
     )
 
     return f"{count} books imported"
-
-
-@shared_task
-def create_random_user_accounts(total):
-    for i in range(total):
-        baker.make(User)
-    return "{} random users created with success!".format(total)
