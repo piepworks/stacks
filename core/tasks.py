@@ -84,7 +84,7 @@ def import_single_book(row, user_id):
         if status == "reading":
             reading = BookReading.objects.create(
                 book=book,
-                start_date=row.get("Date Added"),
+                start_date=parser.parse(row.get("Date Added")),
             )
             reading.save()
 
