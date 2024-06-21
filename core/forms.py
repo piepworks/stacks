@@ -18,7 +18,9 @@ class ImportBooksForm(forms.Form):
 
 
 class OpenLibrarySearchForm(forms.Form):
-    title = forms.CharField(label="Title")
+    title = forms.CharField(
+        label="Title", widget=forms.TextInput(attrs={"autofocus": True})
+    )
     author = forms.CharField(label="Author (optional)", required=False)
 
 
