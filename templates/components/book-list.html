@@ -147,7 +147,7 @@
     </ul>
   {% else %}
     <div class="blank-state">
-      <p>No books found. <a @click.prevent="$refs.addBook.showModal()" href="{% url 'book_new' %}?status={{ status.slug }}">Add one</a> or <a href="{% url 'import_books' %}">import from Goodreads</a></p>
+      <p>No books found. <a @click.prevent="$refs.addBook.showModal()" href="{% url 'book_new' %}?status={{ status.slug }}">Add one to “{{ status.name }}”</a></p>
     </div>
   {% endif %}
 
