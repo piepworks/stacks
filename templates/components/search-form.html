@@ -1,6 +1,5 @@
 <div class="search-form">
   <form action="{% url 'search' %}" method="get">
-    <input type="search" name="q" placeholder="Search your collection for books or authors" value="{{ query }}">
-    {% comment %} <button class="svg search">Search</button> {% endcomment %}
+    <input type="search" name="q" placeholder="Search your collection" value="{{ query }}">
   </form>
 </div>

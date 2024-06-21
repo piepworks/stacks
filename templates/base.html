@@ -23,12 +23,17 @@
   <body {% block body_tag %}{% endblock body_tag %}>
     <header class="container">
       {% if user.is_authenticated %}
-        <nav class="settings">
+        <nav class="main">
           <ul>
             <li>
               <div class="faux-form"><a class="svg stack" href="{% block stack_link %}{% url 'status' 'reading' %}{% endblock stack_link %}">Stacks</a></div>
             </li>
           </ul>
+
+          <div class="desktop-search">
+            {% include "components/search-form.html" %}
+          </div>
+
           <ul>
             {% if user.is_superuser %}
               <li>
@@ -55,6 +60,10 @@
             </li>
           </ul>
         </nav>
+
+        <div class="mobile-search">
+          {% include "components/search-form.html" %}
+        </div>
       {% endif %}
       {% block header %}
       {% endblock header %}

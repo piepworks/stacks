@@ -7,8 +7,6 @@
 {% block content %}
   <h1>Search Results for “{{ query }}”</h1>
 
-  {% include "components/search-form.html" %}
-
   {% if books %}
     <ul>
       {% for book in books %}

@@ -1,4 +1,4 @@
-@import url('vendor/pico.min.css');
+@import url('vendor/pico.css');
 @import url('includes/tom-select.css');
 @import url('includes/navigation.css');
 @import url('includes/buttons.css');
@@ -439,8 +439,37 @@ fieldset > .radio {
   }
 }
 
+.mobile-search {
+  margin: 1rem 0;
+
+  .search-form form {
+    width: 100%;
+  }
+
+  @media (min-width: 576px) {
+    display: none;
+  }
+}
+
+.desktop-search {
+  display: none;
+
+  @media (min-width: 576px) {
+    display: flex;
+  }
+}
+
 .search-form {
-  margin: 3rem 0;
+  display: flex;
+  align-items: center;
+
+  input {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: auto;
+  }
 }
 
 hr {
