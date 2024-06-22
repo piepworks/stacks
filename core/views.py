@@ -435,11 +435,16 @@ def book_archive(request, pk):
 def search(request):
     query = request.GET.get("q")
     if query:
-        books = Book.objects.filter(
-            models.Q(title__icontains=query) | models.Q(author__name__icontains=query),
-            user=request.user,
-            author__user=request.user,
-        ).exclude(archived=True)
+        books = (
+            Book.objects.filter(
+                models.Q(title__icontains=query)
+                | models.Q(author__name__icontains=query),
+                user=request.user,
+                author__user=request.user,
+            )
+            .exclude(archived=True)
+            .distinct()
+        )
     else:
         books = Book.objects.none()
 
