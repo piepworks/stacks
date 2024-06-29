@@ -18,6 +18,7 @@ environs[django]
 Faker
 flake8
 gunicorn
+huey
 ipython
 markdown
 model-bakery
@@ -32,5 +33,4 @@ pytest-xdist
 pytz
 requests[security]==2.31.0
 sentry-sdk
-SQLAlchemy
 whitenoise

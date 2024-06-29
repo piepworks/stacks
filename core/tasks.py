@@ -1,16 +1,13 @@
 from django.shortcuts import get_object_or_404
 from dateutil import parser
 from datetime import date
-from celery import shared_task
-from celery.utils.log import get_task_logger
+from huey.contrib.djhuey import db_task
 from .models import User, Book, BookCover, BookReading, Author
 from .cover_helpers import search_open_library
 from .import_helpers import goodreads_status
 
-logging = get_task_logger(__name__)
 
-
-@shared_task
+@db_task()
 def import_single_book(row, user_id):
     user = get_object_or_404(User, id=user_id)
     main_author, created_author = Author.objects.get_or_create(
@@ -119,7 +116,7 @@ def import_single_book(row, user_id):
         return False
 
 
-@shared_task
+@db_task()
 def import_from_goodreads(data, user_id):
     user = get_object_or_404(User, id=user_id)
     count = 0

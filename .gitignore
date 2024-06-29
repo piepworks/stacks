@@ -18,3 +18,4 @@ htmlcov/
 /playwright/.cache/
 /playwright/.auth/
 /media
+huey.*

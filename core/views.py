@@ -246,7 +246,7 @@ def import_books(request):
             data = csv_file.read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(data))
 
-            import_from_goodreads.delay(list(reader), request.user.id)
+            import_from_goodreads(list(reader), request.user.id)
 
         else:
             messages.error(request, "Nope.")

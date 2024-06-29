@@ -63,6 +63,7 @@ INSTALLED_APPS += [
     "honeypot",
     "django_htmx",
     "imagekit",
+    "huey.contrib.djhuey",
 ]
 
 # Our apps
@@ -225,4 +226,7 @@ HONEYPOT_FIELD_NAME = "phonenumber"
 # django-registration
 ACCOUNT_ACTIVATION_DAYS = 2
 
-CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="sqla+sqlite:///db-celery.sqlite3")
+HUEY = {
+    "huey_class": "huey.SqliteHuey",
+    "immediate": False,
+}
