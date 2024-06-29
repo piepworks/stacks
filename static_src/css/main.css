@@ -114,6 +114,10 @@ body.home {
       border: 0.125rem solid rgb(0 0 0 / 20%);
       border-radius: 0.25rem;
 
+      &.incomplete {
+        color: tomato;
+      }
+
       @media (prefers-color-scheme: dark) {
         border-color: rgb(255 255 255 / 20%);
       }
