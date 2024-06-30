@@ -256,7 +256,7 @@ def import_books(request):
             return redirect(reverse("import_books"))
 
         messages.success(
-            request, "Import started. You will receive an email when it's done."
+            request, "Import started. We’ll send you an email when it's done."
         )
         return redirect("index")
 
