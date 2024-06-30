@@ -229,4 +229,7 @@ ACCOUNT_ACTIVATION_DAYS = 2
 HUEY = {
     "huey_class": "huey.SqliteHuey",
     "immediate": False,
+    "consumer": {
+        "workers": 2,
+    },
 }

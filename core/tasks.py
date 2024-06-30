@@ -112,25 +112,18 @@ def import_single_book(row, user_id):
             note.save()
 
         return True
-    else:
-        return False
+
+    return False
 
 
 @db_task()
 def import_from_goodreads(data, user_id):
     user = get_object_or_404(User, id=user_id)
-    count = 0
 
-    for row in data:
-        created = import_single_book(row, user_id)
+    tasks = [import_single_book(row, user_id) for row in data]
+    results = [task_result.get(blocking=True) for task_result in tasks]
 
-        if created:
-            count += 1
-
-    # Send an email to the user when import is done
     user.email_user(
         subject="Book Stacks import finished!",
-        message=f"Your import of {count} books from Goodreads is done",
+        message=f"Your import of {results.count(True)} books from Goodreads is done",
     )
-
-    return f"{count} books imported"
