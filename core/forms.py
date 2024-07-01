@@ -14,7 +14,7 @@ class RegisterForm(RegistrationForm):
 
 
 class ImportBooksForm(forms.Form):
-    csv = forms.FileField(label="Choose a CSV file")
+    csv = forms.FileField(label="Then, upload the CSV file here")
 
 
 class OpenLibrarySearchForm(forms.Form):
