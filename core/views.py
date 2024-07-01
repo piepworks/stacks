@@ -15,7 +15,8 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import IntegrityError, models
-from django.db.models import Q, OuterRef, Exists, Subquery
+from django.db.models import Q, OuterRef, Exists, Subquery, DateField
+from django.db.models.functions import Trunc
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
@@ -261,6 +262,37 @@ def import_books(request):
         return redirect("index")
 
     return render(request, "import_books.html", {"form": ImportBooksForm})
+
+
+@login_required
+def imports(request):
+    # Group books by date and retrieve all details
+    books = (
+        request.user.books.filter(imported=True)
+        .annotate(date_imported=Trunc("created_at", "day", output_field=DateField()))
+        .order_by("-date_imported")
+    )
+
+    # Structure the data for the template
+    imports_grouped_by_date = {}
+    for book in books:
+        date = book.date_imported
+        if date not in imports_grouped_by_date:
+            imports_grouped_by_date[date] = {"books": [book], "count": 1}
+        else:
+            imports_grouped_by_date[date]["books"].append(book)
+            imports_grouped_by_date[date]["count"] += 1
+
+    # Convert the dictionary to a list of tuples for easier template iteration
+    imports_grouped_by_date = sorted(
+        imports_grouped_by_date.items(), key=lambda x: x[0], reverse=True
+    )
+
+    context = {
+        "imports_grouped_by_date": imports_grouped_by_date,
+    }
+
+    return render(request, "imports.html", context)
 
 
 @login_required

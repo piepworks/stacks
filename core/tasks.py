@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from dateutil import parser
 from datetime import date
 from huey.contrib.djhuey import db_task
@@ -125,5 +126,8 @@ def import_from_goodreads(data, user_id):
 
     user.email_user(
         subject="Book Stacks import finished!",
-        message=f"Your import of {results.count(True)} books from Goodreads is done",
+        message=(
+            f"Your import of {results.count(True)} books from Goodreads is done!\n\n"
+            f"https://bookstacks.app{reverse('imports')}"  # noqa: E231
+        ),
     )

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Your Imports{% endblock title %}
+
+{% block content %}
+  <header>
+    <h1>Your Imports</h1>
+  </header>
+
+  {% if imports_grouped_by_date %}
+    <dl>
+      {% for date, data in imports_grouped_by_date %}
+        <div>
+          <dt>{{ date|date:"F j, Y" }} <span class="subdued">({{ data.count }} books)</span></dt>
+          <dd>
+            {% for book in data.books %}
+              <li><a href="{{ book.get_absolute_url }}">{{ book.title }}</a></li>
+            {% endfor %}
+          </dd>
+        </div>
+      {% endfor %}
+    </dl>
+  {% else %}
+    <p>No imports yet. <a href="{% url 'import_books' %}">Get to it!</a></p>
+  {% endif %}
+{% endblock content %}
