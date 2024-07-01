@@ -231,9 +231,6 @@ def status(request, status):
 
 @login_required
 def import_books(request):
-    if not request.user.is_superuser:
-        raise PermissionDenied()
-
     if request.method == "POST":
         form = ImportBooksForm(request.POST, request.FILES)
 
