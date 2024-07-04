@@ -4,37 +4,67 @@ from dateutil import parser
 from datetime import date
 from huey.contrib.djhuey import db_task
 from .models import User, Book, BookCover, BookReading, Author
+from .utils import pluralize
 from .cover_helpers import search_open_library
-from .import_helpers import goodreads_status
+from .import_helpers import (
+    goodreads_status,
+    the_storygraph_status,
+    published_year_from_isbn,
+)
 
 
 @db_task()
 def import_single_book(row, user_id):
     user = get_object_or_404(User, id=user_id)
-    main_author, created_author = Author.objects.get_or_create(
-        name=row["Author"],
-        user=user,
-    )
+    main_author = None
     additional_authors = []
+    authors = []
 
-    if row.get("Additional Authors", "").strip():
-        for author in row["Additional Authors"].split(","):
-            new_author, created_additional_author = Author.objects.get_or_create(
+    if row.get("Author"):
+        # Goodreads
+        main_author, created_author = Author.objects.get_or_create(
+            name=row["Author"],
+            user=user,
+        )
+
+        if row.get("Additional Authors", "").strip():
+            for author in row["Additional Authors"].split(","):
+                new_author, created_additional_author = Author.objects.get_or_create(
+                    name=author,
+                    user=user,
+                )
+                additional_authors.append(new_author)
+
+    if row.get("Authors"):
+        # The StoryGraph
+        for author in row["Authors"].split(","):
+            new_author, created_new_author = Author.objects.get_or_create(
                 name=author,
                 user=user,
             )
-            additional_authors.append(new_author)
+            authors.append(new_author)
 
-    status = goodreads_status(
-        row["Exclusive Shelf"]
-        if row.get("Exclusive Shelf")
-        else row.get("Bookshelves") if row.get("Bookshelves") else "to-read"
-    )
+    if row.get("Exclusive Shelf") or row.get("Bookshelves"):
+        status = goodreads_status(
+            row["Exclusive Shelf"]
+            if row.get("Exclusive Shelf")
+            else row.get("Bookshelves") if row.get("Bookshelves") else "to-read"
+        )
+    elif row.get("Read Status"):
+        status = the_storygraph_status(
+            row["Read Status"] if row.get("Read Status") else "to-read"
+        )
+    else:
+        status = "wishlist"
+
     published_year = (
         row.get("Original Publication Year")
         if row.get("Original Publication Year")
         else row.get("Year Published") if row.get("Year Published") else None
     )
+
+    if not published_year and row.get("ISBN/UID"):
+        published_year = published_year_from_isbn(row["ISBN/UID"])
 
     book, created_book = Book.objects.get_or_create(
         title=row["Title"],
@@ -49,13 +79,27 @@ def import_single_book(row, user_id):
     if created_book:
         book.imported = True
         book.save()
-        book.author.add(main_author.id)
+        if main_author:
+            # Goodreads
+            book.author.add(main_author.id)
 
         if additional_authors:
+            # Goodreads
             book.author.add(*additional_authors)
 
+        if authors:
+            # The StoryGraph
+            book.author.add(*authors)
+
         # Download a cover from Open Library
-        results = search_open_library(f"&title={book.title}&author={main_author.name}")
+        cover_author = main_author if main_author else authors[0] if authors else None
+        if cover_author:
+            results = search_open_library(
+                f"&title={book.title}&author={cover_author.name}"
+            )
+        else:
+            results = search_open_library(f"&title={book.title}")
+
         if results:
             if isinstance(results, dict):
                 # If there's only one result, it's a dict
@@ -86,24 +130,44 @@ def import_single_book(row, user_id):
             reading.save()
 
         if status == "finished":
-            try:
-                start_date = parser.parse(row.get("Date Added"))
-                end_date = parser.parse(row.get("Date Read"))
+            # First, try to get a "Dates Read" (The StoryGraph) field with content like:
+            # 2023/10/28-2024/01/24
 
-                if start_date > end_date:
-                    start_date = end_date
-            except (TypeError, ValueError):
-                start_date = date.today()
-                end_date = date.today()
+            if dates_read := row.get("Dates Read"):
+                start_date, end_date = dates_read.split("-")
+                start_date = parser.parse(start_date)
+                end_date = parser.parse(end_date)
 
-            reading = BookReading.objects.create(
-                book=book,
-                start_date=start_date,
-                end_date=end_date,
-                finished=True,
-                rating=row.get("My Rating") or None,
-            )
-            reading.save()
+                reading = BookReading.objects.create(
+                    book=book,
+                    start_date=start_date,
+                    end_date=end_date,
+                    finished=True,
+                    rating=(
+                        int(row.get("Star Rating")) if row.get("Star Rating") else None
+                    ),
+                )
+                reading.save()
+            else:
+                # Goodreads fallback
+                try:
+                    start_date = parser.parse(row.get("Date Added"))
+                    end_date = parser.parse(row.get("Date Read"))
+
+                    if start_date > end_date:
+                        start_date = end_date
+                except (TypeError, ValueError):
+                    start_date = date.today()
+                    end_date = date.today()
+
+                reading = BookReading.objects.create(
+                    book=book,
+                    start_date=start_date,
+                    end_date=end_date,
+                    finished=True,
+                    rating=row.get("My Rating") or None,
+                )
+                reading.save()
 
         # Add review as a note if there is one
         if review := row.get("My Review"):
@@ -118,16 +182,17 @@ def import_single_book(row, user_id):
 
 
 @db_task()
-def import_from_goodreads(data, user_id):
+def import_books_from_csv(data, user_id):
     user = get_object_or_404(User, id=user_id)
 
     tasks = [import_single_book(row, user_id) for row in data]
     results = [task_result.get(blocking=True) for task_result in tasks]
+    count = results.count(True)
 
     user.email_user(
         subject="Book Stacks import finished!",
         message=(
-            f"Your import of {results.count(True)} books from Goodreads is done!\n\n"
+            f"Your import of {count} {pluralize('book', count)} is done!\n\n"
             f"https://bookstacks.app{reverse('imports')}"  # noqa: E231
         ),
     )

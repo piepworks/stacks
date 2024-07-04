@@ -50,7 +50,7 @@ from .models import (
     BookLocation,
     BookGenre,
 )
-from .tasks import import_from_goodreads
+from .tasks import import_books_from_csv
 
 
 def home(request):
@@ -244,7 +244,7 @@ def import_books(request):
             data = csv_file.read().decode("utf-8")
             reader = csv.DictReader(io.StringIO(data))
 
-            import_from_goodreads(list(reader), request.user.id)
+            import_books_from_csv(list(reader), request.user.id)
 
         else:
             messages.error(request, "Nope.")

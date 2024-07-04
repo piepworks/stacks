@@ -4,10 +4,15 @@
 
 {% block content %}
   <header>
-    <h1>Import your books from Goodreads</h1>
+    <h1>Import your books from Goodreads or The StoryGraph</h1>
   </header>
 
-  <p>First, <a href="https://www.goodreads.com/review/import">export your library</a></p>
+  <p>First, export your library:</p>
+
+  <ul>
+    <li><a href="https://www.goodreads.com/review/import">Goodreads</a></li>
+    <li><a href="https://app.thestorygraph.com/user-export">The StoryGraph</a></li>
+  </ul>
 
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
