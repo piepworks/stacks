@@ -1,6 +1,8 @@
 import pytest
+from io import BytesIO
 from http import HTTPStatus
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from model_bakery import baker
 from core.models import Book, BookType, BookGenre, BookLocation
 
@@ -227,3 +229,51 @@ def test_book_new_post(client_logged_in, setup_staticfiles_storage):
 
     assert response.status_code == 302
     assert Book.objects.filter(title="The Dispossessed", user=user).exists()
+
+
+def create_csv_file():
+    csv_file = (
+        "Title,Author,Status\n"
+        "The Dispossessed,Ursula K. Le Guin,Classic,Reading\n"
+        "Parable of the Sower,Octavia Butler,Reading\n"
+    )
+    # Encode the CSV string to bytes and return it
+    return BytesIO(csv_file.encode("utf-8")).getvalue()
+
+
+@pytest.mark.django_db
+def test_import_books_valid_csv(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    response = client.post(
+        reverse("import_books"),
+        data={
+            "csv": SimpleUploadedFile(
+                "export.csv", create_csv_file(), content_type="text/csv"
+            )
+        },
+        follow=True,
+    )
+
+    assert response.status_code == 200
+    assert (
+        "Import started. We’ll send you an email when it&#x27;s done."
+        in response.content.decode()
+    )
+
+
+@pytest.mark.django_db
+def test_import_books_invalid_file_type(client_logged_in, setup_staticfiles_storage):
+    client, user = client_logged_in
+
+    response = client.post(
+        reverse("import_books"),
+        data={
+            "csv": SimpleUploadedFile(
+                "test.txt", b"dummy content", content_type="text/plain"
+            )
+        },
+        follow=True,
+    )
+    assert response.status_code == 200
+    assert "Please choose a CSV file." in response.content.decode()
