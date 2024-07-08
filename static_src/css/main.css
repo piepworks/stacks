@@ -143,6 +143,10 @@ body.home {
       align-items: center;
       transition: opacity var(--pico-transition);
 
+      &:has(.faux-form:only-child) {
+        justify-content: center;
+      }
+
       @media (min-width: 1024px) {
         opacity: 0;
       }

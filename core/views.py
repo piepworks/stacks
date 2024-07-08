@@ -483,6 +483,7 @@ def search(request):
         {
             "query": query,
             "books": books,
+            "statuses": Book._meta.get_field("status").choices,
         },
     )
 

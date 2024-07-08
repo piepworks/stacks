@@ -92,27 +92,8 @@
             {% endif %}
           {% endif %}
 
-          <div class="cover">
-            <a href="{{ book.get_absolute_url }}">
-              {% if book.covers.all %}
-                {% with book.covers.all|first as cover %}
-                  {% if cover.thumbnail and cover.thumbnail.url %}
-                    <img src="{{ cover.thumbnail.url }}"
-                      alt="{{ cover }}"
-                      height="auto"
-                      width="150"
-                      title="{{ book }}">
-                  {% else %}
-                    {% include "components/no-cover.html" with class="incomplete" %}
-                  {% endif %}
-                {% endwith %}
-              {% else %}
-                {% include "components/no-cover.html" %}
-              {% endif %}
-            </a>
-          </div>
+          {% include "components/book-list-item.html" %}
 
-          <div class="title" title="{{ book }}">{{ book }}</div>
           <div class="actions">
             {% if book.status|get_previous_status != None %}
               <form action="{% url 'book_update' book.pk %}" method="post" hx-post="{% url 'book_update' book.pk %}">
