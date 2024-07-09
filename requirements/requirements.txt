@@ -72,7 +72,7 @@ dj-database-url==2.2.0
     #   environs
 dj-email-url==1.0.6
     # via environs
-django==5.0.6
+django==5.0.7
     # via
     #   -r requirements/requirements.in
     #   dj-database-url
