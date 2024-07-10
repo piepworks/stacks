@@ -164,8 +164,13 @@ class Book(models.Model):
     genre = models.ForeignKey(
         BookGenre,
         on_delete=models.SET_NULL,
-        related_name="books",
         null=True,
+        blank=True,
+    )
+    genres = models.ManyToManyField(
+        BookGenre,
+        related_name="books",
+        help_text="Choose as many as you like",
         blank=True,
     )
     format = models.ManyToManyField(
