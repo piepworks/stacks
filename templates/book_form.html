@@ -79,6 +79,15 @@
     closeAfterSelect: true,
   });
 
+  new TomSelect('#id_genres', {
+    plugins: {
+      remove_button:{
+        title:'Remove this item',
+      }
+    },
+    closeAfterSelect: true,
+  });
+
   new TomSelect('#id_author', {
     create: function(input, callback) {
       // Get CSRF token

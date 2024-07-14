@@ -70,7 +70,7 @@ def status(request, status):
     books = (
         Book.objects.filter(status=status, archived=False, user=request.user)
         .order_by("-updated_at")
-        .prefetch_related("covers", "author", "format", "genre", "location", "type")
+        .prefetch_related("covers", "author", "format", "genres", "location", "type")
     )
 
     # Check if genres/types have sub-genres/types
@@ -87,7 +87,7 @@ def status(request, status):
 
     # Fetch all books once
     all_books = list(
-        books.values("type__slug", "location__slug", "format__slug", "genre__slug")
+        books.values("type__slug", "location__slug", "format__slug", "genres__slug")
     )
 
     type_filters = {
@@ -105,14 +105,14 @@ def status(request, status):
         for format in formats
     }
     genre_filters = {
-        genre.slug: any(book["genre__slug"] == genre.slug for book in all_books)
+        genre.slug: any(book["genres__slug"] == genre.slug for book in all_books)
         for genre in genres
     }
 
     # Get filter counts before applying filters
     filter_counts = {
         "type": get_filter_counts(books, types, "type"),
-        "genre": get_filter_counts(books, genres, "genre"),
+        "genre": get_filter_counts(books, genres, "genres"),
         "location": get_filter_counts(books, locations, "location"),
         "format": get_filter_counts(books, formats, "format"),
     }
@@ -136,21 +136,24 @@ def status(request, status):
                 books = books.filter(Q(type=type) | Q(type__in=child_types))
             else:
                 books = books.filter(type=type)
-        if filter_queries["genre"] != "all":
-            # Get the genre
-            genre = BookGenre.objects.get(slug=filter_queries["genre"])
-            # If the genre has a parent, also check for sub-genres within this genre
-            if not genre.parent:
-                child_genres = BookGenre.objects.filter(parent=genre)
-                books = books.filter(Q(genre=genre) | Q(genre__in=child_genres))
-            else:
-                books = books.filter(genre=genre)
-    except (BookType.DoesNotExist, BookGenre.DoesNotExist):
+    except BookType.DoesNotExist:
         raise Http404()
+
     if filter_queries["location"] != "all":
         books = books.filter(location__slug=filter_queries["location"])
     if filter_queries["format"] != "all":
         books = books.filter(format__slug=filter_queries["format"])
+    if filter_queries["genre"] != "all":
+        # Fetch the selected genre based on slug
+        selected_genre = BookGenre.objects.get(slug=filter_queries["genre"])
+
+        # Fetch sub-genres of the selected genre
+        sub_genres = BookGenre.objects.filter(parent=selected_genre)
+
+        # Filter books by the selected genre and its sub-genres
+        books = books.filter(
+            Q(genres=selected_genre) | Q(genres__in=sub_genres)
+        ).distinct()
 
     # Sort these statuses by the end date of their latest reading
     if status in ["finished", "dnf"]:

@@ -121,6 +121,9 @@ class BookGenre(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ["parent__name", "name"]
+
     def __str__(self):
         if self.parent:
             return f"{self.parent.name} / {self.name}"
@@ -158,12 +161,6 @@ class Book(models.Model):
         BookType,
         on_delete=models.SET_NULL,
         related_name="books",
-        null=True,
-        blank=True,
-    )
-    genre = models.ForeignKey(
-        BookGenre,
-        on_delete=models.SET_NULL,
         null=True,
         blank=True,
     )
