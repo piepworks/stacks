@@ -54,7 +54,7 @@ def test_superuser_not_superuser(create_superuser):
 @pytest.mark.django_db
 def test_book_creation_without_genre():
     book = baker.make(Book)
-    assert book.genres.count() == 0
+    assert book.genre.count() == 0
 
 
 @pytest.mark.django_db

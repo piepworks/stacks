@@ -86,7 +86,7 @@ def book_data(client_logged_in):
         status="reading",
     )
     book1.location.add(location1)
-    book1.genres.add(genre1)
+    book1.genre.add(genre1)
     book2 = baker.make(
         Book,
         user=user,
@@ -95,7 +95,7 @@ def book_data(client_logged_in):
         status="reading",
     )
     book2.location.add(location2)
-    book2.genres.add(genre2)
+    book2.genre.add(genre2)
     book3 = baker.make(
         Book,
         user=user,
@@ -103,7 +103,7 @@ def book_data(client_logged_in):
         type=type2,
         status="reading",
     )
-    book3.genres.add(genre3)
+    book3.genre.add(genre3)
 
     return (
         type1,

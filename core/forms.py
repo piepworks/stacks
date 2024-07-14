@@ -31,7 +31,7 @@ class BookForm(forms.ModelForm):
         self.fields["author"].label = "Author(s)"
         self.fields["author"].queryset = Author.objects.filter(user=self.user)
         self.fields["location"].label = "Location(s)"
-        self.fields["genres"].label = "Genre(s)"
+        self.fields["genre"].label = "Genre(s)"
         self.fields["type"] = GroupedModelChoiceField(
             queryset=self.fields["type"].queryset.order_by("parent", "name"),
             choices_groupby="parent",
@@ -45,7 +45,7 @@ class BookForm(forms.ModelForm):
             "status",
             "author",
             "type",
-            "genres",
+            "genre",
             "published_year",
             "format",
             "location",

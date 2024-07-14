@@ -70,7 +70,7 @@ def status(request, status):
     books = (
         Book.objects.filter(status=status, archived=False, user=request.user)
         .order_by("-updated_at")
-        .prefetch_related("covers", "author", "format", "genres", "location", "type")
+        .prefetch_related("covers", "author", "format", "genre", "location", "type")
     )
 
     # Check if genres/types have sub-genres/types
@@ -87,7 +87,7 @@ def status(request, status):
 
     # Fetch all books once
     all_books = list(
-        books.values("type__slug", "location__slug", "format__slug", "genres__slug")
+        books.values("type__slug", "location__slug", "format__slug", "genre__slug")
     )
 
     type_filters = {
@@ -105,14 +105,14 @@ def status(request, status):
         for format in formats
     }
     genre_filters = {
-        genre.slug: any(book["genres__slug"] == genre.slug for book in all_books)
+        genre.slug: any(book["genre__slug"] == genre.slug for book in all_books)
         for genre in genres
     }
 
     # Get filter counts before applying filters
     filter_counts = {
         "type": get_filter_counts(books, types, "type"),
-        "genre": get_filter_counts(books, genres, "genres"),
+        "genre": get_filter_counts(books, genres, "genre"),
         "location": get_filter_counts(books, locations, "location"),
         "format": get_filter_counts(books, formats, "format"),
     }
@@ -152,7 +152,7 @@ def status(request, status):
 
         # Filter books by the selected genre and its sub-genres
         books = books.filter(
-            Q(genres=selected_genre) | Q(genres__in=sub_genres)
+            Q(genre=selected_genre) | Q(genre__in=sub_genres)
         ).distinct()
 
     # Sort these statuses by the end date of their latest reading

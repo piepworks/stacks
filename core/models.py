@@ -164,7 +164,7 @@ class Book(models.Model):
         null=True,
         blank=True,
     )
-    genres = models.ManyToManyField(
+    genre = models.ManyToManyField(
         BookGenre,
         related_name="books",
         help_text="Choose as many as you like",

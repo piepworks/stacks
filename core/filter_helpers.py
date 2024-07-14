@@ -4,7 +4,7 @@ def calculate_unique_child_counts(parent, items, queryset):
 
     for child in items:
         if child.parent == parent:
-            related_books = queryset.filter(genres__slug=child.slug)
+            related_books = queryset.filter(genre__slug=child.slug)
             unique_books.update({book.id for book in related_books})
 
     return len(unique_books)
