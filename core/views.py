@@ -6,10 +6,11 @@ import markdown
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login
 from django.conf import settings
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
@@ -298,6 +299,24 @@ def imports(request):
 
 def changelog(request):
     return render(request, "changelog.html", {"entries": Changelog.objects.all()})
+
+
+class ChangelogFeed(Feed):
+    title = "Book Stacks RSS Feed"
+    link = reverse_lazy("changelog")
+    description = "Updates about Book Stacks."
+
+    def items(self):
+        return Changelog.objects.order_by("-created_at")[:5]  # Last 5 entries
+
+    def item_title(self, item):
+        return item.summary
+
+    def item_description(self, item):
+        return item.details
+
+    def item_link(self, item):
+        return reverse("changelog")
 
 
 @login_required
