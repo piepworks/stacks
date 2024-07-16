@@ -72,6 +72,20 @@ class User(AbstractUser):
     REQUIRED_FIELDS = []
 
 
+class Changelog(models.Model):
+    date = models.DateField(default=datetime.date.today)
+    summary = models.CharField(max_length=100)
+    details = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-date"]
+
+    def __str__(self):
+        return f"Changes for {self.date}"
+
+
 class Author(models.Model):
     name = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authors")
