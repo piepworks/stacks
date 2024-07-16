@@ -16,6 +16,7 @@ from .models import (
     BookGenre,
     BookFormat,
     BookLocation,
+    Changelog,
 )
 
 
@@ -158,6 +159,10 @@ class AuthorAdmin(admin.ModelAdmin):
     display_books.short_description = "Books"
 
 
+class ChangelogAdmin(admin.ModelAdmin):
+    list_display = ("date", "summary")
+
+
 admin.site.unregister(Group)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Book, BookAdmin)
@@ -168,3 +173,4 @@ admin.site.register(BookNote)
 admin.site.register(BookType, BookTypeAdmin)
 admin.site.register(BookLocation, BookLocationAdmin)
 admin.site.register(BookGenre, BookGenreAdmin)
+admin.site.register(Changelog, ChangelogAdmin)

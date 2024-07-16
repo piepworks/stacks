@@ -16,8 +16,12 @@ urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
     # Book Imports
+    # ------------
     path("import", views.import_books, name="import_books"),
     path("imports", views.imports, name="imports"),
+    # Changelog
+    # ---------
+    path("changelog", views.changelog, name="changelog"),
     # Book CRUD
     # ---------
     path("book/new", views.book_new, name="book_new"),  # C

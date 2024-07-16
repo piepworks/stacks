@@ -49,6 +49,7 @@ from .models import (
     BookType,
     BookLocation,
     BookGenre,
+    Changelog,
 )
 from .tasks import import_books_from_csv
 
@@ -293,6 +294,10 @@ def imports(request):
     }
 
     return render(request, "imports.html", context)
+
+
+def changelog(request):
+    return render(request, "changelog.html", {"entries": Changelog.objects.all()})
 
 
 @login_required

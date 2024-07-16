@@ -75,12 +75,14 @@ class User(AbstractUser):
 class Changelog(models.Model):
     date = models.DateField(default=datetime.date.today)
     summary = models.CharField(max_length=100)
-    details = models.TextField()
+    details = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["-date"]
+        verbose_name = "Changelog Entry"
+        verbose_name_plural = "Changelog Entries"
 
     def __str__(self):
         return f"Changes for {self.date}"

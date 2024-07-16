@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Changelog{% endblock title %}
+
+{% block content %}
+  <header>
+    <h1>Changelog</h1>
+  </header>
+
+  {% if entries %}
+    {% for entry in entries %}
+      <article>
+        <header>{{ entry.date }}</header>
+        <div>{{ entry.summary }}</div>
+      </article>
+    {% endfor %}
+  {% endif %}
+{% endblock content %}
