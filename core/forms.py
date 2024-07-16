@@ -60,6 +60,7 @@ class BookStatusForm(forms.ModelForm):
         self.fields["author"].widget = MultipleHiddenInput()
         self.fields["format"].widget = MultipleHiddenInput()
         self.fields["location"].widget = MultipleHiddenInput()
+        self.fields["genre"].widget = MultipleHiddenInput()
 
     class Meta:
         model = Book
