@@ -549,3 +549,7 @@ td small {
     }
   }
 }
+
+.hidden {
+  display: none;
+}

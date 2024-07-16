@@ -44,7 +44,10 @@
             {% endif %}
             {% url "changelog" as changelog_url %}
             <li{% if request.path == changelog_url %} class="active"{% endif %}>
-              <div class="faux-form"><a{% if request.path == changelog_url %} aria-current="page"{% endif %} class="svg newspaper" href="{% url 'changelog' %}">Changelog</a></div>
+              <div class="faux-form">
+                <a{% if request.path == changelog_url %} aria-current="page"{% endif %} class="svg newspaper" href="{% url 'changelog' %}">Changelog</a>
+                <div class="badge changelog-badge hidden"></div>
+              </div>
             </li>
             {% url 'import_books' as import_url %}
             <li{% if request.path == import_url %} class="active"{% endif %}>

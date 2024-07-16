@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth import login
 from django.conf import settings
 from django.urls import reverse
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -298,6 +298,18 @@ def imports(request):
 
 def changelog(request):
     return render(request, "changelog.html", {"entries": Changelog.objects.all()})
+
+
+@login_required
+def changelog_latest(request):
+    if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return HttpResponseForbidden()
+
+    return render(
+        request,
+        "changelog_latest.txt",
+        {"entry": Changelog.objects.first()},
+    )
 
 
 @login_required

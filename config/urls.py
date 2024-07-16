@@ -22,6 +22,7 @@ urlpatterns = [
     # Changelog
     # ---------
     path("changelog", views.changelog, name="changelog"),
+    path("changelog/latest", views.changelog_latest, name="changelog_latest"),
     # Book CRUD
     # ---------
     path("book/new", views.book_new, name="book_new"),  # C

@@ -16,3 +16,9 @@
     {% endfor %}
   {% endif %}
 {% endblock content %}
+
+{% block page_js %}
+  <script>
+    localStorage.setItem('changelogId', '{{ entries.0.id }}');
+  </script>
+{% endblock page_js %}
