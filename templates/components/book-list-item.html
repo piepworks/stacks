@@ -3,7 +3,7 @@
     {% if book.covers.all %}
       {% with book.covers.all|first as cover %}
         {% if cover.thumbnail and cover.thumbnail.url %}
-          <img src="{{ cover.thumbnail.url }}"
+          <img loading="lazy" src="{{ cover.thumbnail.url }}"
             alt="{{ cover }}"
             height="auto"
             width="150"
