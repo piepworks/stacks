@@ -167,7 +167,7 @@ def status(request, status):
             latest_reading_end_date=Subquery(latest_bookreading.values("end_date")[:1])
         ).order_by("-latest_reading_end_date")
 
-    paginator = Paginator(books, 30)
+    paginator = Paginator(books, 20)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
