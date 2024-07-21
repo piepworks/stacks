@@ -80,6 +80,7 @@ class BookAuthorInline(admin.TabularInline):
     extra = 1
 
 
+@admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("title", "authors_list", "formats_list", "imported")
     list_filter = ("user", "archived", "status")
@@ -104,6 +105,7 @@ class BookAdmin(admin.ModelAdmin):
     authors_list.short_description = "Authors"
 
 
+@admin.register(BookCover)
 class BookCoverAdmin(admin.ModelAdmin):
     list_display = ("book", "image_tag", "updated_at")
     readonly_fields = ("image_tag",)
@@ -116,26 +118,31 @@ class BookCoverAdmin(admin.ModelAdmin):
     image_tag.short_description = "Cover"
 
 
+@admin.register(BookType)
 class BookTypeAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug", "parent")
 
 
+@admin.register(BookGenre)
 class BookGenreAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("__str__", "slug")
 
 
+@admin.register(BookFormat)
 class BookFormatAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug")
 
 
+@admin.register(BookLocation)
 class BookLocationAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ("name",)}
     list_display = ("name", "slug")
 
 
+@admin.register(Author)
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ("name", "book_count")
 
@@ -159,18 +166,11 @@ class AuthorAdmin(admin.ModelAdmin):
     display_books.short_description = "Books"
 
 
+@admin.register(Changelog)
 class ChangelogAdmin(admin.ModelAdmin):
     list_display = ("date", "summary")
 
 
 admin.site.unregister(Group)
-admin.site.register(Author, AuthorAdmin)
-admin.site.register(Book, BookAdmin)
-admin.site.register(BookFormat, BookFormatAdmin)
-admin.site.register(BookCover, BookCoverAdmin)
 admin.site.register(BookReading)
 admin.site.register(BookNote)
-admin.site.register(BookType, BookTypeAdmin)
-admin.site.register(BookLocation, BookLocationAdmin)
-admin.site.register(BookGenre, BookGenreAdmin)
-admin.site.register(Changelog, ChangelogAdmin)
