@@ -523,6 +523,7 @@ def search(request):
             "query": query,
             "books": books,
             "statuses": Book._meta.get_field("status").choices,
+            "open_library_search_form": OpenLibrarySearchForm({"title": query}),
         },
     )
 
