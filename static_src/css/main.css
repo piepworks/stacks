@@ -61,16 +61,49 @@ body.home {
 
 .cover {
   a {
+    display: block;
+    position: relative;
+    min-height: 100px;
     border-radius: 0.25rem;
 
     &:hover img,
     &:focus img,
+    &:hover .image-spinner,
+    &:focus .image-spinner,
     &:hover .no-cover,
     &:focus .no-cover {
       box-shadow: 0 0 0 var(--pico-outline-width)
         var(--pico-form-element-focus-color);
       border-color: var(--pico-form-element-active-border-color);
     }
+  }
+
+  .img-wrapper {
+    width: fit-content;
+    height: fit-content;
+  }
+
+  @container (max-height: 30px) {
+    .img-wrapper {
+      display: none;
+    }
+  }
+
+  img {
+    position: relative;
+    z-index: 100;
+  }
+
+  .image-spinner {
+    height: 100px;
+    width: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    z-index: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 
@@ -109,6 +142,7 @@ body.home {
     }
 
     img,
+    .image-spinner,
     .no-cover {
       width: 100%;
       border: 0.125rem solid rgb(0 0 0 / 20%);
