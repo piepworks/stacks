@@ -67,6 +67,7 @@
       <thead>
         <tr>
           <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
+          <th>{% if book.genre.all.count > 1 %}Genres{% else %}Genre{% endif %}</th>
           <th>Published Year</th>
           {% if book.olid %}
             <th>URL</th>
@@ -88,6 +89,17 @@
               </ul>
             {% else %}
               <a href="{{ book.author.first.get_absolute_url }}">{{ book.author.first }}</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if book.genre.all.count > 1 %}
+              <ul>
+                {% for genre in book.genre.all %}
+                  <li>{{ genre }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              {{ book.genre.first }}
             {% endif %}
           </td>
           <td>{{ book.published_year }}</td>
