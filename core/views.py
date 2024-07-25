@@ -531,7 +531,7 @@ def search(request):
 @login_required
 def open_library_search(request):
     status = request.GET.get("status")
-    form = OpenLibrarySearchForm(request.GET or None)
+    form = OpenLibrarySearchForm(request.GET or None, autofocus=False)
 
     if form.is_valid():
         title = form.cleaned_data.get("title")

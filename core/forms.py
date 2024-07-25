@@ -18,10 +18,14 @@ class ImportBooksForm(forms.Form):
 
 
 class OpenLibrarySearchForm(forms.Form):
-    title = forms.CharField(
-        label="Title", widget=forms.TextInput(attrs={"autofocus": True})
-    )
+    title = forms.CharField(label="Title")
     author = forms.CharField(label="Author (optional)", required=False)
+
+    def __init__(self, *args, autofocus=True, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.autofocus = autofocus
+        self.attrs = {"autofocus": True} if self.autofocus else {}
+        self.fields["title"].widget.attrs.update(self.attrs)
 
 
 class BookForm(forms.ModelForm):
