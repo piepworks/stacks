@@ -63,7 +63,6 @@ body.home {
   a {
     display: block;
     position: relative;
-    min-height: 100px;
     border-radius: 0.25rem;
 
     &:hover img,
@@ -76,6 +75,10 @@ body.home {
         var(--pico-form-element-focus-color);
       border-color: var(--pico-form-element-active-border-color);
     }
+  }
+
+  .ol-results & a {
+    min-height: 100px;
   }
 
   .img-wrapper {
