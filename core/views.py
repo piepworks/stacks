@@ -639,6 +639,14 @@ def author_update(request, pk):
 
 
 @login_required
+def author_delete(request, pk):
+    author = get_object_or_404(Author, pk=pk, user=request.user)
+    author.delete()
+    messages.success(request, "Author deleted")
+    return redirect("index")
+
+
+@login_required
 def cover_new(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
 

@@ -88,7 +88,11 @@
                 {% endfor %}
               </ul>
             {% else %}
-              <a href="{{ book.author.first.get_absolute_url }}">{{ book.author.first }}</a>
+              {% if book.author.first %}
+                <a href="{{ book.author.first.get_absolute_url }}">{{ book.author.first }}</a>
+              {% else %}
+                None
+              {% endif %}
             {% endif %}
           </td>
           <td>
