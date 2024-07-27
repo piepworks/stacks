@@ -335,6 +335,42 @@ class BookReading(models.Model):
         return None
 
 
+class Series(models.Model):
+    title = models.CharField(max_length=100)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="series")
+    books = models.ManyToManyField(
+        Book, through="SeriesBook", related_name="series", blank=True
+    )
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ["user", "title"]
+        verbose_name_plural = "Series"
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse("series_detail", args=(self.pk,))
+
+
+class SeriesBook(models.Model):
+    series = models.ForeignKey(Series, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    order = models.PositiveSmallIntegerField(null=True, blank=True)
+    order_label = models.CharField(
+        max_length=10,
+        blank=True,
+        help_text="If you want something other than its position in the series. E.g. “4.5”",
+    )
+
+    class Meta:
+        unique_together = ["series", "book"]
+        ordering = ["order"]
+
+
 class BookNote(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="notes")
     text = models.TextField()

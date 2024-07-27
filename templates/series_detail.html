@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load markdown_extras %}
+
+{% block title %}{{ series }} (series){% endblock title %}
+
+{% block body_tag %}class="series-detail"{% endblock body_tag %}
+
+{% block content %}
+  <header class="actions">
+    <h1>
+      {{ series }}
+    </h1>
+    <form action="{% url 'series_delete' series.pk %}" method="post">
+      {% csrf_token %}
+      <div class="inner">
+        <div class="faux-form"><a class="svg edit" href="{% url 'series_update' series.pk %}">Edit</a></div>
+        <div class="faux-form"><button class="svg delete" onclick="return confirm('Are you sure you want to delete this series and all its associated information?')">Delete</button></div>
+      </div>
+    </form>
+  </header>
+
+  {% if series.description %}
+    <div>{{ series.description|markdown }}</div>
+  {% endif %}
+
+  {% if series.books %}
+    <ol>
+      {% for book, form in forms %}
+        <li>
+          {{ book }}
+          <form action="{% url 'series_update' series.pk %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+          </form>
+        </li>
+      {% endfor %}
+    </ol>
+
+  {% endif %}
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if action == 'new' %}
+    Add a new series
+    {% else %}
+    Editing {{ series }}
+    {% endif %}
+{% endblock title %}
+
+{% block content %}
+  <header>
+    <h1>
+      {% if action == 'new' %}
+        Add a new series
+      {% else %}
+        Editing <a href="{{ series.get_absolute_url }}">{{ series }}</a>
+      {% endif %}
+    </h1>
+  </header>
+
+  <form method="post">
+    {% csrf_token %}
+    <fieldset>
+      {% for field in form %}
+        <div>
+          <label>
+            {{ field.as_field_group }}
+          </label>
+        </div>
+      {% endfor %}
+    </fieldset>
+    <button type="submit">Save</button>
+  </form>
+{% endblock content %}

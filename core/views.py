@@ -36,6 +36,8 @@ from .forms import (
     AuthorForm,
     SettingsForm,
     OpenLibrarySearchForm,
+    SeriesForm,
+    SeriesBookForm,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -50,6 +52,8 @@ from .models import (
     BookType,
     BookLocation,
     BookGenre,
+    Series,
+    SeriesBook,
     Changelog,
 )
 from .tasks import import_books_from_csv
@@ -840,6 +844,94 @@ def note_delete(request, pk, note_pk):
     note.delete()
     messages.success(request, "Note deleted")
     return redirect("book_detail", pk=pk)
+
+
+@login_required
+def series_new(request):
+    if request.method == "POST":
+        form = SeriesForm(request.POST)
+
+        if form.is_valid():
+            series = form.save(commit=False)
+            series.user = request.user
+            series.save()
+            messages.success(request, "Series added")
+            return redirect("series_detail", pk=series.pk)
+
+    else:
+        form = SeriesForm()
+
+    return render(
+        request,
+        "series_form.html",
+        {
+            "form": form,
+            "action": "new",
+        },
+    )
+
+
+@login_required
+def series_detail(request, pk):
+    series = get_object_or_404(Series, pk=pk, user=request.user)
+    books = Book.objects.filter(series=series)
+    forms = [
+        (
+            book,
+            SeriesBookForm(
+                instance=SeriesBook.objects.get(
+                    book=book,
+                    series=series,
+                )
+            ),
+        )
+        for book in books
+    ]
+
+    return render(
+        request,
+        "series_detail.html",
+        {
+            "series": series,
+            "books": books,
+            "forms": forms,
+        },
+    )
+
+
+@login_required
+def series_update(request, pk):
+    series = get_object_or_404(Series, pk=pk, user=request.user)
+
+    if request.method == "POST":
+        form = SeriesForm(request.POST, instance=series)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Series updated")
+            return redirect(series.get_absolute_url())
+
+    else:
+        form = SeriesForm(instance=series)
+
+    return render(
+        request,
+        "series_form.html",
+        {
+            "series": series,
+            "form": form,
+            "action": "update",
+        },
+    )
+
+
+@require_POST
+@login_required
+def series_delete(request, pk):
+    series = get_object_or_404(Series, pk=pk, user=request.user)
+    series.delete()
+    messages.success(request, "Series deleted")
+    return redirect("index")
 
 
 # ----------------------------------

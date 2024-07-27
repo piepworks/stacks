@@ -17,6 +17,7 @@ from .models import (
     BookFormat,
     BookLocation,
     Changelog,
+    Series,
 )
 
 
@@ -164,6 +165,22 @@ class AuthorAdmin(admin.ModelAdmin):
         return format_html(links)
 
     display_books.short_description = "Books"
+
+
+class SeriesBookInline(admin.TabularInline):
+    model = Series.books.through
+    extra = 1
+
+
+@admin.register(Series)
+class SeriesAdmin(admin.ModelAdmin):
+    list_display = ("title", "book_count")
+    inlines = [SeriesBookInline]
+
+    def book_count(self, obj):
+        return obj.books.count()
+
+    book_count.short_description = "Book Count"
 
 
 @admin.register(Changelog)

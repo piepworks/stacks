@@ -1,7 +1,16 @@
 from django import forms
 from django.forms.widgets import MultipleHiddenInput
 from django_registration.forms import RegistrationForm
-from .models import User, Book, BookCover, BookReading, BookNote, Author
+from .models import (
+    User,
+    Book,
+    BookCover,
+    BookReading,
+    BookNote,
+    Author,
+    Series,
+    SeriesBook,
+)
 from .fields import GroupedModelChoiceField
 
 
@@ -126,6 +135,24 @@ class AuthorForm(forms.ModelForm):
         fields = (
             "name",
             "bio",
+        )
+
+
+class SeriesForm(forms.ModelForm):
+    class Meta:
+        model = Series
+        fields = (
+            "title",
+            "description",
+        )
+
+
+class SeriesBookForm(forms.ModelForm):
+    class Meta:
+        model = SeriesBook
+        fields = (
+            "order",
+            "order_label",
         )
 
 
