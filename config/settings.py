@@ -62,7 +62,6 @@ INSTALLED_APPS += [
     "django_registration",
     "honeypot",
     "django_htmx",
-    "imagekit",
     "huey.contrib.djhuey",
 ]
 

@@ -13,9 +13,7 @@ from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
-from imagekit.models import ImageSpecField, ProcessedImageField
-from imagekit.processors import ResizeToFit
-from core.image_helpers import rename_image
+from core.image_helpers import rename_image, resize_image
 
 
 class UserManager(BaseUserManager):
@@ -265,18 +263,8 @@ class Book(models.Model):
 
 
 class BookCover(models.Model):
-    image = ProcessedImageField(
-        upload_to=rename_image,
-        processors=[ResizeToFit(width=600, upscale=False)],
-        format="JPEG",
-        options={"quality": 70},
-    )
-    thumbnail = ImageSpecField(
-        source="image",
-        processors=[ResizeToFit(width=300, upscale=False)],
-        format="JPEG",
-        options={"quality": 60},
-    )
+    image = models.ImageField(upload_to=rename_image, blank=True, null=True)
+    thumbnail = models.ImageField(upload_to=rename_image, blank=True, null=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     description = models.CharField(
         max_length=100,
@@ -291,6 +279,15 @@ class BookCover(models.Model):
 
     def __str__(self):
         return f"Cover of {self.book}"
+
+    def save(self, *args, **kwargs):
+        if not self.pk and self.image:
+            self.image = resize_image(self.image, width=600)
+            self.thumbnail = resize_image(self.image, width=300)
+        elif not self.thumbnail and self.image:
+            self.thumbnail = resize_image(self.image, width=300)
+
+        super().save(*args, **kwargs)
 
     def save_cover_from_url(self, url):
         if url != "":

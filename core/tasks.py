@@ -134,9 +134,13 @@ def import_single_book(row, user_id):
             # 2023/10/28-2024/01/24
 
             if dates_read := row.get("Dates Read"):
-                start_date, end_date = dates_read.split("-")
-                start_date = parser.parse(start_date)
-                end_date = parser.parse(end_date)
+                try:
+                    start_date, end_date = dates_read.split("-")
+                    start_date = parser.parse(start_date)
+                    end_date = parser.parse(end_date)
+                except ValueError:
+                    start_date = dates_read
+                    end_date = None
 
                 reading = BookReading.objects.create(
                     book=book,

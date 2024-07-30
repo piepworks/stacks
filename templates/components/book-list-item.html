@@ -2,7 +2,7 @@
   <a href="{{ book.get_absolute_url }}">
     {% if book.covers.all %}
       {% with book.covers.all|first as cover %}
-        {% if cover.thumbnail and cover.thumbnail.url %}
+        {% if cover.thumbnail %}
           <img loading="lazy" src="{{ cover.thumbnail.url }}"
             alt="{{ cover }}"
             height="auto"
