@@ -10,7 +10,6 @@ django-debug-toolbar
 django-extensions
 django-honeypot
 django-htmx
-django-imagekit
 django-registration
 django-storages
 djlint
