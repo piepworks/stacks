@@ -27,9 +27,9 @@
     <form method="post">
       {% csrf_token %}
       {{ formset.management_form }}
-      <ol x-data="series" x-sort="handle">
+      <ol x-data="{ handle: (item, position) => console.log($refs[`bookItem${item}`])}" x-sort="handle">
         {% for form in formset %}
-          <li x-sort:item="{{ form.instance.order }}">
+          <li x-sort:item="{{ form.instance.order }}" x-ref="bookItem{{ form.instance.order }}">
             <p>{{ form.instance.book.title }}</p>
             {{ form }}
           </li>
@@ -40,15 +40,3 @@
 
   {% endif %}
 {% endblock content %}
-
-{% block page_js %}
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('series', () => ({
-        handle: (item, position) => {
-          console.log({item, position});
-        },
-      }));
-    });
-  </script>
-{% endblock page_js %}
