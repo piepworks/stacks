@@ -881,7 +881,9 @@ def series_detail(request, pk):
 
         if formset.is_valid():
             formset.save()
-            messages.success(request, "Series order updated")
+
+            if not request.htmx:
+                messages.success(request, "Series order updated")
 
             return redirect(series.get_absolute_url())
         else:
@@ -891,14 +893,24 @@ def series_detail(request, pk):
 
         formset = SeriesBookFormSet(queryset=series_books)
 
-    return render(
-        request,
-        "series_detail.html",
-        {
-            "series": series,
-            "formset": formset,
-        },
-    )
+    if request.htmx:
+        return render(
+            request,
+            "components/series-list.html",
+            {
+                "series": series,
+                "formset": formset,
+            },
+        )
+    else:
+        return render(
+            request,
+            "series_detail.html",
+            {
+                "series": series,
+                "formset": formset,
+            },
+        )
 
 
 @login_required

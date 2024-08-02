@@ -24,19 +24,31 @@
   {% endif %}
 
   {% if series.books %}
-    <form method="post">
-      {% csrf_token %}
-      {{ formset.management_form }}
-      <ol x-data="{ handle: (item, position) => console.log($refs[`bookItem${item}`])}" x-sort="handle">
-        {% for form in formset %}
-          <li x-sort:item="{{ form.instance.order }}" x-ref="bookItem{{ form.instance.order }}">
-            <p>{{ form.instance.book.title }}</p>
-            {{ form }}
-          </li>
-        {% endfor %}
-      </ol>
-      <button type="submit">Save order</button>
-    </form>
-
+    {% include "components/series-list.html" %}
   {% endif %}
 {% endblock content %}
+
+{% block page_js %}
+  <script>
+    document.addEventListener('alpine:init', () => {
+      Alpine.data('series', () => ({
+        init () {
+          document.querySelectorAll('#series-list ol li div').forEach((el, index) => {
+            el.classList.add('hidden');
+          });
+          document.querySelectorAll('#series-list button').forEach((el, index) => {
+            el.classList.add('hidden');
+          });
+        },
+
+        handle () {
+          document.getElementById('series-list').querySelectorAll('li').forEach((el, index) => {
+            el.querySelector('input').value = index + 1;
+          });
+
+          htmx.trigger('#series-list', 'submit');
+        }
+      }));
+    });
+  </script>
+{% endblock page_js %}

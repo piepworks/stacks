@@ -1,0 +1,13 @@
+<form method="post" id="series-list" hx-post="{% url 'series_detail' series.pk %}" hx-target="#series-list">
+  {% csrf_token %}
+  {{ formset.management_form }}
+  <ol x-sort="handle" x-data="series">
+    {% for form in formset %}
+      <li x-sort:item="{{ form.instance.order }}">
+        <p>{{ form.instance.book.title }}</p>
+        {{ form }}
+      </li>
+    {% endfor %}
+  </ol>
+  <button type="submit">Save order</button>
+</form>
