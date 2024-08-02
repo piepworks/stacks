@@ -37,7 +37,7 @@ from .forms import (
     SettingsForm,
     OpenLibrarySearchForm,
     SeriesForm,
-    SeriesBookForm,
+    SeriesBookFormSet,
 )
 from .utils import send_email_to_admin
 from .cover_helpers import search_open_library
@@ -874,27 +874,29 @@ def series_new(request):
 @login_required
 def series_detail(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
-    books = Book.objects.filter(series=series)
-    forms = [
-        (
-            book,
-            SeriesBookForm(
-                instance=SeriesBook.objects.get(
-                    book=book,
-                    series=series,
-                )
-            ),
-        )
-        for book in books
-    ]
+    series_books = SeriesBook.objects.filter(series=series)
+
+    if request.method == "POST":
+        formset = SeriesBookFormSet(request.POST, queryset=series_books)
+
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, "Series order updated")
+
+            return redirect(series.get_absolute_url())
+        else:
+            messages.error(request, "Nope")
+
+    else:
+
+        formset = SeriesBookFormSet(queryset=series_books)
 
     return render(
         request,
         "series_detail.html",
         {
             "series": series,
-            "books": books,
-            "forms": forms,
+            "formset": formset,
         },
     )
 

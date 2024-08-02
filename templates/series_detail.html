@@ -24,17 +24,19 @@
   {% endif %}
 
   {% if series.books %}
-    <ol>
-      {% for book, form in forms %}
-        <li>
-          {{ book }}
-          <form action="{% url 'series_update' series.pk %}" method="post">
-            {% csrf_token %}
+    <form method="post">
+      {{ formset.management_form }}
+      {% csrf_token %}
+      <ol x-data="{ handle: (item, position) => console.log({item, position})}" x-sort="handle">
+        {% for form in formset %}
+          <li x-sort:item="{{ form.instance.order }}">
+            <p>{{ form.instance.book.title }}</p>
             {{ form }}
-          </form>
-        </li>
-      {% endfor %}
-    </ol>
+          </li>
+        {% endfor %}
+      </ol>
+      <button type="submit">Save order</button>
+    </form>
 
   {% endif %}
 {% endblock content %}

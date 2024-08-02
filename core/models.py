@@ -370,6 +370,15 @@ class SeriesBook(models.Model):
         unique_together = ["series", "book"]
         ordering = ["order"]
 
+    def __str__(self):
+        return f"{self.series}: {self.order}. {self.book}"
+
+    def save(self, *args, **kwargs):
+        if not self.order:
+            self.order = self.series.books.count() + 1
+
+        super().save(*args, **kwargs)
+
 
 class BookNote(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="notes")

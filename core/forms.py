@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.widgets import MultipleHiddenInput
+from django.forms import modelformset_factory
 from django_registration.forms import RegistrationForm
 from .models import (
     User,
@@ -148,12 +149,24 @@ class SeriesForm(forms.ModelForm):
 
 
 class SeriesBookForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SeriesBookForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            if field != "order":
+                self.fields[field].widget = forms.HiddenInput()
+
     class Meta:
         model = SeriesBook
-        fields = (
-            "order",
+        exclude = [
             "order_label",
-        )
+        ]
+
+
+SeriesBookFormSet = modelformset_factory(
+    SeriesBook,
+    form=SeriesBookForm,
+    extra=0,
+)
 
 
 class SettingsForm(forms.ModelForm):
