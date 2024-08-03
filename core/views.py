@@ -887,6 +887,22 @@ def series_add_book(request, pk):
 
 
 @login_required
+@require_POST
+def series_remove_book(request, pk):
+    series = get_object_or_404(Series, pk=pk, user=request.user)
+
+    if request.POST.get("book"):
+        book = get_object_or_404(Book, pk=request.POST.get("book"), user=request.user)
+        series_book = SeriesBook.objects.get(series=series, book=book)
+        series_book.delete()
+        messages.success(request, f"{book} removed from {series}")
+        return redirect(series.get_absolute_url())
+
+    messages.error(request, "No book to remove")
+    return redirect(series.get_absolute_url())
+
+
+@login_required
 def series_new(request):
     if request.method == "POST":
         form = SeriesForm(request.POST)

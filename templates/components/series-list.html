@@ -5,10 +5,13 @@
     {% for form in formset %}
       <li x-sort:item="{{ form.instance.order }}">
         <span class="svg drag" x-sort:handle>hi</span>
-        <span><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
-        {{ form }}
+        <span class="title"><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
+        <div class="fields">{{ form }}</div>
+        <input type="submit" form="remove-book-form" name="book" value="{{ form.instance.book.pk }}" class="svg close" aria-label="Remove"></input>
       </li>
     {% endfor %}
   </ol>
   <button type="submit">Save order</button>
 </form>
+
+<form id="remove-book-form" method="post" action="{% url 'series_remove_book' series.pk %}">{% csrf_token %}</form>

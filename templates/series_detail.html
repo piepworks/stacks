@@ -36,7 +36,7 @@
     document.addEventListener('alpine:init', () => {
       Alpine.data('series', () => ({
         init () {
-          document.querySelectorAll('#series-list ol li div').forEach((el, index) => {
+          document.querySelectorAll('#series-list ol li .fields').forEach((el, index) => {
             el.classList.add('hidden');
           });
           document.querySelectorAll('#series-list button[type=submit]').forEach((el, index) => {

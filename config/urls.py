@@ -39,6 +39,7 @@ urlpatterns = [
     path("series/<int:pk>/update", views.series_update, name="series_update"),  # U
     path("series/<int:pk>/delete", views.series_delete, name="series_delete"),  # D
     path("series/<int:pk>/add", views.series_add_book, name="series_add_book"),
+    path("series/<int:pk>/remove", views.series_remove_book, name="series_remove_book"),
     # Book Search
     # -----------
     path("search", views.search, name="search"),
