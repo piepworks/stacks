@@ -5,7 +5,7 @@
     {% for form in formset %}
       <li x-sort:item="{{ form.instance.order }}">
         <span class="svg drag" x-sort:handle>hi</span>
-        <span>{{ form.instance.book.title }}</span>
+        <span><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
         {{ form }}
       </li>
     {% endfor %}
