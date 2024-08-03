@@ -14,4 +14,4 @@
   <button type="submit">Save order</button>
 </form>
 
-<form id="remove-book-form" method="post" action="{% url 'series_remove_book' series.pk %}">{% csrf_token %}</form>
+<form onsubmit="return confirm('Do you want to remove this book from {{ series }} series?')" id="remove-book-form" method="post" action="{% url 'series_remove_book' series.pk %}">{% csrf_token %}</form>
