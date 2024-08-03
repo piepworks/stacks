@@ -65,7 +65,7 @@
             <li{% if request.path == settings_url %} class="active"{% endif %}>
               <div class="faux-form"><a{% if request.path == settings_url %} aria-current="page"{% endif %} class="svg settings" href="{% url 'settings' %}">Settings</a></div>
             </li>
-            <li>
+            <li class="log-out">
               <form method="post" action="{% url 'logout' %}" onsubmit="return confirm('Do you want to log out?')">
                 {% csrf_token %}
                 <button class="svg log-out">
