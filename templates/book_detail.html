@@ -69,7 +69,7 @@
           <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
           <th>{% if book.genre.all.count > 1 %}Genres{% else %}Genre{% endif %}</th>
           <th>Published Year</th>
-          {% if book.series %}
+          {% if book.series.all %}
             <th>Series</th>
           {% endif %}
           {% if book.olid %}
@@ -110,16 +110,16 @@
             {% endif %}
           </td>
           <td>{{ book.published_year }}</td>
-          {% if book.olid %}
-            <td>
-              <a href="https://openlibrary.org/works/{{ book.olid }}">Open Library</a>
-            </td>
-          {% endif %}
-          {% if book.series %}
+          {% if book.series.all %}
             <td>
               {% for series in book.series.all %}
                 <a href="{{ series.get_absolute_url }}">{{ series }}</a>{% if not forloop.last %}, {% endif %}
               {% endfor %}
+            </td>
+          {% endif %}
+          {% if book.olid %}
+            <td>
+              <a href="https://openlibrary.org/works/{{ book.olid }}">Open Library</a>
             </td>
           {% endif %}
           <td><a href="{% url 'status' book.status %}">{{ status.name }}</a></td>
