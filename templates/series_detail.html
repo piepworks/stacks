@@ -3,7 +3,7 @@
 
 {% block title %}{{ series }} / Series{% endblock title %}
 
-{% block body_tag %}class="series-detail"{% endblock body_tag %}
+{% block body_tag %}class="series-detail" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'{% endblock body_tag %}
 
 {% block content %}
   <header class="actions-inline">
@@ -23,7 +23,7 @@
   </header>
 
   {% if series.description %}
-    <div>{{ series.description|markdown }}</div>
+    <article>{{ series.description|markdown }}</article>
   {% endif %}
 
   {% if series.books %}
@@ -39,7 +39,7 @@
           document.querySelectorAll('#series-list ol li div').forEach((el, index) => {
             el.classList.add('hidden');
           });
-          document.querySelectorAll('#series-list button').forEach((el, index) => {
+          document.querySelectorAll('#series-list button[type=submit]').forEach((el, index) => {
             el.classList.add('hidden');
           });
         },
