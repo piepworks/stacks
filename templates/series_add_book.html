@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Add a book to {{ series }} / Series{% endblock title %}
+
+{% block content %}
+  <header>
+    <h1>Add a book to “{{ series }}”</h1>
+  </header>
+
+  <section>
+    <form method="get">
+      <div role="group">
+        <input type="text" name="q" placeholder="Search for a book"{% if query %} value="{{ query }}"{% endif %}>
+        <button type="submit">Search</button>
+      </div>
+    </form>
+  </section>
+
+  <section>
+    <ul>
+      {% for book in books %}
+        <li>
+          <a href="{% url 'series_add_book' series.pk %}?book={{ book.pk }}">{{ book }}</a>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+{% endblock content %}

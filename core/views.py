@@ -860,6 +860,33 @@ def series_list(request):
 
 
 @login_required
+def series_add_book(request, pk):
+    series = get_object_or_404(Series, pk=pk, user=request.user)
+
+    if request.GET.get("book"):
+        book = get_object_or_404(Book, pk=request.GET.get("book"), user=request.user)
+        SeriesBook.objects.create(series=series, book=book)
+        messages.success(request, f"{book} added to {series}")
+        return redirect(series.get_absolute_url())
+
+    books = Book.objects.filter(user=request.user).exclude(seriesbook__series=series)
+
+    # if search query `q` is present, filter the books by title
+    if query := request.GET.get("q"):
+        books = books.filter(title__icontains=query)
+
+    return render(
+        request,
+        "series_add_book.html",
+        {
+            "query": query,
+            "series": series,
+            "books": books,
+        },
+    )
+
+
+@login_required
 def series_new(request):
     if request.method == "POST":
         form = SeriesForm(request.POST)

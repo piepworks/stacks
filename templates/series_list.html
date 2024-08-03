@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
+{% block title %}Series{% endblock title %}
+
 {% block content %}
   <header class="actions-inline">
     <div>
       <h1>Series</h1>
-      <div class="faux-form"><a @click.prevent="console.log('hi')" class="svg add-item" href="{% url 'series_new' %}">add another</a></div>
+      <div class="faux-form"><a class="svg add-item" href="{% url 'series_new' %}">add another</a></div>
     </div>
   </header>
 

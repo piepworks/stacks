@@ -1,15 +1,18 @@
 {% extends "base.html" %}
 {% load markdown_extras %}
 
-{% block title %}{{ series }} (series){% endblock title %}
+{% block title %}{{ series }} / Series{% endblock title %}
 
 {% block body_tag %}class="series-detail"{% endblock body_tag %}
 
 {% block content %}
-  <header class="actions">
-    <h1>
-      {{ series }}
-    </h1>
+  <header class="actions-inline">
+    <div>
+      <h1>
+        {{ series }}
+      </h1>
+      <div class="faux-form"><a class="svg add-item" href="{% url 'series_add_book' series.pk %}">add another</a></div>
+    </div>
     <form action="{% url 'series_delete' series.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">
