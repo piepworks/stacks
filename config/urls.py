@@ -33,6 +33,7 @@ urlpatterns = [
     path("book/<int:pk>/archive", views.book_archive, name="book_archive"),
     # Book Series
     # -----------
+    path("series", views.series_list, name="series_list"),
     path("series/new", views.series_new, name="series_new"),  # C
     path("series/<int:pk>", views.series_detail, name="series_detail"),  # R
     path("series/<int:pk>/update", views.series_update, name="series_update"),  # U

@@ -44,6 +44,12 @@
                 </div>
               </li>
             {% endif %}
+            {% url "series_list" as series_url %}
+            <li{% if request.path == series_url %} class="active"{% endif %}>
+              <div class="faux-form">
+                <a{% if request.path == series_url %} aria-current="page"{% endif %} class="svg series" href="{% url 'series_list' %}">Series</a>
+              </div>
+            </li>
             {% url "changelog" as changelog_url %}
             <li{% if request.path == changelog_url %} class="active"{% endif %}>
               <div class="faux-form">

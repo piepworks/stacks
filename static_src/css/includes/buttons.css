@@ -47,6 +47,7 @@ button.link {
     padding: 1rem;
   }
 
+  &.series,
   &.newspaper,
   &.import,
   &.export,
@@ -198,6 +199,13 @@ button.link {
     /* https://remixicon.com/icon/newspaper-line */
     mask: 0 0
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M16 20V4H4V19C4 19.5523 4.44772 20 5 20H16ZM19 22H5C3.34315 22 2 20.6569 2 19V3C2 2.44772 2.44772 2 3 2H17C17.5523 2 18 2.44772 18 3V10H22V19C22 20.6569 20.6569 22 19 22ZM18 12V19C18 19.5523 18.4477 20 19 20C19.5523 20 20 19.5523 20 19V12H18ZM6 6H12V12H6V6ZM8 8V10H10V8H8ZM6 13H14V15H6V13ZM6 16H14V18H6V16Z'%3E%3C/path%3E%3C/svg%3E")
+      no-repeat;
+  }
+
+  &.series {
+    /* https://remixicon.com/icon/play-list-add-line */
+    mask: 0 0
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M2 18H12V20H2V18ZM2 11H22V13H2V11ZM2 4H22V6H2V4ZM18 18V15H20V18H23V20H20V23H18V20H15V18H18Z'%3E%3C/path%3E%3C/svg%3E")
       no-repeat;
   }
 }

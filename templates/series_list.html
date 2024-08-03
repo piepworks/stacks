@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header>
+    <h1>
+      Series
+    </h1>
+  </header>
+
+  {% for s in series %}
+    <div>
+      <h2>
+        <a href="{{ s.get_absolute_url }}">{{ s.title }}</a>
+      </h2>
+    </div>
+  {% endfor %}
+{% endblock content %}

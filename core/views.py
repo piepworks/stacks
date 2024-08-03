@@ -847,6 +847,19 @@ def note_delete(request, pk, note_pk):
 
 
 @login_required
+def series_list(request):
+    series = Series.objects.filter(user=request.user)
+
+    return render(
+        request,
+        "series_list.html",
+        {
+            "series": series,
+        },
+    )
+
+
+@login_required
 def series_new(request):
     if request.method == "POST":
         form = SeriesForm(request.POST)
