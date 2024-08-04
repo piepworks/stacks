@@ -66,3 +66,8 @@ coverage-html:
 dev:
   source .venv/bin/activate
   npm run dev
+
+# Run Huey for long running tasks
+huey:
+  rm -f huey.*
+  .venv/bin/python manage.py run_huey
