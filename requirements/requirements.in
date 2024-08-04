@@ -1,6 +1,5 @@
 black
 boto3
-celery
 coverage
 dj-database-url
 Django
