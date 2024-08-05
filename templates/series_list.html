@@ -2,6 +2,8 @@
 
 {% block title %}Series{% endblock title %}
 
+{% block body_tag %}class="series-list"{% endblock body_tag %}
+
 {% block content %}
   <header class="actions-inline">
     <div>
@@ -10,11 +12,12 @@
     </div>
   </header>
 
-  {% for s in series %}
-    <div>
-      <h2>
+  <ul>
+    {% for s in series %}
+      <li>
         <a href="{{ s.get_absolute_url }}">{{ s.title }}</a>
-      </h2>
-    </div>
-  {% endfor %}
+        <span class="subdued">{{ s.books.count }}</span>
+      </li>
+    {% endfor %}
+  </ul>
 {% endblock content %}

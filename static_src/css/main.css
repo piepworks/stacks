@@ -517,6 +517,27 @@ fieldset > .radio {
   }
 }
 
+.series-list main {
+  ul,
+  li {
+    padding: 0;
+  }
+
+  li {
+    font-size: 1.25rem;
+    list-style: none;
+
+    .subdued {
+      font-size: 0.75rem;
+      padding-left: 0.5rem;
+    }
+
+    &:hover .subdued {
+      opacity: 1;
+    }
+  }
+}
+
 .series-detail {
   article {
     margin-bottom: 2rem;
