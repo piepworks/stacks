@@ -348,6 +348,7 @@ class Series(models.Model):
     class Meta:
         unique_together = ["user", "title"]
         verbose_name_plural = "Series"
+        ordering = ["-updated_at"]
 
     def __str__(self):
         return self.title
