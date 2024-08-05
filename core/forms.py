@@ -140,6 +140,10 @@ class AuthorForm(forms.ModelForm):
 
 
 class SeriesForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SeriesForm, self).__init__(*args, **kwargs)
+        self.fields["title"].widget.attrs.update({"autofocus": True})
+
     class Meta:
         model = Series
         fields = (
