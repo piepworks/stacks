@@ -30,28 +30,3 @@
     {% include "components/series-list.html" %}
   {% endif %}
 {% endblock content %}
-
-{% block page_js %}
-  <script>
-    document.addEventListener('alpine:init', () => {
-      Alpine.data('series', () => ({
-        init () {
-          document.querySelectorAll('#series-list ol li .fields').forEach((el, index) => {
-            el.classList.add('hidden');
-          });
-          document.querySelectorAll('#series-list button[type=submit]').forEach((el, index) => {
-            el.classList.add('hidden');
-          });
-        },
-
-        handle () {
-          document.getElementById('series-list').querySelectorAll('li').forEach((el, index) => {
-            el.querySelector('input').value = index + 1;
-          });
-
-          htmx.trigger('#series-list', 'submit');
-        }
-      }));
-    });
-  </script>
-{% endblock page_js %}

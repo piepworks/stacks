@@ -1,17 +1,48 @@
-<form method="post" id="series-list" hx-post="{% url 'series_detail' series.pk %}" hx-swap="outerHTML">
-  {% csrf_token %}
-  {{ formset.management_form }}
-  <ol x-sort="handle" x-data="series">
-    {% for form in formset %}
-      <li x-sort:item="{{ form.instance.order }}">
-        <span class="svg drag" x-sort:handle>Drag me</span>
-        <span class="title"><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
-        <div class="fields">{{ form }}</div>
-        <input type="submit" form="remove-book-form" name="book" value="{{ form.instance.book.pk }}" class="svg close" aria-label="Remove"></input>
-      </li>
-    {% endfor %}
-  </ol>
-  <button type="submit">Save order</button>
-</form>
+<div id="series-list-wrapper" x-data="{
+  init() {
+    document.querySelectorAll('#series-list ol li .fields').forEach((el, index) => {
+      el.classList.add('hidden');
+    });
+    document.querySelectorAll('#series-list button[type=submit]').forEach((el, index) => {
+      el.classList.add('hidden');
+    });
+  },
 
-<form onsubmit="return confirm('Do you want to remove this book from {{ series }} series?')" id="remove-book-form" method="post" action="{% url 'series_remove_book' series.pk %}">{% csrf_token %}</form>
+  adjusting: {{ adjusting|yesno:'true,false' }},
+
+  get toggleButtonText() {
+    return this.adjusting ? 'Done' : 'Adjust';
+  },
+
+  toggle() {
+    this.adjusting = !this.adjusting;
+  },
+
+  handle() {
+    document.getElementById('series-list').querySelectorAll('li').forEach((el, index) => {
+      el.querySelector('input').value = index + 1;
+    });
+
+    htmx.trigger('#series-list', 'submit');
+  }
+}">
+  <button class="link toggle" x-cloak @click="toggle" x-text="toggleButtonText"></button>
+
+  <form method="post" id="series-list" hx-post="{% url 'series_detail' series.pk %}?adjusting" hx-swap="outerHTML" hx-target="#series-list-wrapper">
+    {% csrf_token %}
+    {{ formset.management_form }}
+    <ol x-sort="handle">
+      {% for form in formset %}
+        <li x-sort:item="{{ form.instance.order }}">
+          <span class="svg drag" x-cloak x-sort:handle x-show="adjusting">Drag me</span>
+          <span class="title"><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
+          <div class="fields">{{ form }}</div>
+          <input x-show="adjusting" type="submit" form="remove-book-form" name="book" value="{{ form.instance.book.pk }}" class="svg close" aria-label="Remove"></input>
+        </li>
+      {% endfor %}
+    </ol>
+    <button type="submit">Save order</button>
+  </form>
+
+  <form onsubmit="return confirm('Do you want to remove this book from {{ series }} series?')" id="remove-book-form" method="post" action="{% url 'series_remove_book' series.pk %}">{% csrf_token %}</form>
+</div>

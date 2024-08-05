@@ -946,7 +946,6 @@ def series_detail(request, pk):
             messages.error(request, "Nope")
 
     else:
-
         formset = SeriesBookFormSet(queryset=series_books)
 
     if request.htmx:
@@ -956,6 +955,7 @@ def series_detail(request, pk):
             {
                 "series": series,
                 "formset": formset,
+                "adjusting": True,
             },
         )
     else:
