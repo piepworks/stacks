@@ -931,6 +931,9 @@ def series_new(request):
 def series_detail(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
     series_books = SeriesBook.objects.filter(series=series)
+    series.description_text_html = bleach.linkify(
+        markdown.markdown(series.description, extensions=["fenced_code", "smarty"])
+    )
 
     if request.method == "POST":
         formset = SeriesBookFormSet(request.POST, queryset=series_books)
