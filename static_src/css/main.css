@@ -584,6 +584,7 @@ fieldset > .radio {
         cursor: pointer;
         background-color: rgb(0 0 0 / 25%);
 
+        &:focus,
         &:hover {
           background-color: rgb(0 0 0 / 50%);
         }
@@ -591,6 +592,7 @@ fieldset > .radio {
         @media (prefers-color-scheme: dark) {
           background-color: rgb(255 255 255 / 25%);
 
+          &:focus,
           &:hover {
             background-color: rgb(255 255 255 / 50%);
           }
