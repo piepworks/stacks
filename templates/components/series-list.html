@@ -4,7 +4,7 @@
   <ol x-sort="handle" x-data="series">
     {% for form in formset %}
       <li x-sort:item="{{ form.instance.order }}">
-        <span class="svg drag" x-sort:handle>hi</span>
+        <span class="svg drag" x-sort:handle>Drag me</span>
         <span class="title"><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
         <div class="fields">{{ form }}</div>
         <input type="submit" form="remove-book-form" name="book" value="{{ form.instance.book.pk }}" class="svg close" aria-label="Remove"></input>
