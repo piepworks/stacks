@@ -331,6 +331,14 @@ main header:not(dialog header, article header) {
       display: flex;
     }
 
+    form {
+      margin-top: 1rem;
+
+      @media (min-width: 576px) {
+        margin-top: 0;
+      }
+    }
+
     .status & {
       margin: 0 0 2rem;
     }
