@@ -8,7 +8,7 @@ from django.contrib.auth import login
 from django.conf import settings
 from django.urls import reverse, reverse_lazy
 from django.http import FileResponse, Http404, HttpResponseForbidden
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_not_required
 from django.contrib import messages
 from django.contrib.syndication.views import Feed
 from django.core.paginator import Paginator
@@ -59,6 +59,7 @@ from .models import (
 from .tasks import import_books_from_csv
 
 
+@login_not_required
 def home(request):
     context = {}
 
@@ -68,7 +69,6 @@ def home(request):
     return render(request, "home.html", context)
 
 
-@login_required
 def status(request, status):
     if status not in dict(Book._meta.get_field("status").choices):
         raise Http404()
@@ -238,7 +238,6 @@ def status(request, status):
         return render(request, "status.html", context)
 
 
-@login_required
 def import_books(request):
     if request.method == "POST":
         form = ImportBooksForm(request.POST, request.FILES)
@@ -270,7 +269,6 @@ def import_books(request):
     return render(request, "import_books.html", {"form": ImportBooksForm})
 
 
-@login_required
 def imports(request):
     # Group books by date and retrieve all details
     books = (
@@ -301,10 +299,12 @@ def imports(request):
     return render(request, "imports.html", context)
 
 
+@login_not_required
 def changelog(request):
     return render(request, "changelog.html", {"entries": Changelog.objects.all()})
 
 
+@method_decorator(login_not_required, name="__call__")
 class ChangelogFeed(Feed):
     title = "Book Stacks RSS Feed"
     link = reverse_lazy("changelog")
@@ -323,7 +323,6 @@ class ChangelogFeed(Feed):
         return reverse("changelog")
 
 
-@login_required
 def changelog_latest(request):
     if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
         return HttpResponseForbidden()
@@ -335,7 +334,6 @@ def changelog_latest(request):
     )
 
 
-@login_required
 def book_new(request):
     if request.method == "POST":
         form = BookForm(request.POST, user=request.user)
@@ -415,7 +413,6 @@ def book_new(request):
     )
 
 
-@login_required
 def book_detail(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     notes = book.notes.all()
@@ -445,7 +442,6 @@ def book_detail(request, pk):
     )
 
 
-@login_required
 def book_update(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     old_status = book.status
@@ -483,7 +479,6 @@ def book_update(request, pk):
 
 
 @require_POST
-@login_required
 def book_delete(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     status = book.status
@@ -493,7 +488,6 @@ def book_delete(request, pk):
 
 
 @require_POST
-@login_required
 def book_archive(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     status = book.status
@@ -503,7 +497,6 @@ def book_archive(request, pk):
     return redirect("status", status=status)
 
 
-@login_required
 def search(request):
     query = request.GET.get("q")
     if query:
@@ -532,7 +525,6 @@ def search(request):
     )
 
 
-@login_required
 def open_library_search(request):
     status = request.GET.get("status")
     form = OpenLibrarySearchForm(request.GET or None, autofocus=False)
@@ -586,7 +578,6 @@ def open_library_search(request):
 
 
 @require_POST
-@login_required
 def author_new(request):
     if not request.headers.get("Content-Type") == "application/json":
         # Require AJAX
@@ -601,7 +592,6 @@ def author_new(request):
     return JsonResponse({"id": a.pk})
 
 
-@login_required
 def author_detail(request, pk):
     author = get_object_or_404(Author, pk=pk, user=request.user)
     books = Book.objects.filter(author=author)
@@ -616,7 +606,6 @@ def author_detail(request, pk):
     )
 
 
-@login_required
 def author_update(request, pk):
     author = get_object_or_404(Author, pk=pk, user=request.user)
 
@@ -642,7 +631,6 @@ def author_update(request, pk):
     )
 
 
-@login_required
 def author_delete(request, pk):
     author = get_object_or_404(Author, pk=pk, user=request.user)
     author.delete()
@@ -650,7 +638,6 @@ def author_delete(request, pk):
     return redirect("index")
 
 
-@login_required
 def cover_new(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
 
@@ -678,7 +665,6 @@ def cover_new(request, pk):
     )
 
 
-@login_required
 def cover_update(request, pk, cover_pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     cover = BookCover.objects.get(pk=cover_pk, book=book)
@@ -706,7 +692,6 @@ def cover_update(request, pk, cover_pk):
 
 
 @require_POST
-@login_required
 def cover_delete(request, pk, cover_pk):
     cover = get_object_or_404(BookCover, pk=cover_pk, book=Book.objects.get(pk=pk))
     cover.delete()
@@ -714,7 +699,6 @@ def cover_delete(request, pk, cover_pk):
     return redirect("book_detail", pk=pk)
 
 
-@login_required
 def reading_new(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
 
@@ -742,7 +726,6 @@ def reading_new(request, pk):
     )
 
 
-@login_required
 def reading_update(request, pk, reading_pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     reading = book.readings.get(pk=reading_pk)
@@ -771,7 +754,6 @@ def reading_update(request, pk, reading_pk):
 
 
 @require_POST
-@login_required
 def reading_delete(request, pk, reading_pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     reading = book.readings.get(pk=reading_pk)
@@ -780,7 +762,6 @@ def reading_delete(request, pk, reading_pk):
     return redirect("book_detail", pk=pk)
 
 
-@login_required
 def note_new(request, pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
 
@@ -808,7 +789,6 @@ def note_new(request, pk):
     )
 
 
-@login_required
 def note_update(request, pk, note_pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     note = book.notes.get(pk=note_pk)
@@ -837,7 +817,6 @@ def note_update(request, pk, note_pk):
 
 
 @require_POST
-@login_required
 def note_delete(request, pk, note_pk):
     book = get_object_or_404(Book, pk=pk, user=request.user)
     note = book.notes.get(pk=note_pk)
@@ -846,7 +825,6 @@ def note_delete(request, pk, note_pk):
     return redirect("book_detail", pk=pk)
 
 
-@login_required
 def series_list(request):
     series = Series.objects.filter(user=request.user)
 
@@ -859,7 +837,6 @@ def series_list(request):
     )
 
 
-@login_required
 def series_add_book(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
 
@@ -886,7 +863,6 @@ def series_add_book(request, pk):
     )
 
 
-@login_required
 @require_POST
 def series_remove_book(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
@@ -902,7 +878,6 @@ def series_remove_book(request, pk):
     return redirect(series.get_absolute_url())
 
 
-@login_required
 def series_new(request):
     if request.method == "POST":
         form = SeriesForm(request.POST)
@@ -927,7 +902,6 @@ def series_new(request):
     )
 
 
-@login_required
 def series_detail(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
     series_books = SeriesBook.objects.filter(series=series)
@@ -972,7 +946,6 @@ def series_detail(request, pk):
         )
 
 
-@login_required
 def series_update(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
 
@@ -999,7 +972,6 @@ def series_update(request, pk):
 
 
 @require_POST
-@login_required
 def series_delete(request, pk):
     series = get_object_or_404(Series, pk=pk, user=request.user)
     series.delete()
@@ -1012,7 +984,6 @@ def series_delete(request, pk):
 # ----------------------------------
 
 
-@login_required
 def user_settings(request):
     if request.method == "POST":
         form = SettingsForm(request.POST, instance=request.user)
@@ -1031,12 +1002,14 @@ def user_settings(request):
 
 
 @require_GET
+@login_not_required
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # One day
 def favicon(request):
     file = (settings.BASE_DIR / "static" / "img" / "seahorse-64x64.png").open("rb")
     return FileResponse(file)
 
 
+@login_not_required
 def account_verified(request, user_id):
     user = get_object_or_404(User, id=user_id)
 
@@ -1050,6 +1023,7 @@ def account_verified(request, user_id):
     return redirect("index")
 
 
+@method_decorator(login_not_required, name="dispatch")
 class ActivationView(BaseActivationView):
     def get_success_url(self, user):
         return reverse("account-verified", args=(user.id,))
