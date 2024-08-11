@@ -525,7 +525,8 @@ fieldset > .radio {
   }
 }
 
-.series-list main {
+.series-list main,
+.series-detail main {
   ul,
   li {
     padding: 0;

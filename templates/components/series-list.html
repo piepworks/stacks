@@ -35,7 +35,10 @@
       {% for form in formset %}
         <li x-sort:item="{{ form.instance.order }}">
           <span class="svg drag" x-cloak x-sort:handle x-show="adjusting">Drag me</span>
-          <span class="title"><a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a></span>
+          <span class="title">
+            <a href="{% url 'book_detail' form.instance.book.pk %}">{{ form.instance.book.title }}</a>
+            <span class="subdued">{{ form.instance.book.published_year|default_if_none:"N/A" }}</span>
+          </span>
           <div class="fields">{{ form }}</div>
           <input x-show="adjusting" type="submit" form="remove-book-form" name="book" value="{{ form.instance.book.pk }}" class="svg close" aria-label="Remove"></input>
         </li>
