@@ -540,10 +540,6 @@ fieldset > .radio {
       font-size: 0.75rem;
       padding-left: 0.5rem;
     }
-
-    &:hover .subdued {
-      opacity: 1;
-    }
   }
 }
 
@@ -596,6 +592,11 @@ fieldset > .radio {
         &:focus,
         &:hover {
           background-color: rgb(0 0 0 / 50%);
+        }
+
+        &.close:focus,
+        &.close:hover {
+          background-color: tomato;
         }
 
         @media (prefers-color-scheme: dark) {
