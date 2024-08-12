@@ -1,0 +1,36 @@
+.messages {
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  background: #70fcba; /* Jade 100 */
+
+  @media (prefers-color-scheme: dark) {
+    background: #00b478; /* Jade 350 */
+  }
+
+  ul {
+    color: #005f3d; /* Jade 650 */
+    margin: 0;
+
+    @media (prefers-color-scheme: dark) {
+      color: #042c1b; /* Jade 850 */
+    }
+
+    &:has(:only-child) {
+      padding: 0;
+
+      li {
+        list-style: none;
+        margin-bottom: 0;
+      }
+    }
+
+    li {
+      margin: 0;
+
+      & + & {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+}

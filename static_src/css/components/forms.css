@@ -1,0 +1,41 @@
+fieldset > div + div {
+  margin-top: 2rem;
+}
+
+fieldset > .checkbox,
+fieldset > .radio {
+  margin-top: 1rem;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+
+  input {
+    font-size: 0.75rem;
+    margin-bottom: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    height: auto;
+  }
+}
+
+.mobile-search {
+  margin: 1rem 0;
+
+  .search-form form {
+    width: 100%;
+  }
+
+  @media (min-width: 576px) {
+    display: none;
+  }
+}
+
+.desktop-search {
+  display: none;
+
+  @media (min-width: 576px) {
+    display: flex;
+  }
+}

@@ -1,0 +1,100 @@
+.ol-results main,
+.search main,
+.status main,
+.author-detail main {
+  ul,
+  ol {
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-gap: 2rem;
+  }
+
+  li {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    text-overflow: ellipsis;
+
+    &:hover .actions,
+    &:focus-within .actions {
+      /* focus-within propagates to the parent element */
+      opacity: 1;
+    }
+
+    .title {
+      overflow: hidden;
+      width: 100%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      padding: 0.5rem 0;
+    }
+
+    img,
+    .image-spinner,
+    .no-cover {
+      width: 100%;
+      border: 0.125rem solid rgb(0 0 0 / 20%);
+      border-radius: 0.25rem;
+
+      &.incomplete {
+        color: tomato;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        border-color: rgb(255 255 255 / 20%);
+      }
+    }
+
+    .no-cover {
+      margin: 0;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .extra-info {
+      margin-bottom: 0.5rem;
+      font-style: italic;
+      opacity: 0.5;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: opacity var(--pico-transition);
+
+      &:has(.faux-form:only-child) {
+        justify-content: center;
+      }
+
+      @media (min-width: 1024px) {
+        opacity: 0;
+      }
+
+      span.empty {
+        padding: 0 0.5rem;
+
+        &.right {
+          padding-right: 0.75rem;
+        }
+      }
+    }
+  }
+
+  .messages {
+    margin-bottom: 1rem;
+
+    ul {
+      display: block;
+
+      li {
+        width: auto;
+      }
+    }
+  }
+}
