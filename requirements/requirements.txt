@@ -15,9 +15,9 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.34.158
+boto3==1.34.159
     # via -r requirements/requirements.in
-botocore==1.34.158
+botocore==1.34.159
     # via
     #   boto3
     #   s3transfer
@@ -99,13 +99,13 @@ execnet==2.1.1
     # via pytest-xdist
 executing==2.0.1
     # via stack-data
-faker==26.3.0
+faker==27.0.0
     # via -r requirements/requirements.in
 filelock==3.15.4
     # via virtualenv
 flake8==7.1.1
     # via -r requirements/requirements.in
-gunicorn==22.0.0
+gunicorn==23.0.0
     # via -r requirements/requirements.in
 html-tag-names==0.1.2
     # via djlint
