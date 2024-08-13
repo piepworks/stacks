@@ -12,6 +12,10 @@
       <article>
         <header>{{ entry.date }}</header>
         <div>{{ entry.summary }}</div>
+        {% if entry.details_html %}
+          <hr>
+          <div>{{ entry.details_html|safe }}</div>
+        {% endif %}
       </article>
     {% endfor %}
   {% endif %}

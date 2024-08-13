@@ -301,7 +301,14 @@ def imports(request):
 
 @login_not_required
 def changelog(request):
-    return render(request, "changelog.html", {"entries": Changelog.objects.all()})
+    entries = Changelog.objects.all()
+
+    for entry in entries:
+        entry.details_html = markdown.markdown(
+            entry.details, extensions=["fenced_code", "smarty"]
+        )
+
+    return render(request, "changelog.html", {"entries": entries})
 
 
 @method_decorator(login_not_required, name="__call__")

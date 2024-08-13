@@ -12,6 +12,10 @@ hr {
   margin: 3rem 0;
 }
 
+article hr {
+  margin: 1rem 0;
+}
+
 .alpine [x-ignore] {
   display: none;
 }
