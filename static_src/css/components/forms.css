@@ -1,7 +1,4 @@
-fieldset > div + div {
-  margin-top: 2rem;
-}
-
+fieldset > div + div,
 fieldset > .checkbox,
 fieldset > .radio {
   margin-top: 1rem;
@@ -38,4 +35,16 @@ fieldset > .radio {
   @media (min-width: 576px) {
     display: flex;
   }
+}
+
+.checkbox {
+  margin-bottom: 1rem;
+
+  label {
+    margin-bottom: 0;
+  }
+}
+
+select {
+  margin-bottom: 0;
 }

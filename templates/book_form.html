@@ -49,9 +49,7 @@
       <input type="hidden" name="olid"{% if olid != '' %} value="{{ olid }}"{% endif %}>
       {% for field in form %}
         <div>
-          <label>
-            {{ field.as_field_group }}
-          </label>
+          {{ field.as_field_group }}
         </div>
       {% endfor %}
     </fieldset>
