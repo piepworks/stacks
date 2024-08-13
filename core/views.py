@@ -418,10 +418,16 @@ def book_detail(request, pk):
     notes = book.notes.all()
     status_changes = book.status_changes.all()
 
-    # Apply Markdown formatting and convert URLs in notes to clickable links
+    # Apply Markdown formatting and convert URLs in notes and reviews to clickable links
     for note in notes:
         note.text_html = bleach.linkify(
             markdown.markdown(note.text, extensions=["fenced_code", "smarty"])
+        )
+
+    readings = book.readings.all()
+    for reading in readings:
+        reading.review_html = bleach.linkify(
+            markdown.markdown(reading.review, extensions=["fenced_code", "smarty"])
         )
 
     return render(
@@ -435,7 +441,7 @@ def book_detail(request, pk):
             },
             "reading_form": BookReadingForm(instance=book),
             "note_form": BookNoteForm(instance=book),
-            "readings": book.readings.all(),
+            "readings": readings,
             "status_changes": status_changes,
             "notes": notes,
         },

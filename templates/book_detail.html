@@ -177,12 +177,21 @@
                       <div class="star"></div>
                     {% endfor %}
                   </div>
+                  {% else %}
+                  <span class="subdued">N/A</span>
                 {% endif %}
               </td>
               <td>
                 <div class="faux-form"><a class="svg edit" href="{% url 'reading_update' book.pk reading.id %}">Edit</a></div>
               </td>
             </tr>
+            {% if reading.review_html %}
+              <tr>
+                <td colspan="5" class="note">
+                  <div class="content">{{ reading.review_html|safe }}</div>
+                </td>
+              </tr>
+            {% endif %}
           {% endfor %}
         </tbody>
       </table>

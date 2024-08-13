@@ -55,3 +55,7 @@
 .note-edit #id_text {
   min-height: 20ch;
 }
+
+td.note .content {
+  margin-top: 0;
+}

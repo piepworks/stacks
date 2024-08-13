@@ -90,7 +90,7 @@ class BookReadingForm(forms.ModelForm):
 
     class Meta:
         model = BookReading
-        fields = ("start_date", "end_date", "finished", "rating")
+        fields = ("finished", "start_date", "end_date", "rating", "review")
 
 
 class BookCoverForm(forms.ModelForm):
