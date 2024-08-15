@@ -7,10 +7,10 @@
 {% block content %}
   <h1>Search Results for “{{ query }}”</h1>
 
-  {% if books %}
+  {% if forms %}
     <ul>
-      {% for book in books %}
-      <li class="book" x-data="{
+      {% for book, form in forms %}
+        <li class="book" x-data="{
           close() {
             $refs.statusModal_{{ book.id }}.close();
           },

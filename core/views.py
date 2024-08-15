@@ -523,6 +523,8 @@ def search(request):
             .exclude(archived=True)
             .distinct()
         )
+        # Get the books and their forms for these search results
+        forms = [(book, BookStatusForm(instance=book)) for book in books]
     else:
         books = Book.objects.none()
 
@@ -531,6 +533,7 @@ def search(request):
         "search.html",
         {
             "query": query,
+            "forms": forms,
             "books": books,
             "statuses": Book._meta.get_field("status").choices,
             "open_library_search_form": OpenLibrarySearchForm({"title": query}),
