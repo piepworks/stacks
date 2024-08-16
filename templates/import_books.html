@@ -17,9 +17,7 @@
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <div>
-      <label>
-        {{ form.csv.as_field_group }}
-      </label>
+      {{ form.csv.as_field_group }}
     </div>
     <input type="submit" value="Import">
   </form>
