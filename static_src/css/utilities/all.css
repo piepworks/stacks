@@ -85,3 +85,7 @@ td small {
 .hidden {
   display: none;
 }
+
+.overflow-auto th {
+  white-space: nowrap;
+}
