@@ -6,11 +6,13 @@
 
   <form method="post">
     {% csrf_token %}
-    {% for field in form %}
-      <div>
-        {{ field.as_field_group }}
-      </div>
-      {% endfor %}
+    <fieldset>
+      {% for field in form %}
+        <div>
+          {{ field.as_field_group }}
+        </div>
+        {% endfor %}
+    </fieldset>
       <input type="submit" value="Save">
   </form>
 {% endblock content %}
