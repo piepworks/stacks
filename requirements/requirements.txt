@@ -15,9 +15,9 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.0
+boto3==1.35.1
     # via -r requirements/requirements.in
-botocore==1.35.0
+botocore==1.35.1
     # via
     #   boto3
     #   s3transfer
@@ -141,7 +141,7 @@ matplotlib-inline==0.1.7
     # via ipython
 mccabe==0.7.0
     # via flake8
-model-bakery==1.19.3
+model-bakery==1.19.4
     # via -r requirements/requirements.in
 mypy-extensions==1.0.0
     # via black
@@ -219,7 +219,7 @@ pyyaml==6.0.2
     #   pre-commit
 regex==2023.12.25
     # via djlint
-requests[security]==2.31.0
+requests==2.32.3
     # via -r requirements/requirements.in
 s3transfer==0.10.2
     # via boto3

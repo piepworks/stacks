@@ -29,6 +29,6 @@ pytest-cov
 pytest-django
 pytest-xdist
 pytz
-requests[security]==2.31.0
+requests
 sentry-sdk
 whitenoise
