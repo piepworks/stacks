@@ -511,7 +511,8 @@ def book_archive(request, pk):
 
 
 def search(request):
-    query = request.GET.get("q")
+    query = request.GET.get("q").strip()
+
     if query:
         books = (
             Book.objects.filter(
