@@ -51,7 +51,7 @@ class UserAdmin(DjangoUserAdmin):
             },
         ),
     )
-    list_display = ("email", "book_count", "is_active", "last_login")
+    list_display = ("email", "book_count", "series_count", "is_active", "last_login")
     list_filter = ("is_active",)
     search_fields = ("email",)
     ordering = ("-last_login",)
@@ -60,13 +60,18 @@ class UserAdmin(DjangoUserAdmin):
         qs = super().get_queryset(request)
         qs = qs.annotate(
             _book_count=Count("books", distinct=True),
+            _series_count=Count("series", distinct=True),
         )
         return qs
 
     def book_count(self, obj):
         return obj._book_count
 
+    def series_count(self, obj):
+        return obj._series_count
+
     book_count.admin_order_field = "_book_count"
+    book_count.admin_order_field = "_series_count"
     book_count.short_description = "Books"
 
 
