@@ -15,9 +15,9 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.1
+boto3==1.35.6
     # via -r requirements/requirements.in
-botocore==1.35.1
+botocore==1.35.6
     # via
     #   boto3
     #   s3transfer
@@ -99,7 +99,7 @@ execnet==2.1.1
     # via pytest-xdist
 executing==2.0.1
     # via stack-data
-faker==27.0.0
+faker==28.0.0
     # via -r requirements/requirements.in
 filelock==3.15.4
     # via virtualenv
@@ -115,7 +115,7 @@ huey==2.5.1
     # via -r requirements/requirements.in
 identify==2.6.0
     # via pre-commit
-idna==3.7
+idna==3.8
     # via requests
 iniconfig==2.0.0
     # via pytest
@@ -135,13 +135,13 @@ json5==0.9.25
     # via djlint
 markdown==3.7
     # via -r requirements/requirements.in
-marshmallow==3.21.3
+marshmallow==3.22.0
     # via environs
 matplotlib-inline==0.1.7
     # via ipython
 mccabe==0.7.0
     # via flake8
-model-bakery==1.19.4
+model-bakery==1.19.5
     # via -r requirements/requirements.in
 mypy-extensions==1.0.0
     # via black
