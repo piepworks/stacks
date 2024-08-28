@@ -15,6 +15,15 @@ admin.site.index_title = "Stacks innards"
 urlpatterns = [
     path("", views.home, name="index"),
     path("status/<slug:status>", views.status, name="status"),
+    # PWA goodies
+    path(
+        "sw.js",
+        TemplateView.as_view(
+            template_name="js/sw.js", content_type="application/javascript"
+        ),
+        name="sw",
+    ),
+    path("offline", TemplateView.as_view(template_name="offline.html"), name="offline"),
     # Book Imports
     # ------------
     path("import", views.import_books, name="import_books"),

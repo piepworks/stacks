@@ -110,8 +110,10 @@
       <div class="copyright">Copyright © {% now "Y" %} <a href="https://piep.works">Piepworks LLC</a>. All rights reserved.</div>
     </footer>
 
-    {% django_htmx_script %}
-    {% block page_js %}{% endblock page_js %}
+    {% if not debug %}
+      <script>{% include "js/sw-setup.js" %}</script>
+    {% endif %}
+
     {% if user.is_authenticated %}
       <script>
         {% include "js/main.js" %}
@@ -137,5 +139,8 @@
         </script>
       {% endif %}
     {% endif %}
+
+    {% django_htmx_script %}
+    {% block page_js %}{% endblock page_js %}
   </body>
 </html>
