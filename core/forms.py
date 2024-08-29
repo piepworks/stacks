@@ -17,6 +17,7 @@ from .fields import GroupedModelChoiceField
 
 class RegisterForm(RegistrationForm):
     email = forms.EmailField()
+    usable_password = None
 
     class Meta(RegistrationForm.Meta):
         model = User

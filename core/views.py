@@ -1046,6 +1046,7 @@ class ActivationView(BaseActivationView):
         return reverse("account-verified", args=(user.id,))
 
 
+@method_decorator(login_not_required, name="dispatch")
 @method_decorator(check_honeypot, name="post")
 class RegistrationView(BaseRegistrationView):
     def get(self, request, *args, **kwargs):
