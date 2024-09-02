@@ -383,8 +383,8 @@ def book_new(request):
         author_records = []
         title = request.GET.get("title", "")
         year = request.GET.get("year", "")
-
-        form = BookForm(user=request.user)
+        # Set `type` to `textual` by default for new entries
+        form = BookForm(user=request.user, initial={"type": 1})
 
         # If there's a querystring for status, set the initial value
         if "status" in request.GET:
