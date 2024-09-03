@@ -7,7 +7,7 @@ RUN mkdir -p /code
 
 WORKDIR /code
 
-# install Git and Node
+# install stuff
 RUN apt-get update && \
     apt-get install -y git && \
     apt-get remove nodejs npm && \

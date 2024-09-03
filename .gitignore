@@ -10,6 +10,8 @@ playwright.env
 node_modules/
 staticfiles/
 static/css/main.css
+static/js/vendor/htmx*
+static/js/vendor/alpine*
 htmlcov/
 .coverage
 .test_project/
@@ -19,3 +21,4 @@ htmlcov/
 /playwright/.auth/
 /media
 huey.*
+just.sh

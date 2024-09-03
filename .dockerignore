@@ -6,5 +6,8 @@ fly.env
 node_modules/
 .venv/
 static/css/main.css
+static/js/vendor/htmx*
+static/js/vendor/alpine*
 media/
 huey.*
+just.sh

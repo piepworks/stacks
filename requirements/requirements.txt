@@ -133,6 +133,8 @@ jsbeautifier==1.15.1
     #   djlint
 json5==0.9.25
     # via djlint
+just-sh==0.0.2
+    # via -r requirements/requirements.in
 markdown==3.7
     # via -r requirements/requirements.in
 marshmallow==3.22.0
@@ -156,6 +158,8 @@ packaging==24.1
     #   pytest
 parso==0.8.4
     # via jedi
+parsy==2.1
+    # via just-sh
 pathspec==0.12.1
     # via
     #   black

@@ -63,7 +63,14 @@ coverage:
 coverage-html:
   open -a firefox -g `pwd`/htmlcov/index.html
 
-dev:
+copy-npm-scripts:
+  cp `pwd`/node_modules/htmx.org/dist/htmx.min.js `pwd`/static/js/vendor/htmx.min.js
+  cp `pwd`/node_modules/htmx-ext-alpine-morph/alpine-morph.js `pwd`/static/js/vendor/htmx-alpine-morph.min.js
+  cp `pwd`/node_modules/@alpinejs/sort/dist/cdn.min.js `pwd`/static/js/vendor/alpinejs-sort.min.js
+  cp `pwd`/node_modules/@alpinejs/morph/dist/cdn.min.js `pwd`/static/js/vendor/alpinejs-morph.min.js
+  cp `pwd`/node_modules/alpinejs/dist/cdn.min.js `pwd`/static/js/vendor/alpinejs.min.js
+
+dev: copy-npm-scripts
   source .venv/bin/activate
   npm run dev
 

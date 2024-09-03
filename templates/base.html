@@ -15,11 +15,11 @@
     {% url 'index' as index_url %}
     <title>{% block title %}{% endblock title %}{% if request.path != index_url %} / {% endif %}Book Stacks</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <script defer src="{% static 'js/vendor/htmx-1.9.12.min.js' %}"></script>
-    <script defer src="{% static 'js/vendor/htmx-1.9.12-alpine-morph.js' %}"></script>
-    <script defer src="{% static 'js/vendor/alpinejs-morph-3.14.1.min.js' %}"></script>
-    <script defer src="{% static 'js/vendor/alpinejs-sort-3.14.1.min.js' %}"></script>
-    <script defer src="{% static 'js/vendor/alpinejs-3.14.1.min.js' %}"></script>
+    <script defer src="{% static 'js/vendor/htmx.min.js' %}"></script>
+    <script defer src="{% static 'js/vendor/htmx-alpine-morph.min.js' %}"></script>
+    <script defer src="{% static 'js/vendor/alpinejs-sort.min.js' %}"></script>
+    <script defer src="{% static 'js/vendor/alpinejs-morph.min.js' %}"></script>
+    <script defer src="{% static 'js/vendor/alpinejs.min.js' %}"></script>
     {% block head_src %}{% endblock head_src %}
   </head>
   <body {% block body_tag %}{% endblock body_tag %}>

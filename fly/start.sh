@@ -38,6 +38,10 @@ cp /code/litestream.yml /etc/litestream.yml
 
 litestream restore "$DB_DIR/db.sqlite3"
 
+# Copy npm scripts to static folder
+rm -f ./just.sh && just.sh >/dev/null 2>&1
+./just.sh copy-npm-scripts
+
 ./manage.py collectstatic --noinput
 ./manage.py migrate --noinput
 ./manage.py loaddata book_type book_genre book_format book_location
