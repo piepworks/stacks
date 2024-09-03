@@ -17,14 +17,6 @@
 }
 
 .series-detail {
-  article {
-    margin-bottom: 2rem;
-
-    :last-child {
-      margin-bottom: 0;
-    }
-  }
-
   button.toggle {
     text-decoration: underline;
     margin-bottom: 1rem;

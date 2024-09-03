@@ -19,9 +19,7 @@
     </form>
   </header>
 
-  <div class="author-bio">
-    {{ author.bio|markdown }}
-  </div>
+  <article class="description">{{ author.bio|markdown }}</article>
 
   <ul>
     {% for book in books %}

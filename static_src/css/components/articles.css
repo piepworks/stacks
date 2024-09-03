@@ -1,0 +1,7 @@
+article.description {
+  margin-bottom: 3rem;
+
+  :last-child {
+    margin-bottom: 0;
+  }
+}

@@ -23,7 +23,7 @@
   </header>
 
   {% if series.description %}
-    <article>{{ series.description_text_html|safe }}</article>
+    <article class="description">{{ series.description_text_html|safe }}</article>
   {% endif %}
 
   {% if series.books %}
