@@ -15,15 +15,15 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.6
+boto3==1.35.10
     # via -r requirements/requirements.in
-botocore==1.35.6
+botocore==1.35.10
     # via
     #   boto3
     #   s3transfer
 build==1.2.1
     # via pip-tools
-certifi==2024.7.4
+certifi==2024.8.30
     # via
     #   requests
     #   sentry-sdk
@@ -87,7 +87,7 @@ django-registration==3.4
     # via -r requirements/requirements.in
 django-storages==1.14.4
     # via -r requirements/requirements.in
-djlint==1.34.1
+djlint==1.35.2
     # via -r requirements/requirements.in
 editorconfig==0.12.4
     # via
@@ -97,9 +97,9 @@ environs[django]==11.0.0
     # via -r requirements/requirements.in
 execnet==2.1.1
     # via pytest-xdist
-executing==2.0.1
+executing==2.1.0
     # via stack-data
-faker==28.0.0
+faker==28.1.0
     # via -r requirements/requirements.in
 filelock==3.15.4
     # via virtualenv
@@ -119,7 +119,7 @@ idna==3.8
     # via requests
 iniconfig==2.0.0
     # via pytest
-ipython==8.26.0
+ipython==8.27.0
     # via -r requirements/requirements.in
 jedi==0.19.1
     # via ipython
@@ -201,7 +201,7 @@ pytest==8.3.2
     #   pytest-xdist
 pytest-cov==5.0.0
     # via -r requirements/requirements.in
-pytest-django==4.8.0
+pytest-django==4.9.0
     # via -r requirements/requirements.in
 pytest-xdist==3.6.1
     # via -r requirements/requirements.in
@@ -217,7 +217,7 @@ pyyaml==6.0.2
     # via
     #   djlint
     #   pre-commit
-regex==2023.12.25
+regex==2024.7.24
     # via djlint
 requests==2.32.3
     # via -r requirements/requirements.in
