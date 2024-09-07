@@ -26,5 +26,6 @@
     "openlibrary",
     "userbook"
   ],
-  "python.analysis.exclude": [".venv"]
+  "python.analysis.exclude": [".venv"],
+  "python.testing.pytestEnabled": true
 }
