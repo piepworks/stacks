@@ -136,12 +136,24 @@
   {% if page_obj.has_other_pages %}
     <div class="pagination">
       {% if page_obj.has_previous %}
-      <form method="post"
-        action="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}"
-        hx-post="{% url 'status' status.slug %}?page={{ page_obj.previous_page_number }}"
+      <form method="get"
+        action="{% url 'status' status.slug %}"
+        hx-get="{% url 'status' status.slug %}"
         @htmx:after-request="topOfList"
         x-data="{ loading: false }">
-        {% csrf_token %}
+        <input type="hidden" name="page" value="{{ page_obj.previous_page_number }}">
+        {% if filter_queries.type != "all" %}
+          <input type="hidden" name="type" value="{{ filter_queries.type }}">
+        {% endif %}
+        {% if filter_queries.genre != "all" %}
+          <input type="hidden" name="genre" value="{{ filter_queries.genre }}">
+        {% endif %}
+        {% if filter_queries.format != "all" %}
+          <input type="hidden" name="format" value="{{ filter_queries.format }}">
+        {% endif %}
+        {% if filter_queries.location != "all" %}
+          <input type="hidden" name="location" value="{{ filter_queries.location }}">
+        {% endif %}
         <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Previous</button>
       </form>
       {% else %}
@@ -151,12 +163,24 @@
       <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
 
       {% if page_obj.has_next %}
-      <form method="post"
-        action="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}"
-        hx-post="{% url 'status' status.slug %}?page={{ page_obj.next_page_number }}"
+      <form method="get"
+        action="{% url 'status' status.slug %}"
+        hx-get="{% url 'status' status.slug %}"
         @htmx:after-request="topOfList"
         x-data="{ loading: false }">
-        {% csrf_token %}
+        <input type="hidden" name="page" value="{{ page_obj.next_page_number }}">
+        {% if filter_queries.type != "all" %}
+          <input type="hidden" name="type" value="{{ filter_queries.type }}">
+        {% endif %}
+        {% if filter_queries.genre != "all" %}
+          <input type="hidden" name="genre" value="{{ filter_queries.genre }}">
+        {% endif %}
+        {% if filter_queries.format != "all" %}
+          <input type="hidden" name="format" value="{{ filter_queries.format }}">
+        {% endif %}
+        {% if filter_queries.location != "all" %}
+          <input type="hidden" name="location" value="{{ filter_queries.location }}">
+        {% endif %}
         <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Next</button>
       </form>
       {% else %}

@@ -73,6 +73,8 @@ def status(request, status):
     if status not in dict(Book._meta.get_field("status").choices):
         raise Http404()
 
+    pagination = 20
+
     books = (
         Book.objects.filter(status=status, archived=False, user=request.user)
         .order_by("-updated_at")
@@ -90,30 +92,6 @@ def status(request, status):
 
     locations = BookLocation.objects.all()
     formats = BookFormat.objects.all()
-
-    # Fetch all books once
-    all_books = list(
-        books.values("type__slug", "location__slug", "format__slug", "genre__slug")
-    )
-
-    type_filters = {
-        type.slug: any(book["type__slug"] == type.slug for book in all_books)
-        for type in types
-    }
-    location_filters = {
-        location.slug: any(
-            book["location__slug"] == location.slug for book in all_books
-        )
-        for location in locations
-    }
-    format_filters = {
-        format.slug: any(book["format__slug"] == format.slug for book in all_books)
-        for format in formats
-    }
-    genre_filters = {
-        genre.slug: any(book["genre__slug"] == genre.slug for book in all_books)
-        for genre in genres
-    }
 
     # Get filter counts before applying filters
     filter_counts = {
@@ -171,7 +149,7 @@ def status(request, status):
             latest_reading_end_date=Subquery(latest_bookreading.values("end_date")[:1])
         ).order_by("-latest_reading_end_date")
 
-    paginator = Paginator(books, 20)
+    paginator = Paginator(books, pagination)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
@@ -221,10 +199,6 @@ def status(request, status):
         "locations": locations,
         "genres": genres,
         "page_obj": page_obj,
-        "type_filters": type_filters,
-        "location_filters": location_filters,
-        "format_filters": format_filters,
-        "genre_filters": genre_filters,
         "filter_queries": filter_queries,
         "filter_active": status_counts.get(status, 0) != books_count,
         "filter_request": any(value != "all" for value in filter_queries.values()),
