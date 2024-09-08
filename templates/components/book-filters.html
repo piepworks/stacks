@@ -1,6 +1,6 @@
 {% load get_item filter_matches_any %}
 <form
-  x-cloak
+  id="filters"
   x-show="openFilters"
   method="get"
   action="{% url 'status' status.slug %}"

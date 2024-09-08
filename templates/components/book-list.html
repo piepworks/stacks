@@ -32,7 +32,7 @@
     {% if forms %}
       <div class="filter-toggle">
         {% if filter_request %}
-          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a hx-get="{{ request.path }}" href="{{ request.path }}">Reset filters</a></p>
+          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a href="{{ request.path }}" hx-get="{{ request.path }}" hx-on:click="window.bsResetFilters()">Reset filters</a></p>
         {% endif %}
         <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
         <div class="faux-form">

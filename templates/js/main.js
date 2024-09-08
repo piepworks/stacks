@@ -28,3 +28,19 @@ fetch(`{% url 'changelog_latest' %}`, {
       changelogBadge.classList.remove('hidden');
     }
   });
+
+// {% if request.resolver_match and request.resolver_match.view_name == 'status' %}
+window.bsResetFilters = (e) => {
+  const filters = document
+    .getElementById('filters')
+    .querySelectorAll('input[type=radio]');
+  filters.forEach((input) => {
+    input.checked = false;
+  });
+  filters.forEach((input) => {
+    if (input.value === 'all') {
+      input.checked = true;
+    }
+  });
+};
+// {% endif %}
