@@ -380,6 +380,7 @@ def book_new(request):
         form.fields["author"].initial = author_records
         form.fields["title"].initial = title
         form.fields["published_year"].initial = year
+        form.fields["olid"].initial = olid
 
     return render(
         request,
@@ -545,6 +546,7 @@ def open_library_search(request):
             reverse("book_new")
             + f"?title={results['title']}&authors={','.join(results['authors'])}"
             + f"&year={results['published']}&status={status}"
+            + f"&olid={results['olid']}"
         )
 
     # Now we know there are multiple results with covers

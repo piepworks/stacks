@@ -64,6 +64,7 @@ class BookForm(forms.ModelForm):
             "published_year",
             "format",
             "location",
+            "olid",
         )
 
 

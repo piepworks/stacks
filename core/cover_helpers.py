@@ -2,10 +2,15 @@ import requests
 
 
 def search_open_library(query):
-    querystring = f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,first_publish_year{query}"
+    querystring = (
+        f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,"  # noqa: E231
+        f"first_publish_year,key{query}"  # noqa: E231
+    )
 
     try:
-        response = requests.get(f"https://openlibrary.org/search.json{querystring}")
+        response = requests.get(
+            f"https://openlibrary.org/search.json{querystring}"  # noqa: E231
+        )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
@@ -20,11 +25,9 @@ def search_open_library(query):
     try:
         for doc in data["docs"]:
             if "cover_i" in doc:
-                cover_image = (
-                    f"https://covers.openlibrary.org/b/id/{doc['cover_i']}-L.jpg"
-                )
+                cover_image = f"https://covers.openlibrary.org/b/id/{doc['cover_i']}-L.jpg"  # noqa: E231
             elif "cover_edition_key" in doc:
-                cover_image = f"https://covers.openlibrary.org/b/olid/{doc['cover_edition_key']}-L.jpg"
+                cover_image = f"https://covers.openlibrary.org/b/olid/{doc['cover_edition_key']}-L.jpg"  # noqa: E231
             else:
                 cover_image = None
 
@@ -66,7 +69,11 @@ def search_open_library(query):
             "published": (
                 doc["first_publish_year"] if "first_publish_year" in doc else None
             ),
-            "olid": (doc["cover_edition_key"] if "cover_edition_key" in doc else None),
+            "olid": (
+                doc["cover_edition_key"]
+                if "cover_edition_key" in doc
+                else doc["key"].replace("/works/", "") if "key" in doc else None
+            ),
         }
 
     return found
