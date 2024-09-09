@@ -360,9 +360,12 @@ def book_new(request):
         # Set `type` to `textual` by default for new entries
         form = BookForm(user=request.user, initial={"type": 1})
 
-        # If there's a querystring for status, set the initial value
-        if "status" in request.GET:
+        if request.GET["status"]:
+            # If there's a querystring for status, set the initial value
             form.fields["status"].initial = request.GET["status"]
+        else:
+            # Otherwise, default to wishlist
+            form.fields["status"].initial = "wishlist"
 
         for a in authors:
             if not a:
