@@ -1001,7 +1001,7 @@ def user_settings(request):
 @login_not_required
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # One day
 def favicon(request):
-    file = (settings.BASE_DIR / "static" / "img" / "seahorse-64x64.png").open("rb")
+    file = (settings.BASE_DIR / "static_nonversioned" / "favicon.png").open("rb")
     return FileResponse(file)
 
 

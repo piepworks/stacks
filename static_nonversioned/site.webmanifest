@@ -1,20 +1,16 @@
 {
   "name": "Book Stacks",
   "short_name": "Stacks",
+  "start_url": "/",
   "icons": [
     {
-      "src": "/android-chrome-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "/android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "/apple-touch-icon.png",
+      "sizes": "300x300",
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "background_color": "#292524",
+  "theme_color": "#292524",
   "display": "standalone",
   "description": "Keep track of what you are reading, what you want to read, and what you've finished (or not!)"
 }
