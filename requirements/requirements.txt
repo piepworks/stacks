@@ -15,13 +15,13 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.10
+boto3==1.35.16
     # via -r requirements/requirements.in
-botocore==1.35.10
+botocore==1.35.16
     # via
     #   boto3
     #   s3transfer
-build==1.2.1
+build==1.2.2
     # via pip-tools
 certifi==2024.8.30
     # via
@@ -99,9 +99,9 @@ execnet==2.1.1
     # via pytest-xdist
 executing==2.1.0
     # via stack-data
-faker==28.1.0
+faker==28.4.1
     # via -r requirements/requirements.in
-filelock==3.15.4
+filelock==3.16.0
     # via virtualenv
 flake8==7.1.1
     # via -r requirements/requirements.in
@@ -174,7 +174,7 @@ pip-lock==2.11.0
     # via -r requirements/requirements.in
 pip-tools==7.4.1
     # via -r requirements/requirements.in
-platformdirs==4.2.2
+platformdirs==4.3.2
     # via
     #   black
     #   virtualenv
@@ -198,7 +198,7 @@ pyproject-hooks==1.1.0
     # via
     #   build
     #   pip-tools
-pytest==8.3.2
+pytest==8.3.3
     # via
     #   pytest-cov
     #   pytest-django
@@ -215,7 +215,7 @@ python-dateutil==2.9.0.post0
     #   faker
 python-dotenv==1.0.1
     # via environs
-pytz==2024.1
+pytz==2024.2
     # via -r requirements/requirements.in
 pyyaml==6.0.2
     # via
@@ -227,7 +227,7 @@ requests==2.32.3
     # via -r requirements/requirements.in
 s3transfer==0.10.2
     # via boto3
-sentry-sdk==2.13.0
+sentry-sdk==2.14.0
     # via -r requirements/requirements.in
 six==1.16.0
     # via
@@ -257,7 +257,7 @@ urllib3==2.2.2
     #   botocore
     #   requests
     #   sentry-sdk
-virtualenv==20.26.3
+virtualenv==20.26.4
     # via pre-commit
 wcwidth==0.2.13
     # via prompt-toolkit
