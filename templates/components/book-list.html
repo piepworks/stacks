@@ -29,17 +29,19 @@
       <div class="faux-form"><a @click.prevent="$refs.addBook.showModal()" class="svg add-item" href="{% url 'book_new' %}?status={{ status.slug }}">add another</a></div>
     </div>
 
-    {% if forms %}
-      <div class="filter-toggle">
-        {% if filter_request %}
-          <p>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books / {% endif %}<a href="{{ request.path }}" hx-get="{{ request.path }}" hx-on:click="window.bsResetFilters()">Reset filters</a></p>
-        {% endif %}
-        <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
-        <div class="faux-form">
-          <button title="Toggle filters" class="svg" :class="{'no-filter': openFilters, 'filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
+    <div class="filter-toggle">
+      {% if filter_request %}
+        <div class="summary-reset">
+          <span>{% if filter_active %}Showing {{ filtered_books_count }} of {{ status_counts|get_item:status.slug }} books{% endif %}</span>
+          <span class="slash"> / </span>
+          <span><a href="{{ request.path }}" hx-get="{{ request.path }}" hx-on:click="window.bsResetFilters()">Reset filters</a></span>
         </div>
+      {% endif %}
+      <button title="Show filters" class="svg no-filter" disabled x-ignore>Show filters</button>
+      <div class="faux-form">
+        <button title="Toggle filters" class="svg" :class="{'no-filter': openFilters, 'filter': !openFilters}" @click="openFilters = !openFilters" x-cloak>Show filters</button>
       </div>
-    {% endif %}
+    </div>
   </header>
 
   {% if finished_counts %}

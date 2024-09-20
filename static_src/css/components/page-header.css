@@ -37,7 +37,7 @@ main header:not(dialog header, article header) {
   &.actions-inline {
     gap: 1rem;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: center;
 
     @media (min-width: 576px) {
       display: flex;
@@ -77,13 +77,34 @@ main header:not(dialog header, article header) {
 
     .filter-toggle {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
+      margin-top: 1rem;
       margin-right: 1rem;
       justify-content: flex-end;
-      gap: 0.5rem;
+      gap: 1rem;
 
-      p {
-        margin: 0;
+      @media (min-width: 450px) {
+        margin-top: 0;
+      }
+
+      .summary-reset {
+        display: flex;
+        flex-direction: column;
+        text-align: right;
+
+        .slash {
+          display: none;
+        }
+
+        @media (min-width: 768px) {
+          flex-direction: row;
+          gap: 0.5rem;
+          text-align: left;
+
+          .slash {
+            display: inline;
+          }
+        }
       }
     }
   }
