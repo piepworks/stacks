@@ -36,8 +36,27 @@ main header:not(dialog header, article header) {
 
   &.actions-inline {
     display: flex;
-    flex-wrap: wrap;
     gap: 1rem;
+
+    &.filter-display {
+      display: block;
+
+      div:first-child {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      .summary-reset {
+        display: block;
+        margin-top: 1rem;
+
+        p {
+          margin: 0;
+        }
+      }
+    }
 
     .status & {
       margin: 0 0 2rem;
