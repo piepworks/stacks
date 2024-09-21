@@ -35,21 +35,9 @@ main header:not(dialog header, article header) {
   }
 
   &.actions-inline {
+    display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
-    justify-content: flex-start;
-    align-items: center;
-
-    @media (min-width: 576px) {
-      display: flex;
-    }
-
-    form {
-      margin-top: 1rem;
-
-      @media (min-width: 576px) {
-        margin-top: 0;
-      }
-    }
 
     .status & {
       margin: 0 0 2rem;
@@ -73,39 +61,6 @@ main header:not(dialog header, article header) {
       display: flex;
       gap: 1rem;
       align-items: center;
-    }
-
-    .filter-toggle {
-      display: flex;
-      align-items: center;
-      margin-top: 1rem;
-      margin-right: 1rem;
-      justify-content: flex-end;
-      gap: 1rem;
-
-      @media (min-width: 450px) {
-        margin-top: 0;
-      }
-
-      .summary-reset {
-        display: flex;
-        flex-direction: column;
-        text-align: right;
-
-        .slash {
-          display: none;
-        }
-
-        @media (min-width: 768px) {
-          flex-direction: row;
-          gap: 0.5rem;
-          text-align: left;
-
-          .slash {
-            display: inline;
-          }
-        }
-      }
     }
   }
 
