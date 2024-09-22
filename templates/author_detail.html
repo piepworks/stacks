@@ -19,7 +19,9 @@
     </form>
   </header>
 
-  <article class="description">{{ author.bio|markdown }}</article>
+  {% if author.bio %}
+    <article class="description">{{ author.bio|markdown }}</article>
+  {% endif %}
 
   <ul>
     {% for book in books %}
