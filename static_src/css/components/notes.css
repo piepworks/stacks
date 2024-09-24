@@ -46,6 +46,14 @@
   :last-child {
     margin-bottom: 0;
   }
+
+  &:target .content {
+    animation: highlight 1.5s;
+
+    > * {
+      animation: black-text 1.5s;
+    }
+  }
 }
 
 .note + .note {
@@ -59,4 +67,18 @@
 td.note .content {
   margin-top: 0;
   white-space: pre-wrap;
+}
+
+@keyframes highlight {
+  50% {
+    background: goldenrod;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes black-text {
+  50% {
+    color: black;
+    animation-timing-function: ease-in-out;
+  }
 }

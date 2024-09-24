@@ -213,7 +213,7 @@
     <div id="ajax-notes">
       {% if notes %}
           {% for note in notes %}
-            <div class="note">
+            <div class="note" id="note-{{ note.id }}">
               <div class="datetime">
                 <small>
                   <a href="{% url 'note_update' book.pk note.id %}">

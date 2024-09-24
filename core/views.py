@@ -795,7 +795,7 @@ def note_update(request, pk, note_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Note updated")
-            return redirect(book.get_absolute_url())
+            return redirect(book.get_absolute_url() + f"#note-{note_pk}")
 
     else:
         form = BookNoteForm(instance=note)
