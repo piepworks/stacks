@@ -33,4 +33,15 @@
       }
     }
   }
+
+  a,
+  a:hover {
+    --pico-color: black;
+    --pico-underline: black;
+
+    @media (prefers-color-scheme: dark) {
+      --pico-color: white;
+      --pico-underline: white;
+    }
+  }
 }

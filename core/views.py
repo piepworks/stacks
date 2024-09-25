@@ -21,6 +21,8 @@ from django.db.models.functions import Trunc
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
+from django.utils.html import format_html
+from django.utils.safestring import mark_safe
 from django_registration.backends.activation.views import (
     ActivationView as BaseActivationView,
     RegistrationView as BaseRegistrationView,
@@ -559,7 +561,16 @@ def open_library_search(request):
         result["authors_string"] = ",".join(result.get("authors", []))
 
     if not results:
-        messages.error(request, "No results from Open Library")
+        messages.error(
+            request,
+            format_html(
+                "{} {}",
+                "No results from Open Library.",
+                mark_safe(
+                    '<a target="_blank" href="https://openlibrary.org/books/add">Please consider adding it!</a>'
+                ),
+            ),
+        )
         return redirect(reverse("book_new") + f"?status={status}")
 
     return render(
