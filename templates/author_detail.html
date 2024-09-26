@@ -8,7 +8,7 @@
 {% block body_tag %}class="author-detail"{% endblock body_tag %}
 
 {% block content %}
-  <header class="actions-inline">
+  <header class="actions">
     <h1>{{ author }}</h1>
     <form action="{% url 'author_delete' author.pk %}" method="post">
       {% csrf_token %}
