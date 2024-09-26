@@ -10,7 +10,8 @@ form.delete,
   position: relative;
 
   &:hover,
-  &:focus-within {
+  &:focus-within,
+  &:active {
     box-shadow: 0 0 0 var(--pico-outline-width)
       var(--pico-form-element-focus-color);
   }
@@ -37,7 +38,8 @@ button.link {
   mask-repeat: no-repeat;
 
   &:hover,
-  &:focus-within {
+  &:focus-within,
+  &:active {
     box-shadow: 0 0 0 var(--pico-outline-width)
       var(--pico-form-element-focus-color);
   }

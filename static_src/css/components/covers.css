@@ -7,10 +7,13 @@
 
     &:hover img,
     &:focus img,
+    &:active img,
     &:hover .image-spinner,
     &:focus .image-spinner,
+    &:active .image-spinner,
     &:hover .no-cover,
-    &:focus .no-cover {
+    &:focus .no-cover,
+    &:active .no-cover {
       box-shadow: 0 0 0 var(--pico-outline-width)
         var(--pico-form-element-focus-color);
       border-color: var(--pico-form-element-active-border-color);
