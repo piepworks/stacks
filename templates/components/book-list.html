@@ -9,7 +9,7 @@
   x-data="{
     openFilters: false,
     topOfList() {
-      document.getElementById('book-list').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('book-list-inner').scrollIntoView({ behavior: 'smooth' });
     },
     close() {
       $refs.addBook.close();
@@ -61,7 +61,7 @@
   {% include "components/book-filters.html" %}
 
   {% if forms %}
-    <ul>
+    <ul id="book-list-inner">
       {% for book, form in forms %}
         <li x-data="{
           close() {
