@@ -264,7 +264,15 @@ class Book(models.Model):
 
 class BookCover(models.Model):
     image = models.ImageField(upload_to=rename_image, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to=rename_image, blank=True, null=True)
+    thumbnail = models.ImageField(
+        upload_to=rename_image,
+        blank=True,
+        null=True,
+        height_field="thumbnail_height",
+        width_field="thumbnail_width",
+    )
+    thumbnail_width = models.PositiveSmallIntegerField(blank=True, null=True)
+    thumbnail_height = models.PositiveSmallIntegerField(blank=True, null=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
     description = models.CharField(
         max_length=100,

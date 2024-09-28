@@ -5,8 +5,8 @@
         {% if cover.thumbnail %}
           <img loading="lazy" src="{{ cover.thumbnail.url }}"
             alt="{{ cover }}"
-            height="auto"
-            width="150"
+            height="{{ cover.thumbnail_height }}"
+            width="{{ cover.thumbnail_width }}"
             title="{{ book }}">
         {% else %}
           {% include "components/no-cover.html" with class="incomplete" %}
