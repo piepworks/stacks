@@ -4,11 +4,14 @@ from core.models import BookCover
 
 
 class Command(BaseCommand):
-    help = "Get thumbnail dimensions for covers without them"
+    help = "Get dimensions for covers without them"
 
     def handle(self, *args, **kwargs):
         covers_without_dimensions = BookCover.objects.filter(
-            Q(thumbnail_width__isnull=True) | Q(thumbnail_height__isnull=True)
+            Q(thumbnail_width__isnull=True)
+            | Q(thumbnail_height__isnull=True)
+            | Q(image_width__isnull=True)
+            | Q(image_height__isnull=True)
         )
         for cover in covers_without_dimensions:
             cover.save()
