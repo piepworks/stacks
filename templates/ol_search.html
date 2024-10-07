@@ -16,7 +16,7 @@
       {% for result in results %}
         <li class="book">
           <div class="cover">
-            <a href="{% url 'book_new' %}?status={{ status }}&olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}&olid={{ result.olid }}">
+            <a href="{% url 'book_new' %}?olid={{ result.olid }}&cover={{ result.cover }}&authors={{ result.authors_string }}&title={{ result.title }}&year={{ result.published }}{% if status %}&status={{ status }}{% endif %}">
               <div class="img-wrapper"><img src="{{ result.cover }}" alt="Cover of {{ result.title }}" width="300" height="auto"></div>
               <div class="image-spinner">
                 <div aria-busy="true"></div>

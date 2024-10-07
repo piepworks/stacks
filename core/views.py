@@ -362,7 +362,12 @@ def book_new(request):
         # Set `type` to `textual` by default for new entries
         form = BookForm(user=request.user, initial={"type": 1})
 
-        form.fields["status"].initial = request.GET.get("status", "wishlist")
+        status = request.GET.get("status", "wishlist")
+
+        if status == "":
+            status = "wishlist"
+
+        form.fields["status"].initial = status
 
         for a in authors:
             if not a:
