@@ -1,0 +1,8 @@
+footer .support {
+  display: inline-flex;
+  gap: 1rem;
+
+  .svg {
+    background-color: rgb(255, 191, 0); /* amber-200 */
+  }
+}

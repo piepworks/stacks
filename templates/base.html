@@ -94,17 +94,18 @@
       {% block footer %}
       {% endblock footer %}
 
-      {% if user.is_authenticated %}
-        <div class="faux-form" data-tooltip="Give feedback" data-placement="right">
-          <a class="svg megaphone" data-canny-link href="https://piepworks.canny.io/bookstacks" title="Give feedback">
-            Give feedback
-          </a>
+      <div class="support">
+        <div class="faux-form ko-fi" data-tooltip="Support Book Stacks on Ko-fi" data-placement="right">
+          <a class="svg heart-pulse" target="_blank" href="https://ko-fi.com/piepworks">💚</a>
         </div>
-      {% endif %}
-
-      <p class="ko-fi">
-        <a target="_blank" href="https://ko-fi.com/piepworks">💚 Support Book Stacks on Ko-fi</a>
-      </p>
+        {% if user.is_authenticated %}
+          <div class="faux-form" data-tooltip="Give feedback" data-placement="right">
+            <a class="svg megaphone" data-canny-link href="https://piepworks.canny.io/bookstacks" title="Give feedback">
+              Give feedback
+            </a>
+          </div>
+        {% endif %}
+      </div>
 
       <div class="copyright">Copyright © {% now "Y" %} <a href="https://piep.works">Piepworks LLC</a>. All rights reserved.</div>
     </footer>
