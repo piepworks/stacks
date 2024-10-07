@@ -15,13 +15,13 @@ black==24.8.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.16
+boto3==1.35.34
     # via -r requirements/requirements.in
-botocore==1.35.16
+botocore==1.35.34
     # via
     #   boto3
     #   s3transfer
-build==1.2.2
+build==1.2.2.post1
     # via pip-tools
 certifi==2024.8.30
     # via
@@ -99,9 +99,9 @@ execnet==2.1.1
     # via pytest-xdist
 executing==2.1.0
     # via stack-data
-faker==28.4.1
+faker==30.1.0
     # via -r requirements/requirements.in
-filelock==3.16.0
+filelock==3.16.1
     # via virtualenv
 flake8==7.1.1
     # via -r requirements/requirements.in
@@ -111,15 +111,15 @@ html-tag-names==0.1.2
     # via djlint
 html-void-elements==0.1.0
     # via djlint
-huey==2.5.1
+huey==2.5.2
     # via -r requirements/requirements.in
-identify==2.6.0
+identify==2.6.1
     # via pre-commit
-idna==3.8
+idna==3.10
     # via requests
 iniconfig==2.0.0
     # via pytest
-ipython==8.27.0
+ipython==8.28.0
     # via -r requirements/requirements.in
 jedi==0.19.1
     # via ipython
@@ -174,15 +174,15 @@ pip-lock==2.11.0
     # via -r requirements/requirements.in
 pip-tools==7.4.1
     # via -r requirements/requirements.in
-platformdirs==4.3.2
+platformdirs==4.3.6
     # via
     #   black
     #   virtualenv
 pluggy==1.5.0
     # via pytest
-pre-commit==3.8.0
+pre-commit==4.0.0
     # via -r requirements/requirements.in
-prompt-toolkit==3.0.47
+prompt-toolkit==3.0.48
     # via ipython
 ptyprocess==0.7.0
     # via pexpect
@@ -194,7 +194,7 @@ pyflakes==3.2.0
     # via flake8
 pygments==2.18.0
     # via ipython
-pyproject-hooks==1.1.0
+pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
@@ -221,13 +221,13 @@ pyyaml==6.0.2
     # via
     #   djlint
     #   pre-commit
-regex==2024.7.24
+regex==2024.9.11
     # via djlint
 requests==2.32.3
     # via -r requirements/requirements.in
 s3transfer==0.10.2
     # via boto3
-sentry-sdk==2.14.0
+sentry-sdk==2.15.0
     # via -r requirements/requirements.in
 six==1.16.0
     # via
@@ -251,13 +251,15 @@ traitlets==5.14.3
     #   ipython
     #   matplotlib-inline
 typing-extensions==4.12.2
-    # via dj-database-url
-urllib3==2.2.2
+    # via
+    #   dj-database-url
+    #   faker
+urllib3==2.2.3
     # via
     #   botocore
     #   requests
     #   sentry-sdk
-virtualenv==20.26.4
+virtualenv==20.26.6
     # via pre-commit
 wcwidth==0.2.13
     # via prompt-toolkit
