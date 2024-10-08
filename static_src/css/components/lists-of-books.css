@@ -10,6 +10,17 @@
     grid-gap: 2rem;
   }
 
+  ul.authors {
+    &,
+    li {
+      display: block;
+    }
+
+    li {
+      width: auto;
+    }
+  }
+
   li {
     list-style: none;
     display: flex;

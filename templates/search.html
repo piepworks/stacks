@@ -7,33 +7,44 @@
 {% block content %}
   <h1>Search Results for “{{ query }}”</h1>
 
-  {% if forms %}
-    <ul>
-      {% for book, form in forms %}
-        <li class="book" x-data="{
-          close() {
-            $refs.statusModal_{{ book.id }}.close();
-          },
-          closeFromEvent(event) {
-            if (event.currentTarget === event.target) {
+  {% if forms or authors %}
+    {% if forms %}
+      <h2>Books</h2>
+      <ul>
+        {% for book, form in forms %}
+          <li class="book" x-data="{
+            close() {
               $refs.statusModal_{{ book.id }}.close();
-            }
-          },
-        }">
-        {% include "components/book-list-item.html" %}
+            },
+            closeFromEvent(event) {
+              if (event.currentTarget === event.target) {
+                $refs.statusModal_{{ book.id }}.close();
+              }
+            },
+          }">
+          {% include "components/book-list-item.html" %}
 
-        {% include "components/status-modal.html" %}
+          {% include "components/status-modal.html" %}
 
-        <div class="actions">
-            <div class="faux-form">
-              <button class="svg adjust-status" @click="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
-                Adjust status
-              </button>
-            </div>
-        </div>
-      </li>
-      {% endfor %}
-    </ul>
+          <div class="actions">
+              <div class="faux-form">
+                <button class="svg adjust-status" @click="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
+                  Adjust status
+                </button>
+              </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% if authors %}
+      <h2>Authors</h2>
+      <ul class="authors">
+        {% for author in authors %}
+          <li><a href="{{ author.get_absolute_url }}">{{ author }}</a> <span class="subdued">{{ author.book_count }}</span></li>
+        {% endfor %}
+      </ul>
+    {% endif %}
   {% else %}
     <div x-data="{
       close() {

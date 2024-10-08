@@ -102,6 +102,17 @@ class Author(models.Model):
     def get_absolute_url(self):
         return reverse("author_detail", args=(self.pk,))
 
+    @property
+    def book_count(self):
+        return (
+            Book.objects.filter(
+                author=self,
+                user=self.user,
+            )
+            .exclude(archived=True)
+            .count()
+        )
+
 
 class BookFormat(models.Model):
     name = models.CharField(max_length=20, unique=True)

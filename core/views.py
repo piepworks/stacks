@@ -492,22 +492,27 @@ def book_archive(request, pk):
 
 def search(request):
     query = request.GET.get("q").strip()
+    forms = []
 
     if query:
         books = (
             Book.objects.filter(
-                models.Q(title__icontains=query)
-                | models.Q(author__name__icontains=query),
+                title__icontains=query,
                 user=request.user,
-                author__user=request.user,
             )
             .exclude(archived=True)
             .distinct()
         )
         # Get the books and their forms for these search results
         forms = [(book, BookStatusForm(instance=book)) for book in books]
+
+        authors = Author.objects.filter(
+            name__icontains=query,
+            user=request.user,
+        ).distinct()
     else:
         books = Book.objects.none()
+        authors = Author.objects.none()
 
     return render(
         request,
@@ -516,6 +521,7 @@ def search(request):
             "query": query,
             "forms": forms,
             "books": books,
+            "authors": authors,
             "statuses": Book._meta.get_field("status").choices,
             "open_library_search_form": OpenLibrarySearchForm({"title": query}),
         },
