@@ -89,6 +89,13 @@
     <main class="container">
       {% block content %}
       {% endblock content %}
+
+      {% url 'book_new' as book_new_url %}
+      {% if request.path != book_new_url and user.is_authenticated %}
+        <div class="persistent-add">
+          <a class="svg add-item-solid" href="{% url 'book_new' %}">YO YO YO YO YO YO</a>
+        </div>
+      {% endif %}
     </main>
     <footer class="container">
       {% block footer %}
