@@ -57,6 +57,7 @@ from .models import (
     Series,
     SeriesBook,
     Changelog,
+    BookStatusChange,
 )
 from .tasks import import_books_from_csv
 
@@ -272,6 +273,13 @@ def imports(request):
     }
 
     return render(request, "imports.html", context)
+
+
+def logbook(request):
+    context = {
+        "status_changes": BookStatusChange.objects.filter(book__user=request.user)
+    }
+    return render(request, "logbook.html", context)
 
 
 @login_not_required

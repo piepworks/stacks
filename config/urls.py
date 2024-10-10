@@ -24,6 +24,8 @@ urlpatterns = [
         name="sw",
     ),
     path("offline", TemplateView.as_view(template_name="offline.html"), name="offline"),
+    # Logbook
+    path("logbook", views.logbook, name="logbook"),
     # Book Imports
     # ------------
     path("import", views.import_books, name="import_books"),

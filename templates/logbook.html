@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}Logbook{% endblock title %}
+{% block body_tag %}class="logbook"{% endblock body_tag %}
+
+{% block content %}
+  <header>
+    <h1>Changelog</h1>
+  </header>
+
+  <ol>
+    {% for change in status_changes %}
+      <li>{{ change }}</li>
+    {% endfor %}
+  </ol>
+{% endblock content %}
