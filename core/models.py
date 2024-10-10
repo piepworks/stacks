@@ -328,7 +328,7 @@ class BookCover(models.Model):
                 img_tmp.write(r.content)
                 img_tmp.flush()
 
-                self.image.save(os.path.basename(url), File(img_tmp), save=True)
+                self.image.save(os.path.basename(url)[:100], File(img_tmp), save=True)
                 return True
             else:
                 return False
