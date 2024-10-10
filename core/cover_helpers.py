@@ -1,4 +1,4 @@
-import requests
+import httpx
 
 
 def search_open_library(query):
@@ -8,12 +8,17 @@ def search_open_library(query):
     )
 
     try:
-        response = requests.get(
+        response = httpx.get(
             f"https://openlibrary.org/search.json{querystring}"  # noqa: E231
         )
         response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        return {"error": str(e)}
+    except httpx.HTTPError as exc:
+        return {
+            "error": (
+                "Open Library is having issues. Please try again later or add your book manually. "
+                f"We got the following error: “{exc}”"
+            )
+        }
 
     if response.content and "application/json" in response.headers["Content-Type"]:
         data = response.json()

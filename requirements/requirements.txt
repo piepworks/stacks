@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements/requirements.in
 #
+anyio==4.6.0
+    # via httpx
 asgiref==3.8.1
     # via
     #   django
@@ -25,6 +27,8 @@ build==1.2.2.post1
     # via pip-tools
 certifi==2024.8.30
     # via
+    #   httpcore
+    #   httpx
     #   requests
     #   sentry-sdk
 cfgv==3.4.0
@@ -107,16 +111,25 @@ flake8==7.1.1
     # via -r requirements/requirements.in
 gunicorn==23.0.0
     # via -r requirements/requirements.in
+h11==0.14.0
+    # via httpcore
 html-tag-names==0.1.2
     # via djlint
 html-void-elements==0.1.0
     # via djlint
+httpcore==1.0.6
+    # via httpx
+httpx==0.27.2
+    # via -r requirements/requirements.in
 huey==2.5.2
     # via -r requirements/requirements.in
 identify==2.6.1
     # via pre-commit
 idna==3.10
-    # via requests
+    # via
+    #   anyio
+    #   httpx
+    #   requests
 iniconfig==2.0.0
     # via pytest
 ipython==8.28.0
@@ -236,6 +249,10 @@ six==1.16.0
     #   cssbeautifier
     #   jsbeautifier
     #   python-dateutil
+sniffio==1.3.1
+    # via
+    #   anyio
+    #   httpx
 sqlparse==0.5.1
     # via
     #   django

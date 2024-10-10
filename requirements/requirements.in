@@ -16,6 +16,7 @@ environs[django]
 Faker
 flake8
 gunicorn
+httpx
 huey
 ipython
 just.sh
