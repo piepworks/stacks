@@ -1,9 +1,15 @@
 <form method="get" action="{% url 'open_library_search' %}">
   <fieldset>
-    <input type="hidden" name="status" value="{{ status.slug }}">
     {% for field in form %}
       {{ field.as_field_group }}
     {% endfor %}
+
+    <label for="id_status">Status</label>
+    <select name="status" id="id_status">
+      {% for x, y in status_choices %}
+        <option value="{{ x }}"{% if status and status.slug == x %} selected{% endif %}>{{ y }}</option>
+      {% endfor %}
+    </select>
   </fieldset>
   <button type="submit">Search Open Library</button>
 </form>

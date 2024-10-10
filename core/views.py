@@ -195,7 +195,6 @@ def status(request, status):
             "name": Book(status=status).get_status_display(),
         },
         "forms": forms,
-        "open_library_search_form": OpenLibrarySearchForm,
         "formats": formats,
         "types": types,
         "locations": locations,
@@ -523,7 +522,6 @@ def search(request):
             "books": books,
             "authors": authors,
             "statuses": Book._meta.get_field("status").choices,
-            "open_library_search_form": OpenLibrarySearchForm({"title": query}),
         },
     )
 

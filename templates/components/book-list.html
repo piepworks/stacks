@@ -11,14 +11,6 @@
     topOfList() {
       document.getElementById('book-list-inner').scrollIntoView({ behavior: 'smooth' });
     },
-    close() {
-      $refs.addBook.close();
-    },
-    closeFromEvent(event) {
-      if (event.currentTarget === event.target) {
-        $refs.addBook.close();
-      }
-    },
   }">
   {% if messages %}
     {% include "components/messages.html" %}
@@ -191,5 +183,4 @@
     {% endif %}
   </div>
   {% endif %}
-  {% include "components/add-book-modal.html" %}
 </div>

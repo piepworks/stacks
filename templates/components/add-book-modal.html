@@ -4,7 +4,7 @@
       <button aria-label="Close"
               rel="prev"
               @click="close()"></button>
-      <p><b>Search to add a book{% if status %} to “{{ status.name }}”{% endif %}</b></p>
+      <p><b>Search to add a book{% if status %}{% endif %}</b></p>
       <p>or <a href="{% url 'book_new' %}{% if status %}?status={{ status.slug }}{% endif %}">add manually</a></p>
     </header>
     {% include "components/ol-search-form.html" with form=open_library_search_form %}
