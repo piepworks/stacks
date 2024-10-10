@@ -546,7 +546,7 @@ def open_library_search(request):
 
     if "error" in results:
         messages.error(request, results["error"])
-        return redirect(reverse("book_new") + f"?status={status}")
+        return redirect(reverse("book_new") + f"?status={status}{query}")
 
     # If results is a dict, it means there was only one result
     if isinstance(results, dict):
