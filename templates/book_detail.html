@@ -251,7 +251,7 @@
         {% endif %}
         <tr>
           <td title="{{ book.created_at }}">{{ book.created_at|timesince }} <span class="subdued">ago</span></td>
-          <td>Added</td>
+          <td>Added <span class="subdued">→</span> {{ book.original_status_display }}</td>
         </tr>
       </tbody>
     </table>

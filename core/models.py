@@ -268,6 +268,24 @@ class Book(models.Model):
     def status_display(self):
         return self.get_status_display()
 
+    # Maybe use an annotation for this instead of a @property
+    # https://stackoverflow.com/questions/2143438/is-it-possible-to-reference-a-property-using-djangos-queryset-values-list#comment131258575_2143575
+    # @property
+    # def original_status(self):
+    #     # Check BookStatusChange
+    #     # If it does have status changes, return the first one
+    #     # If it doesn't have any, return current status
+    #     first_change = self.status_changes.all().order_by("changed_at").first()
+
+    #     if first_change:
+    #         return first_change.old_status
+    #     else:
+    #         return self.status
+
+    # @property
+    # def original_status_display(self):
+    #     return dict(self._meta.get_field("status").choices)[self.original_status]
+
     @property
     def latest_reading(self):
         return BookReading.objects.filter(book=self).order_by("-start_date").first()

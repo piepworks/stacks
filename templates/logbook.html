@@ -10,23 +10,40 @@
 
   <article class="description">Here’s what your books have been up to…</article>
 
-    {% for change in status_changes %}
+    {% comment %} {% for book in books %}
+      <div>{{ book }}</div>
+    {% endfor %} {% endcomment %}
+
+    <h1>Logbook</h1>
+    <ul>
+      {% for log in logs %}
+        <li>
+          {% if log.log_type == 'book' %}
+            <strong>New Book Added:</strong> <a href="{% url 'book_detail' log.id %}">{{ log.title }}</a> (Added on {{ log.log_timestamp|date:"Y-m-d H:i" }} to {{ log.original_status }})
+          {% elif log.log_type == 'status_change' %}
+            <strong>Status Change:</strong> <a href="{% url 'book_detail' log.book_id %}">{{ log.title }}</a> {{ log.old_status }} → {{ log.new_status }} (Changed on {{ log.log_timestamp|date:"Y-m-d H:i" }})
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    {% comment %} {% for book in books %}
       <article>
-        <header title="{{ change.changed_at }}">{{ change.changed_at|timesince }} <span class="subdued">ago</span></header>
+        <header title="{{ book.changed_at }}">{{ book.changed_at|timesince }} <span class="subdued">ago</span></header>
 
         <div class="change-body">
-          {% with change.book.covers.all|first as cover %}
+          {% with book.covers.all|first as cover %}
             <div class="cover">
-              <a href="{{ change.book.get_absolute_url }}">
-                <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ change.cover.thumbnail_height }}" width="{{ change.cover.thumbnail_width }}">
+              <a href="{{ book.get_absolute_url }}">
+                <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ book.cover.thumbnail_height }}" width="{{ book.cover.thumbnail_width }}">
               </a>
             </div>
           {% endwith %}
           <div class="change-details">
-            <div class="title">{{ change.book }}</div>
-            <div class="change">{{ change.old_status_display }} <span class="subdued">→</span> {{ change.new_status_display }}</div>
+            <div class="title">{{ book }}</div>
+            <div class="change">{{ book.old_status_display }} <span class="subdued">→</span> {{ book.new_status_display }}</div>
           </div>
         </div>
-      </article>
-    {% endfor %}
+      </article> {% endcomment %}
+    {% comment %} {% endfor %} {% endcomment %}
 {% endblock content %}
