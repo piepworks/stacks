@@ -113,7 +113,7 @@
       {% endif %}
 
       {% url 'logbook' as logbook_url %}
-      {% if request.path != logbook_url %}
+      {% if request.path != logbook_url and user.is_authenticated %}
         <div class="logbook-link"><a href="{% url 'logbook' %}">Your Logbook</a></div>
       {% endif %}
 
