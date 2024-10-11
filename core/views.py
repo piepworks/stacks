@@ -285,27 +285,48 @@ def logbook(request):
     )[:1]
 
     # Annotated queryset for books with their original status
-    books_with_status = Book.objects.annotate(
-        log_timestamp=F("created_at"),  # Assuming you have a created_at field
-        original_status=Coalesce(
-            Subquery(first_change_subquery, output_field=CharField()), F("status")
-        ),
-        log_type=Value("book", output_field=CharField()),
-    ).values("id", "log_timestamp", "title", "original_status", "log_type")
+    books_with_status = (
+        Book.objects.annotate(
+            log_timestamp=F("created_at"),  # Assuming you have a created_at field
+            original_status=Coalesce(
+                Subquery(first_change_subquery, output_field=CharField()), F("status")
+            ),
+            log_type=Value("book", output_field=CharField()),
+        )
+        .prefetch_related("covers")
+        .values("id", "log_timestamp", "title", "original_status", "log_type")
+    )
 
-    # Queryset for status changes
+    # Queryset for status changes, including book titles and prefetching covers
     status_changes = (
         BookStatusChange.objects.filter(book__user=request.user)
         .annotate(
-            # book_id=F("book__id"),
             log_timestamp=F("changed_at"),
-            # status_change_old_status=F("old_status"),
             log_type=Value("status_change", output_field=CharField()),
             title=F("book__title"),
+            # book_id=F("book__id"),
         )
         .values(
-            "book_id", "log_timestamp", "title", "old_status", "new_status", "log_type"
+            "book_id",
+            "log_timestamp",
+            "title",
+            "old_status",
+            "new_status",
+            "log_type",
         )
+    )
+
+    # Combine both querysets
+    books_list = list(books_with_status)
+    status_changes_list = list(status_changes)
+
+    combined_logs = books_list + status_changes_list
+    combined_logs.sort(key=lambda x: x["log_timestamp"], reverse=True)
+
+    return render(
+        request,
+        "logbook.html",
+        {"logs": combined_logs, "books": Book.objects.prefetch_related("covers")},
     )
 
     # Convert querysets to lists
@@ -320,7 +341,14 @@ def logbook(request):
 
     # print(combined_logs)
 
-    return render(request, "logbook.html", {"logs": combined_logs})
+    return render(
+        request,
+        "logbook.html",
+        {
+            "logs": combined_logs,
+            "books": Book.objects.prefetch_related("covers"),
+        },
+    )
 
 
 @login_not_required

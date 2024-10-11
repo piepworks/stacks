@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load status_display %}
+{% load status_display get_book %}
 
 {% block title %}Logbook{% endblock title %}
 {% block body_tag %}class="logbook"{% endblock body_tag %}
@@ -11,40 +11,53 @@
 
   <article class="description">Here’s what your books have been up to…</article>
 
-    {% comment %} {% for book in books %}
-      <div>{{ book }}</div>
-    {% endfor %} {% endcomment %}
+  {% for log in logs %}
+    <article>
+      <header title="{{ log.log_timestamp }}">{{ log.log_timestamp|timesince }} <span class="subdued">ago</span></header>
 
-    <h1>Logbook</h1>
-    <ul>
-      {% for log in logs %}
-        <li>
-          {% if log.log_type == 'book' %}
-            <strong>New Book Added:</strong> <a href="{% url 'book_detail' log.id %}">{{ log.title }}</a> (Added on {{ log.log_timestamp|date:"Y-m-d H:i" }} to {{ log.original_status|status_display }})
-          {% elif log.log_type == 'status_change' %}
-            <strong>Status Change:</strong> <a href="{% url 'book_detail' log.book_id %}">{{ log.title }}</a> {{ log.old_status|status_display }} → {{ log.new_status|status_display }} (Changed on {{ log.log_timestamp|date:"Y-m-d H:i" }})
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
-
-    {% comment %} {% for book in books %}
-      <article>
-        <header title="{{ book.changed_at }}">{{ book.changed_at|timesince }} <span class="subdued">ago</span></header>
-
-        <div class="change-body">
-          {% with book.covers.all|first as cover %}
-            <div class="cover">
-              <a href="{{ book.get_absolute_url }}">
-                <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ book.cover.thumbnail_height }}" width="{{ book.cover.thumbnail_width }}">
-              </a>
-            </div>
+      <div class="change-body">
+        {% if log.log_type == 'book' %}
+          {% with book=books|get_book:log.id %}
+            {% if book %}
+              {% with cover=book.covers.all|first %}
+                <div class="cover">
+                  <a href="{% url 'book_detail' book.id %}">
+                    {% if cover.thumbnail %}
+                      <img src="{{ cover.image.url }}" alt="{{ cover }}" height="{{ cover.thumbnail_height }}" width="{{ cover.thumbnail_width }}">
+                    {% else %}
+                      {% include "components/no-cover.html" with class="incomplete" %}
+                    {% endif %}
+                  </a>
+                </div>
+              {% endwith %}
+              <div class="change-details">
+                <div class="title">{{ book.title }}</div>
+                <div class="change">Added <span class="subdued">→</span> {{ log.original_status|status_display }}</div>
+              </div>
+            {% endif %}
           {% endwith %}
-          <div class="change-details">
-            <div class="title">{{ book }}</div>
-            <div class="change">{{ book.old_status_display }} <span class="subdued">→</span> {{ book.new_status_display }}</div>
-          </div>
-        </div>
-      </article> {% endcomment %}
-    {% comment %} {% endfor %} {% endcomment %}
+        {% elif log.log_type == 'status_change' %}
+          {% with book=books|get_book:log.book_id %}
+            {% if book %}
+              {% with cover=book.covers.all|first %}
+                <div class="cover">
+                  <a href="{% url 'book_detail' book.id %}">
+                    {% if cover.thumbnail %}
+                      <img src="{{ cover.image.url }}" alt="{{ cover }}" height="{{ cover.thumbnail_height }}" width="{{ cover.thumbnail_width }}">
+                    {% else %}
+                      {% include "components/no-cover.html" with class="incomplete" %}
+                    {% endif %}
+                  </a>
+                </div>
+              {% endwith %}
+              <div class="change-details">
+                <div class="title">{{ book.title }}</div>
+                <div class="change">{{ log.old_status|status_display }} <span class="subdued">→</span> {{ log.new_status|status_display }}</div>
+              </div>
+            {% endif %}
+          {% endwith %}
+        {% endif %}
+      </div>
+    </article>
+  {% endfor %}
 {% endblock content %}
