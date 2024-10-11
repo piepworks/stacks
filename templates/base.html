@@ -111,6 +111,12 @@
           {% include "components/add-book-modal.html" %}
         </div>
       {% endif %}
+
+      {% url 'logbook' as logbook_url %}
+      {% if request.path != logbook_url %}
+        <div><a href="{% url 'logbook' %}">Your Logbook</a></div>
+      {% endif %}
+
     </main>
     <footer class="container">
       {% block footer %}

@@ -245,13 +245,13 @@
           {% for status_change in status_changes %}
             <tr>
               <td title="{{ status_change.changed_at }}">{{ status_change.changed_at|timesince }} <span class="subdued">ago</span></td>
-              <td>{{ status_change.old_status }} <span class="subdued">→</span> {{ status_change.new_status }}</td>
+              <td>{{ status_change.old_status_display }} <span class="subdued">→</span> {{ status_change.new_status_display }}</td>
             </tr>
           {% endfor %}
         {% endif %}
         <tr>
           <td title="{{ book.created_at }}">{{ book.created_at|timesince }} <span class="subdued">ago</span></td>
-          <td>added</td>
+          <td>Added</td>
         </tr>
       </tbody>
     </table>

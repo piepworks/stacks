@@ -444,6 +444,14 @@ class BookStatusChange(models.Model):
     def __str__(self):
         return f"{date(self.changed_at, 'Y-m-d')} / {self.book} Changed from “{self.old_status}” to “{self.new_status}”"
 
+    @property
+    def old_status_display(self):
+        return dict(Book._meta.get_field("status").choices)[self.old_status]
+
+    @property
+    def new_status_display(self):
+        return dict(Book._meta.get_field("status").choices)[self.new_status]
+
 
 @receiver(pre_save, sender=Book)
 def track_status_changes(sender, instance, **kwargs):
