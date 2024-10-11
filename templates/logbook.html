@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load status_display %}
 
 {% block title %}Logbook{% endblock title %}
 {% block body_tag %}class="logbook"{% endblock body_tag %}
@@ -19,9 +20,9 @@
       {% for log in logs %}
         <li>
           {% if log.log_type == 'book' %}
-            <strong>New Book Added:</strong> <a href="{% url 'book_detail' log.id %}">{{ log.title }}</a> (Added on {{ log.log_timestamp|date:"Y-m-d H:i" }} to {{ log.original_status }})
+            <strong>New Book Added:</strong> <a href="{% url 'book_detail' log.id %}">{{ log.title }}</a> (Added on {{ log.log_timestamp|date:"Y-m-d H:i" }} to {{ log.original_status|status_display }})
           {% elif log.log_type == 'status_change' %}
-            <strong>Status Change:</strong> <a href="{% url 'book_detail' log.book_id %}">{{ log.title }}</a> {{ log.old_status }} → {{ log.new_status }} (Changed on {{ log.log_timestamp|date:"Y-m-d H:i" }})
+            <strong>Status Change:</strong> <a href="{% url 'book_detail' log.book_id %}">{{ log.title }}</a> {{ log.old_status|status_display }} → {{ log.new_status|status_display }} (Changed on {{ log.log_timestamp|date:"Y-m-d H:i" }})
           {% endif %}
         </li>
       {% endfor %}

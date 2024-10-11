@@ -270,21 +270,17 @@ class Book(models.Model):
 
     # Maybe use an annotation for this instead of a @property
     # https://stackoverflow.com/questions/2143438/is-it-possible-to-reference-a-property-using-djangos-queryset-values-list#comment131258575_2143575
-    # @property
-    # def original_status(self):
-    #     # Check BookStatusChange
-    #     # If it does have status changes, return the first one
-    #     # If it doesn't have any, return current status
-    #     first_change = self.status_changes.all().order_by("changed_at").first()
+    @property
+    def original_status(self):
+        # Check BookStatusChange
+        # If it does have status changes, return the first one
+        # If it doesn't have any, return current status
+        first_change = self.status_changes.all().order_by("changed_at").first()
 
-    #     if first_change:
-    #         return first_change.old_status
-    #     else:
-    #         return self.status
-
-    # @property
-    # def original_status_display(self):
-    #     return dict(self._meta.get_field("status").choices)[self.original_status]
+        if first_change:
+            return first_change.old_status
+        else:
+            return self.status
 
     @property
     def latest_reading(self):
@@ -461,14 +457,6 @@ class BookStatusChange(models.Model):
 
     def __str__(self):
         return f"{date(self.changed_at, 'Y-m-d')} / {self.book} Changed from “{self.old_status}” to “{self.new_status}”"
-
-    @property
-    def old_status_display(self):
-        return dict(Book._meta.get_field("status").choices)[self.old_status]
-
-    @property
-    def new_status_display(self):
-        return dict(Book._meta.get_field("status").choices)[self.new_status]
 
 
 @receiver(pre_save, sender=Book)
