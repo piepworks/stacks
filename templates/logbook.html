@@ -5,12 +5,26 @@
 
 {% block content %}
   <header>
-    <h1>Changelog</h1>
+    <h1>Logbook</h1>
   </header>
 
-  <ol>
+  <article class="description">Here’s what your books have been up to…</article>
+
     {% for change in status_changes %}
-      <li>{{ change }}</li>
+      <article>
+        <header>{{ change.changed_at }}</header>
+
+        <div class="change-body">
+          {% with change.book.covers.all|first as cover %}
+            <a href="{{ change.book.get_absolute_url }}">
+              <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ change.cover.thumbnail_height }}" width="{{ change.cover.thumbnail_width }}">
+            </a>
+          {% endwith %}
+          <div class="change-details">
+            <div class="title">{{ change.book }}</div>
+            <div class="change">{{ change.old_status }} → {{ change.new_status }}</div>
+          </div>
+        </div>
+      </article>
     {% endfor %}
-  </ol>
 {% endblock content %}

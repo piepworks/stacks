@@ -1,14 +1,19 @@
 .logbook {
-  main ol {
-    list-style: none;
-    padding: 0;
+  article .change-body {
+    display: flex;
+    gap: 1rem;
 
-    li {
-      margin: 0;
+    img {
+      width: 80px;
     }
 
-    li + li {
-      margin-top: 2rem;
+    .change-details {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .title {
+      font-weight: 600;
     }
   }
 }
