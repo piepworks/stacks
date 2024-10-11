@@ -85,3 +85,7 @@ td small {
 .overflow-auto th {
   white-space: nowrap;
 }
+
+.logbook-link {
+  margin-top: 2rem;
+}
