@@ -204,7 +204,7 @@
 
   <h2 id="heading-notes">Notes</h2>
   <section class="notes">
-    <form x-data="{ note: ''}" x-init x-target="ajax-notes" @ajax:success="note = ''" action="{% url 'note_new' book.pk %}" method="post">
+    <form action="{% url 'note_new' book.pk %}" method="post">
       {% csrf_token %}
       {{ note_form.text }}
       <button type="submit">Save a new note</button>
