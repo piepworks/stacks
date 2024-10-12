@@ -21,21 +21,25 @@
         {% if log.log_type == 'book' %}
           {% with book=books|get_book:log.id %}
             {% if book %}
-              {% include "components/logbook-list-item.html" %}
-              <div class="change-details">
-                <div class="title">{{ book.title }}</div>
-                <div class="change">Added <span class="subdued">→</span> {{ log.original_status|status_display }}</div>
-              </div>
+              <a href="{% url 'book_detail' book.id %}">
+                {% include "components/logbook-list-item.html" %}
+                <div class="change-details">
+                  <div class="title">{{ book.title }}</div>
+                  <div class="change">Added <span class="subdued">→</span> {{ log.original_status|status_display }}</div>
+                </div>
+              </a>
             {% endif %}
           {% endwith %}
         {% elif log.log_type == 'status_change' %}
           {% with book=books|get_book:log.book_id %}
             {% if book %}
-              {% include "components/logbook-list-item.html" %}
-              <div class="change-details">
-                <div class="title">{{ book.title }}</div>
-                <div class="change">{{ log.old_status|status_display }} <span class="subdued">→</span> {{ log.new_status|status_display }}</div>
-              </div>
+              <a href="{% url 'book_detail' book.id %}">
+                {% include "components/logbook-list-item.html" %}
+                <div class="change-details">
+                  <div class="title">{{ book.title }}</div>
+                  <div class="change">{{ log.old_status|status_display }} <span class="subdued">→</span> {{ log.new_status|status_display }}</div>
+                </div>
+              </a>
             {% endif %}
           {% endwith %}
         {% endif %}

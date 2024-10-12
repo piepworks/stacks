@@ -1,7 +1,13 @@
 .logbook {
-  article .change-body {
+  article .change-body a {
     display: flex;
     gap: 1rem;
+    text-decoration: none;
+    color: var(--pico-text-color);
+
+    &:hover {
+      color: var(--pico-color);
+    }
 
     img {
       width: 50px;

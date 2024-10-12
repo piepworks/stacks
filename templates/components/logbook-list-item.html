@@ -1,11 +1,9 @@
 {% with cover=book.covers.all|first %}
   <div class="cover">
-    <a href="{% url 'book_detail' book.id %}">
-      {% if cover.thumbnail %}
-        <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ cover.thumbnail_height }}" width="{{ cover.thumbnail_width }}">
-      {% else %}
-        {% include "components/no-cover.html" with class="incomplete" %}
-      {% endif %}
-    </a>
+    {% if cover.thumbnail %}
+      <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ cover.thumbnail_height }}" width="{{ cover.thumbnail_width }}">
+    {% else %}
+      {% include "components/no-cover.html" with class="incomplete" %}
+    {% endif %}
   </div>
 {% endwith %}
