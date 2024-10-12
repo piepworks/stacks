@@ -286,7 +286,7 @@ def imports(request):
 
 
 def logbook(request):
-    pagination = 20
+    pagination = 10
 
     # Subquery to get the first status change for each book
     first_change_subquery = BookStatusChange.objects.filter(book=OuterRef("pk")).values(
@@ -341,14 +341,15 @@ def logbook(request):
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
 
-    return render(
-        request,
-        "logbook.html",
-        {
-            "books": Book.objects.filter(user=request.user).prefetch_related("covers"),
-            "page_obj": page_obj,
-        },
-    )
+    context = {
+        "books": Book.objects.filter(user=request.user).prefetch_related("covers"),
+        "page_obj": page_obj,
+    }
+
+    if request.htmx:
+        return render(request, "components/logbook-list.html", context)
+    else:
+        return render(request, "logbook.html", context)
 
 
 @login_not_required
