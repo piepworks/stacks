@@ -4,6 +4,14 @@
   margin-top: 1rem;
   background: #70fcba; /* Jade 100 */
 
+  &:has(.error) {
+    background: #ee402e; /* Red 450 (Cascara) */
+
+    .error {
+      color: white;
+    }
+  }
+
   @media (prefers-color-scheme: dark) {
     background: #00b478; /* Jade 350 */
   }
