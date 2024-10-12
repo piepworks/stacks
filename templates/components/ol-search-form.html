@@ -11,5 +11,5 @@
       {% endfor %}
     </select>
   </fieldset>
-  <button type="submit">Search Open Library</button>
+  <button type="submit" x-data="{ loading: false }" :aria-busy="loading" @click="loading = true">Search Open Library</button>
 </form>
