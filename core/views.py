@@ -294,18 +294,23 @@ def logbook(request):
     # Annotated queryset for books with their original status
     books_with_status = (
         Book.objects.annotate(
-            log_timestamp=F("created_at"),  # Assuming you have a created_at field
+            log_timestamp=F("created_at"),
             original_status=Coalesce(
                 Subquery(first_change_subquery, output_field=CharField()), F("status")
             ),
             log_type=Value("book", output_field=CharField()),
         )
         .filter(user=request.user)
-        .prefetch_related("covers")
-        .values("id", "log_timestamp", "title", "original_status", "log_type")
+        .values(
+            "id",
+            "log_timestamp",
+            "title",
+            "original_status",
+            "log_type",
+        )
     )
 
-    # Queryset for status changes, including book titles and prefetching covers
+    # Queryset for status changes, including book titles
     status_changes = (
         BookStatusChange.objects.filter(book__user=request.user)
         .annotate(
@@ -335,7 +340,7 @@ def logbook(request):
         "logbook.html",
         {
             "logs": combined_logs,
-            "books": Book.objects.prefetch_related("covers"),
+            "books": Book.objects.filter(user=request.user).prefetch_related("covers"),
         },
     )
 
