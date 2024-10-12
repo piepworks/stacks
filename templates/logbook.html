@@ -9,9 +9,11 @@
     <h1>Logbook</h1>
   </header>
 
-  <article class="description">Here’s what your books have been up to…</article>
+  {% if page_obj.number == 1 %}
+    <article class="description">Here’s what your books have been up to…</article>
+  {% endif %}
 
-  {% for log in logs %}
+  {% for log in page_obj %}
     <article>
       <header title="{{ log.log_timestamp }}">{{ log.log_timestamp|timesince }} <span class="subdued">ago</span></header>
 
@@ -40,4 +42,30 @@
       </div>
     </article>
   {% endfor %}
+
+  {% if page_obj.has_other_pages %}
+    <div class="pagination">
+      {% if page_obj.has_previous %}
+        <form method="get"
+          action="{% url 'logbook' %}">
+          <input type="hidden" name="page" value="{{ page_obj.previous_page_number }}">
+          <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Previous</button>
+        </form>
+      {% else %}
+        <button disabled>Previous</button>
+      {% endif %}
+
+      <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</p>
+
+      {% if page_obj.has_next %}
+        <form method="get"
+          action="{% url 'logbook' %}">
+          <input type="hidden" name="page" value="{{ page_obj.next_page_number }}">
+          <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Next</button>
+        </form>
+      {% else %}
+        <button disabled>Next</button>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endblock content %}

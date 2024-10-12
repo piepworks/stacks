@@ -286,6 +286,8 @@ def imports(request):
 
 
 def logbook(request):
+    pagination = 20
+
     # Subquery to get the first status change for each book
     first_change_subquery = BookStatusChange.objects.filter(book=OuterRef("pk")).values(
         "old_status"
@@ -335,12 +337,16 @@ def logbook(request):
     combined_logs = books_list + status_changes_list
     combined_logs.sort(key=lambda x: x["log_timestamp"], reverse=True)
 
+    paginator = Paginator(combined_logs, pagination)
+    page_number = request.GET.get("page", 1)
+    page_obj = paginator.get_page(page_number)
+
     return render(
         request,
         "logbook.html",
         {
-            "logs": combined_logs,
             "books": Book.objects.filter(user=request.user).prefetch_related("covers"),
+            "page_obj": page_obj,
         },
     )
 
