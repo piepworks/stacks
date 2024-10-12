@@ -13,7 +13,10 @@
   }">
   {% for log in page_obj %}
     <article>
-      <header title="{{ log.log_timestamp }}">{{ log.log_timestamp|timesince }} <span class="subdued">ago</span></header>
+      <header title="{{ log.log_timestamp }}" x-data="{ timestamp: false, }" @click="timestamp = !timestamp">
+        <span x-show="!timestamp">{{ log.log_timestamp|timesince }} <span class="subdued">ago</span></span>
+        <span x-show="timestamp" x-cloak>{{ log.log_timestamp }}</span>
+      </header>
       <div class="change-body">
         {% if log.log_type == 'book' %}
           {% with book=books|get_book:log.id %}
