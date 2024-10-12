@@ -16,13 +16,23 @@ from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.views.decorators.http import require_POST
 from django.db import IntegrityError, models
-from django.db.models import Q, OuterRef, Exists, Subquery, DateField
-from django.db.models.functions import Trunc
+from django.db.models import (
+    Q,
+    OuterRef,
+    Exists,
+    Subquery,
+    DateField,
+    F,
+    Value,
+    CharField,
+)
+from django.db.models.functions import Trunc, Coalesce
 from django.http import JsonResponse
 from django.core.exceptions import PermissionDenied
 from django.utils.decorators import method_decorator
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+
 from django_registration.backends.activation.views import (
     ActivationView as BaseActivationView,
     RegistrationView as BaseRegistrationView,
@@ -276,9 +286,6 @@ def imports(request):
 
 
 def logbook(request):
-    from django.db.models import OuterRef, Subquery, F, Value, CharField
-    from django.db.models.functions import Coalesce
-
     # Subquery to get the first status change for each book
     first_change_subquery = BookStatusChange.objects.filter(book=OuterRef("pk")).values(
         "old_status"
@@ -293,6 +300,7 @@ def logbook(request):
             ),
             log_type=Value("book", output_field=CharField()),
         )
+        .filter(user=request.user)
         .prefetch_related("covers")
         .values("id", "log_timestamp", "title", "original_status", "log_type")
     )
@@ -304,7 +312,6 @@ def logbook(request):
             log_timestamp=F("changed_at"),
             log_type=Value("status_change", output_field=CharField()),
             title=F("book__title"),
-            # book_id=F("book__id"),
         )
         .values(
             "book_id",
@@ -322,24 +329,6 @@ def logbook(request):
 
     combined_logs = books_list + status_changes_list
     combined_logs.sort(key=lambda x: x["log_timestamp"], reverse=True)
-
-    return render(
-        request,
-        "logbook.html",
-        {"logs": combined_logs, "books": Book.objects.prefetch_related("covers")},
-    )
-
-    # Convert querysets to lists
-    books_list = list(books_with_status)
-    status_changes_list = list(status_changes)
-
-    # Combine both lists
-    combined_logs = books_list + status_changes_list
-
-    # Sort combined logs by log_timestamp in reverse order
-    combined_logs.sort(key=lambda x: x["log_timestamp"], reverse=True)
-
-    # print(combined_logs)
 
     return render(
         request,
