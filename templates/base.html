@@ -105,23 +105,19 @@
       {% block content %}
       {% endblock content %}
 
+      {% if request.path != book_new_url and user.is_authenticated %}
+        <div class="persistent-add">
+          <a class="svg add-item-solid" href="{% url 'book_new' %}" @click.prevent="$refs.addBook.showModal()">Add a book</a>
+          {% include "components/add-book-modal.html" %}
+        </div>
+      {% endif %}
+
       {% url 'logbook' as logbook_url %}
       {% if request.path != logbook_url and user.is_authenticated %}
         <div class="logbook-link"><a href="{% url 'logbook' %}">Your Logbook</a></div>
       {% endif %}
+
     </main>
-
-    {% if request.path != book_new_url and user.is_authenticated %}
-      <div class="persistent-bar">
-        <div class="container">
-          <div class="persistent-add">
-            <a class="svg add-item-solid" href="{% url 'book_new' %}" @click.prevent="$refs.addBook.showModal()">Add a book</a>
-            {% include "components/add-book-modal.html" %}
-          </div>
-        </div>
-      </div>
-    {% endif %}
-
     <footer class="container">
       {% block footer %}
       {% endblock footer %}
