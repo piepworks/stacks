@@ -229,7 +229,7 @@ button.link {
     background-color: rgb(0 0 0 / 50%);
   }
 
-  a:hover {
+  a.svg:hover {
     background: black;
 
     @media (prefers-color-scheme: dark) {
