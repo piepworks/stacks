@@ -44,3 +44,13 @@ window.bsResetFilters = (e) => {
   });
 };
 // {% endif %}
+
+// On browser forward or back
+window.onpageshow = (e) => {
+  if (e.persisted) {
+    let button = document.querySelector('#openLibraryForm button');
+    if (button) {
+      button.removeAttribute('aria-busy');
+    }
+  }
+};
