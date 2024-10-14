@@ -4,7 +4,7 @@
 #
 #    pip-compile requirements/requirements.in
 #
-anyio==4.6.0
+anyio==4.6.2.post1
     # via httpx
 asgiref==3.8.1
     # via
@@ -13,13 +13,13 @@ asgiref==3.8.1
     #   django-htmx
 asttokens==2.4.1
     # via stack-data
-black==24.8.0
+black==24.10.0
     # via -r requirements/requirements.in
 bleach[css]==5.0.1
     # via django-bleach
-boto3==1.35.34
+boto3==1.35.39
     # via -r requirements/requirements.in
-botocore==1.35.34
+botocore==1.35.39
     # via
     #   boto3
     #   s3transfer
@@ -33,7 +33,7 @@ certifi==2024.8.30
     #   sentry-sdk
 cfgv==3.4.0
     # via pre-commit
-charset-normalizer==3.3.2
+charset-normalizer==3.4.0
     # via requests
 click==8.1.7
     # via
@@ -44,7 +44,7 @@ colorama==0.4.6
     # via djlint
 confusable-homoglyphs==3.3.1
     # via django-registration
-coverage[toml]==7.6.1
+coverage[toml]==7.6.3
     # via
     #   -r requirements/requirements.in
     #   pytest-cov
@@ -52,7 +52,7 @@ cssbeautifier==1.15.1
     # via djlint
 decorator==5.1.1
     # via ipython
-distlib==0.3.8
+distlib==0.3.9
     # via virtualenv
 dj-database-url==2.2.0
     # via
@@ -60,7 +60,7 @@ dj-database-url==2.2.0
     #   environs
 dj-email-url==1.0.6
     # via environs
-django==5.1.1
+django==5.1.2
     # via
     #   -r requirements/requirements.in
     #   dj-database-url
@@ -75,7 +75,7 @@ django==5.1.1
     #   model-bakery
 django-bleach==3.1.0
     # via -r requirements/requirements.in
-django-browser-reload==1.15.0
+django-browser-reload==1.16.0
     # via -r requirements/requirements.in
 django-cache-url==3.4.5
     # via environs
@@ -103,7 +103,7 @@ execnet==2.1.1
     # via pytest-xdist
 executing==2.1.0
     # via stack-data
-faker==30.1.0
+faker==30.3.0
     # via -r requirements/requirements.in
 filelock==3.16.1
     # via virtualenv
@@ -156,7 +156,7 @@ matplotlib-inline==0.1.7
     # via ipython
 mccabe==0.7.0
     # via flake8
-model-bakery==1.19.5
+model-bakery==1.20.0
     # via -r requirements/requirements.in
 mypy-extensions==1.0.0
     # via black
@@ -193,7 +193,7 @@ platformdirs==4.3.6
     #   virtualenv
 pluggy==1.5.0
     # via pytest
-pre-commit==4.0.0
+pre-commit==4.0.1
     # via -r requirements/requirements.in
 prompt-toolkit==3.0.48
     # via ipython
@@ -238,9 +238,9 @@ regex==2024.9.11
     # via djlint
 requests==2.32.3
     # via -r requirements/requirements.in
-s3transfer==0.10.2
+s3transfer==0.10.3
     # via boto3
-sentry-sdk==2.15.0
+sentry-sdk==2.16.0
     # via -r requirements/requirements.in
 six==1.16.0
     # via
