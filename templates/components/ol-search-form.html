@@ -1,4 +1,4 @@
-<form method="get" action="{% url 'open_library_search' %}" id="openLibraryForm" x-ref="openLibraryForm">
+<form method="get" action="{% url 'open_library_search' %}" id="openLibraryForm">
   <fieldset>
     {% for field in form %}
       {{ field.as_field_group }}
@@ -12,13 +12,10 @@
     </select>
   </fieldset>
   <button
+    :class="loading ? 'loading' : ''"
     type="submit"
-    x-data="{
-      loading: false,
-      submitForm: () => $refs.openLibraryForm.submit()
-    }"
-    :aria-busy="loading"
-    @click.prevent="loading = true; setTimeout(submitForm, 1000)">
+    x-data="{ loading: false }"
+    @click="loading = true">
       Search Open Library
     </button>
 </form>

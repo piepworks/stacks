@@ -149,7 +149,7 @@
           {% if filter_queries.location != "all" %}
             <input type="hidden" name="location" value="{{ filter_queries.location }}">
           {% endif %}
-          <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Previous</button>
+          <button :class="loading ? 'loading' : ''" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Previous</button>
         </form>
       {% else %}
         <button disabled>Previous</button>
@@ -176,7 +176,7 @@
           {% if filter_queries.location != "all" %}
             <input type="hidden" name="location" value="{{ filter_queries.location }}">
           {% endif %}
-          <button :aria-busy="loading" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Next</button>
+          <button :class="loading ? 'loading' : ''" @click="loading = true" x-on:htmx:after-swap.window="loading = false">Next</button>
         </form>
       {% else %}
         <button disabled>Next</button>
