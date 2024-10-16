@@ -37,7 +37,7 @@ fieldset > .radio {
     font-size: 1rem;
   }
 
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     display: none;
   }
 }
@@ -45,7 +45,7 @@ fieldset > .radio {
 .desktop-search {
   display: none;
 
-  @media (min-width: 576px) {
+  @media (min-width: 768px) {
     display: flex;
   }
 }

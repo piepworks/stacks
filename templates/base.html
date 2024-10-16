@@ -58,6 +58,14 @@
                 </div>
               </li>
             {% endif %}
+
+            {% url "logbook" as logbook_url %}
+            <li{% if request.path == logbook_url %} class="active"{% endif %}>
+              <div class="faux-form">
+                <a{% if request.path == logbook_url %} aria-current="page"{% endif %} class="svg logbook" href="{% url 'logbook' %}"></a>
+              </div>
+            </li>
+
             {% url "series_list" as series_url %}
             <li{% if request.path == series_url %} class="active"{% endif %}>
               <div class="faux-form">
@@ -111,12 +119,6 @@
           {% include "components/add-book-modal.html" %}
         </div>
       {% endif %}
-
-      {% url 'logbook' as logbook_url %}
-      {% if request.path != logbook_url and user.is_authenticated %}
-        <div class="logbook-link"><a href="{% url 'logbook' %}">Your Logbook</a></div>
-      {% endif %}
-
     </main>
     <footer class="container">
       {% block footer %}
