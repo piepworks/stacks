@@ -1,4 +1,9 @@
-<form method="get" action="{% url 'open_library_search' %}" id="openLibraryForm">
+<form method="get"
+  action="{% url 'open_library_search' %}"
+  id="openLibraryForm"
+  x-data="{ loading: false }"
+  @submit="loading = true"
+  :class="loading ? 'loading' : ''">
   <fieldset>
     {% for field in form %}
       {{ field.as_field_group }}
@@ -11,11 +16,5 @@
       {% endfor %}
     </select>
   </fieldset>
-  <button
-    :class="loading ? 'loading' : ''"
-    type="submit"
-    x-data="{ loading: false }"
-    @click="loading = true">
-      Search Open Library
-    </button>
+  <button type="submit">Search Open Library</button>
 </form>

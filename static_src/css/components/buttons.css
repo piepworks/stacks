@@ -250,7 +250,7 @@ button.link {
   }
 }
 
-.loading {
+.loading [type='submit'] {
   /* The aria-busy stuff from Pico for the sake of Safari */
   /* which stops animating as soon as the next page starts loading. */
   /* https://github.com/picocss/pico/blob/main/scss/components/_loading.scss */
