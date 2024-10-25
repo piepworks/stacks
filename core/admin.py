@@ -5,6 +5,7 @@ from django.utils.html import format_html
 from django.urls import reverse
 from django.contrib.auth.models import Group
 from django.db.models import Count
+from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
 from .models import (
     User,
     Book,
@@ -89,8 +90,17 @@ class UserAdmin(DjangoUserAdmin):
     series_count.short_description = "Series"
 
 
-class BookCoverInline(admin.TabularInline):
+class BookCoverInline(OrderedTabularInline):
     model = BookCover
+    fields = (
+        "image",
+        "order",
+        "move_up_down_links",
+    )
+    readonly_fields = (
+        "order",
+        "move_up_down_links",
+    )
     extra = 1
 
 
@@ -101,7 +111,7 @@ class BookAuthorInline(admin.TabularInline):
 
 
 @admin.register(Book)
-class BookAdmin(admin.ModelAdmin):
+class BookAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     list_display = ("title", "authors_list", "formats_list", "imported")
     list_filter = ("user", "archived", "status")
     inlines = [BookAuthorInline, BookCoverInline]

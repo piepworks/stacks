@@ -9,6 +9,7 @@ django-debug-toolbar
 django-extensions
 django-honeypot
 django-htmx
+django-ordered-model
 django-registration
 django-storages
 djlint

@@ -63,6 +63,7 @@ INSTALLED_APPS += [
     "honeypot",
     "django_htmx",
     "huey.contrib.djhuey",
+    "ordered_model",
 ]
 
 # Our apps

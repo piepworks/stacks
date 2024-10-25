@@ -14,6 +14,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
 from core.image_helpers import rename_image, resize_image
+from ordered_model.models import OrderedModel
 
 
 class UserManager(BaseUserManager):
@@ -287,7 +288,7 @@ class Book(models.Model):
         return BookReading.objects.filter(book=self).order_by("-start_date").first()
 
 
-class BookCover(models.Model):
+class BookCover(OrderedModel):
     image = models.ImageField(
         upload_to=rename_image,
         height_field="image_height",
@@ -307,6 +308,7 @@ class BookCover(models.Model):
     thumbnail_width = models.PositiveSmallIntegerField(blank=True, null=True)
     thumbnail_height = models.PositiveSmallIntegerField(blank=True, null=True)
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="covers")
+    order_with_respect_to = "book"
     description = models.CharField(
         max_length=100,
         blank=True,
@@ -314,9 +316,6 @@ class BookCover(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ["-updated_at"]
 
     def __str__(self):
         return f"Cover of {self.book}"
