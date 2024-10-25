@@ -41,14 +41,23 @@
             </a>
             <div class="actions">
               {% if book.covers.all|length != 1 %}
-                <form action="{% url 'cover_order' book.pk cover.id 'up' %}" method="post">
-                  {% csrf_token %}
-                  <button class="svg cover-up" title="Move this cover up in the list">Up</button>
-                </form>
-                <form action="{% url 'cover_order' book.pk cover.id 'down' %}" method="post">
-                  {% csrf_token %}
-                  <button class="svg cover-down" title="Move this cover down in the list">Down</button>
-                </form>
+                {% if forloop.first %}
+                  <button class="svg cover-up" disabled>Up</button>
+                {% else %}
+                  <form action="{% url 'cover_order' book.pk cover.id 'up' %}" method="post">
+                    {% csrf_token %}
+                    <button class="svg cover-up" title="Move this cover up in the list">Up</button>
+                  </form>
+                {% endif %}
+
+                {% if forloop.last %}
+                  <button class="svg cover-down" disabled>Down</button>
+                {% else %}
+                  <form action="{% url 'cover_order' book.pk cover.id 'down' %}" method="post">
+                    {% csrf_token %}
+                    <button class="svg cover-down" title="Move this cover down in the list">Down</button>
+                  </form>
+                {% endif %}
               {% endif %}
 
               <div class="faux-form"><a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a></div>
