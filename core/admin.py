@@ -93,15 +93,22 @@ class UserAdmin(DjangoUserAdmin):
 class BookCoverInline(OrderedTabularInline):
     model = BookCover
     fields = (
-        "image",
+        "image_tag",
         "order",
         "move_up_down_links",
     )
     readonly_fields = (
+        "image_tag",
         "order",
         "move_up_down_links",
     )
     extra = 1
+    show_change_link = True
+
+    def image_tag(self, obj):
+        if obj.image:
+            return format_html(f'<img src="{obj.image.url}" width="150" />')
+        return "-"
 
 
 class BookAuthorInline(admin.TabularInline):
