@@ -40,14 +40,16 @@
                 title="{{ book }}">
             </a>
             <div class="actions">
-              <form action="{% url 'cover_order' book.pk cover.id 'up' %}" method="post">
-                {% csrf_token %}
-                <button class="svg cover-up" title="Move this cover up in the list">Up</button>
-              </form>
-              <form action="{% url 'cover_order' book.pk cover.id 'down' %}" method="post">
-                {% csrf_token %}
-                <button class="svg cover-down" title="Move this cover down in the list">Down</button>
-              </form>
+              {% if book.covers.all|length != 1 %}
+                <form action="{% url 'cover_order' book.pk cover.id 'up' %}" method="post">
+                  {% csrf_token %}
+                  <button class="svg cover-up" title="Move this cover up in the list">Up</button>
+                </form>
+                <form action="{% url 'cover_order' book.pk cover.id 'down' %}" method="post">
+                  {% csrf_token %}
+                  <button class="svg cover-down" title="Move this cover down in the list">Down</button>
+                </form>
+              {% endif %}
 
               <div class="faux-form"><a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a></div>
               <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
