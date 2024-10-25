@@ -737,7 +737,10 @@ def cover_new(request, pk):
             cover = form.save(commit=False)
             cover.book = book
             cover.save()
+            cover.top()  # You probably want what you just uploaded to be the main cover
+
             messages.success(request, "Cover added")
+
             return redirect(book.get_absolute_url())
 
     else:
@@ -778,6 +781,21 @@ def cover_update(request, pk, cover_pk):
             "action": "update",
         },
     )
+
+
+@require_POST
+def cover_order(request, pk, cover_pk, direction):
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    cover = BookCover.objects.get(pk=cover_pk, book=book)
+
+    if direction == "up":
+        cover.up()
+    else:
+        cover.down()
+
+    messages.success(request, "Cover order updated")
+
+    return redirect(book.get_absolute_url())
 
 
 @require_POST

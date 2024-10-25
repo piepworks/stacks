@@ -74,6 +74,11 @@ urlpatterns = [
         views.cover_delete,
         name="cover_delete",
     ),
+    path(
+        "book/<int:pk>/cover/<int:cover_pk>/order/<str:direction>",
+        views.cover_order,
+        name="cover_order",
+    ),
     # Book Readings
     # -------------
     path("book/<int:pk>/reading/new", views.reading_new, name="reading_new"),
