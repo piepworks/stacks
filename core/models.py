@@ -210,6 +210,7 @@ class Book(models.Model):
     )
     archived = models.BooleanField(default=False)
     olid = models.CharField(max_length=100, blank=True, verbose_name="Open Library ID")
+    pages = models.PositiveSmallIntegerField(blank=True, null=True)
     imported = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

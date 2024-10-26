@@ -88,6 +88,9 @@
         <tr>
           <th>{% if book.author.all.count > 1 %}Authors{% else %}Author{% endif %}</th>
           <th>{% if book.genre.all.count > 1 %}Genres{% else %}Genre{% endif %}</th>
+          {% if book.pages %}
+            <th>Pages</th>
+          {% endif %}
           <th>Published Year</th>
           {% if book.series.all %}
             <th>Series</th>
@@ -129,6 +132,9 @@
               {{ book.genre.first }}
             {% endif %}
           </td>
+          {% if book.pages %}
+            <td>{{ book.pages }}</td>
+          {% endif %}
           <td>{{ book.published_year }}</td>
           {% if book.series.all %}
             <td>

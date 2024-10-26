@@ -65,6 +65,7 @@ class BookForm(forms.ModelForm):
             "format",
             "location",
             "olid",
+            "pages",
         )
 
 

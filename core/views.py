@@ -404,6 +404,8 @@ def book_new(request):
 
             if (olid := request.POST.get("olid")) != "":
                 book.olid = olid
+            if (pages := request.POST.get("pages")) != "":
+                book.pages = pages
 
             try:
                 book.save()
@@ -431,6 +433,7 @@ def book_new(request):
             return redirect("book_detail", pk=book.pk)
     else:
         olid = request.GET.get("olid", "")
+        pages = request.GET.get("pages", "")
         cover = request.GET.get("cover", "")
         authors = request.GET.get("authors", "").split(",")
         author_records = []
@@ -463,6 +466,7 @@ def book_new(request):
         form.fields["title"].initial = title
         form.fields["published_year"].initial = year
         form.fields["olid"].initial = olid
+        form.fields["pages"].initial = pages
 
     return render(
         request,
@@ -470,6 +474,7 @@ def book_new(request):
         {
             "form": form,
             "olid": olid,
+            "pages": pages,
             "authors": authors,
             "cover": cover,
             "action": "new",
@@ -634,6 +639,7 @@ def open_library_search(request):
             + f"?title={results['title']}&authors={','.join(results['authors'])}"
             + f"&year={results['published']}&status={status}"
             + f"&olid={results['olid']}"
+            + f"&pages={results['pages']}"
         )
 
     # Now we know there are multiple results with covers

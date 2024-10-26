@@ -4,7 +4,7 @@ import httpx
 def search_open_library(query):
     querystring = (
         f"?limit=10&fields=cover_i,cover_edition_key,title,author_name,"  # noqa: E231
-        f"first_publish_year,key{query}"  # noqa: E231
+        f"number_of_pages_median,first_publish_year,key{query}"  # noqa: E231
     )
 
     try:
@@ -51,6 +51,11 @@ def search_open_library(query):
                             if "cover_edition_key" in doc
                             else None
                         ),
+                        "pages": (
+                            doc["number_of_pages_median"]
+                            if "number_of_pages_median" in doc
+                            else None
+                        ),
                         "cover": cover_image,
                     }
                 )
@@ -78,6 +83,11 @@ def search_open_library(query):
                 doc["cover_edition_key"]
                 if "cover_edition_key" in doc
                 else doc["key"].replace("/works/", "") if "key" in doc else None
+            ),
+            "pages": (
+                doc["number_of_pages_median"]
+                if "number_of_pages_median" in doc
+                else None
             ),
         }
 
