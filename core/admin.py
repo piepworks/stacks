@@ -1,25 +1,28 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
-from django.utils.translation import gettext_lazy as _
-from django.utils.html import format_html
-from django.urls import reverse
 from django.contrib.auth.models import Group
 from django.db.models import Count
-from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
+from import_export.admin import ImportExportModelAdmin
+from ordered_model.admin import OrderedInlineModelAdminMixin, OrderedTabularInline
+
 from .models import (
-    User,
-    Book,
     Author,
+    Book,
     BookCover,
-    BookReading,
-    BookNote,
-    BookType,
-    BookGenre,
     BookFormat,
+    BookGenre,
     BookLocation,
+    BookNote,
+    BookReading,
+    BookType,
     Changelog,
     Series,
+    User,
 )
+from .resources import BookResource
 
 
 @admin.register(User)
@@ -118,7 +121,8 @@ class BookAuthorInline(admin.TabularInline):
 
 
 @admin.register(Book)
-class BookAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
+class BookAdmin(OrderedInlineModelAdminMixin, ImportExportModelAdmin):
+    resource_classes = [BookResource]
     list_display = ("title", "authors_list", "formats_list", "imported")
     list_filter = ("user", "archived", "status")
     inlines = [BookAuthorInline, BookCoverInline]

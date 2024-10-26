@@ -64,6 +64,7 @@ INSTALLED_APPS += [
     "django_htmx",
     "huey.contrib.djhuey",
     "ordered_model",
+    "import_export",
 ]
 
 # Our apps
