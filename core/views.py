@@ -162,6 +162,16 @@ def status(request, status):
             latest_reading_end_date=Subquery(latest_bookreading.values("end_date")[:1])
         ).order_by("-latest_reading_end_date")
 
+    if status == "reading":
+        latest_bookreading = BookReading.objects.filter(
+            Q(book=OuterRef("pk"))
+        ).order_by("-start_date")
+        books = books.annotate(
+            latest_reading_start_date=Subquery(
+                latest_bookreading.values("start_date")[:1]
+            )
+        ).order_by("latest_reading_start_date")
+
     paginator = Paginator(books, pagination)
     page_number = request.GET.get("page", 1)
     page_obj = paginator.get_page(page_number)
