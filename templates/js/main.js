@@ -50,7 +50,7 @@ window.onpageshow = (e) => {
   if (e.persisted) {
     let button = document.querySelector('#openLibraryForm button');
     if (button) {
-      button.removeAttribute('aria-busy');
+      button.classList.toggle('loading');
     }
   }
 };
