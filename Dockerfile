@@ -32,11 +32,12 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip awscliv2.zip && \
     ./aws/install
 
-COPY requirements/requirements.txt /tmp/requirements.txt
+COPY pyproject.toml /tmp/pyproject.toml
 
 RUN set -ex && \
     pip install --upgrade pip && \
-    pip install -r /tmp/requirements.txt && \
+    pip install uv && \
+    uv pip install -r /tmp/pyproject.toml --system && \
     rm -rf /root/.cache/
 
 COPY . /code/
