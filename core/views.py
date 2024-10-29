@@ -669,7 +669,9 @@ def open_library_search(request):
                 ),
             ),
         )
-        return redirect(reverse("book_new") + f"?status={status}")
+        return redirect(
+            reverse("book_new") + f"?status={status}&title={title}&authors={author}"
+        )
 
     return render(
         request,
