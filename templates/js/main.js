@@ -1,4 +1,5 @@
 document.body.removeEventListener('keyup', window.bsKeyupSlash);
+document.body.removeEventListener('keyup', window.bsKeyupNew);
 window.bsKeyupSlash = (e) => {
   if (
     e.code === 'Slash' &&
@@ -10,7 +11,19 @@ window.bsKeyupSlash = (e) => {
     searchForm.focus();
   }
 };
+window.bsKeyupNew = (e) => {
+  if (
+    e.code === 'KeyN' &&
+    document.activeElement.tagName !== 'INPUT' &&
+    document.activeElement.tagName !== 'SELECT' &&
+    document.activeElement.tagName !== 'TEXTAREA' &&
+    document.getElementById('addBook')
+  ) {
+    document.getElementById('addBook').showModal();
+  }
+};
 document.body.addEventListener('keyup', window.bsKeyupSlash);
+document.body.addEventListener('keyup', window.bsKeyupNew);
 
 // Show a badge on the changelog nav if there's something new
 const changelogId = localStorage.getItem('changelogId');
