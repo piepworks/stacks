@@ -1,7 +1,17 @@
 <form method="get"
   action="{% url 'open_library_search' %}"
   id="openLibraryForm"
-  x-data="{ loading: false }"
+  x-data="{
+    loading: false,
+    query: '{{ query }}'
+  }"
+  x-init="
+    $nextTick(() => {
+      if (query) {
+        document.getElementById('id_title').value = query;
+      }
+    })
+  "
   @submit="loading = true">
   <fieldset>
     {% for field in form %}

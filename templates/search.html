@@ -57,7 +57,7 @@
       },
     }">
       <p>No books found.</p>
-      <p><button @click="$refs.addBook.showModal()">Add it</button></p>
+      <p><a role="button" href="{% url 'book_new' %}?title={{ query }}" @click.prevent="$refs.addBook.showModal()">Add it</a></p>
     </div>
   {% endif %}
 {% endblock content %}
