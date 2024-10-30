@@ -219,6 +219,8 @@ class Book(models.Model):
         unique_together = (("user", "title"),)
 
     def __str__(self):
+        if self.archived:
+            return f"{self.title} (Archived)"
         return self.title
 
     def save(self, *args, **kwargs):

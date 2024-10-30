@@ -24,7 +24,7 @@
               <a href="{% url 'book_detail' book.id %}">
                 {% include "components/logbook-list-item.html" %}
                 <div class="change-details">
-                  <div class="title">{{ book.title }}</div>
+                  <div class="title">{{ book }}</div>
                   <div class="change">Added <span class="subdued">→</span> {{ log.original_status|status_display }}</div>
                 </div>
               </a>
