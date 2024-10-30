@@ -267,6 +267,18 @@ wheels = [
 ]
 
 [[package]]
+name = "django-admin-dracula"
+version = "0.0.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "django" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/fe/e9/3ddca0f4da67f220e1d3a6d58ec14255f151b716010aca80c193c448c3c0/django_admin_dracula-0.0.2.tar.gz", hash = "sha256:34b65dca17e60ec96880e1c6aee503a633aa75c7b76706a2e1b5639436429e7f", size = 1366415 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/fa/53/db89eaeb45feb42c125267333957bbdf765e551b1456f0608f32ef5f8f48/django_admin_dracula-0.0.2-py3-none-any.whl", hash = "sha256:10067296066ec513145fddacc2b68813d6412244d94a506ba2da6044334231f0", size = 32215 },
+]
+
+[[package]]
 name = "django-bleach"
 version = "3.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1135,6 +1147,7 @@ dependencies = [
     { name = "coverage" },
     { name = "dj-database-url" },
     { name = "django" },
+    { name = "django-admin-dracula" },
     { name = "django-bleach" },
     { name = "django-browser-reload" },
     { name = "django-debug-toolbar" },
@@ -1174,6 +1187,7 @@ requires-dist = [
     { name = "coverage", specifier = ">=7.6.4" },
     { name = "dj-database-url", specifier = ">=2.3.0" },
     { name = "django", specifier = ">=5.1.2" },
+    { name = "django-admin-dracula", specifier = ">=0.0.2" },
     { name = "django-bleach", specifier = ">=3.1.0" },
     { name = "django-browser-reload", specifier = ">=1.16.0" },
     { name = "django-debug-toolbar", specifier = ">=4.4.6" },

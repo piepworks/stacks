@@ -9,6 +9,7 @@ dependencies = [
     "boto3>=1.35.49",
     "coverage>=7.6.4",
     "dj-database-url>=2.3.0",
+    "django-admin-dracula>=0.0.2",
     "django-bleach>=3.1.0",
     "django-browser-reload>=1.16.0",
     "django-debug-toolbar>=4.4.6",
