@@ -582,6 +582,16 @@ def book_archive(request, pk):
     return redirect("status", status=status)
 
 
+@require_POST
+def book_unarchive(request, pk):
+    book = get_object_or_404(Book, pk=pk, user=request.user)
+    status = book.status
+    book.archived = False
+    book.save()
+    messages.success(request, f"{book} un-archived")
+    return redirect("status", status=status)
+
+
 def search(request):
     query = request.GET.get("q").strip()
     forms = []

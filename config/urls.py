@@ -42,6 +42,7 @@ urlpatterns = [
     path("book/<int:pk>/update", views.book_update, name="book_update"),  # U
     path("book/<int:pk>/delete", views.book_delete, name="book_delete"),  # D
     path("book/<int:pk>/archive", views.book_archive, name="book_archive"),
+    path("book/<int:pk>/unarchive", views.book_unarchive, name="book_unarchive"),
     # Book Series
     # -----------
     path("series", views.series_list, name="series_list"),

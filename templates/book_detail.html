@@ -21,7 +21,11 @@
           <div class="faux-form"><a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a></div>
         {% endif %}
         <div class="faux-form"><a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a></div>
-        <div class="faux-form"><button class="svg archive" formaction="{% url 'book_archive' book.pk %}" onclick="return confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to talk to Trey.')">Archive</button></div>
+        {% if book.archived %}
+          <div class="faux-form"><button class="svg unarchive" formaction="{% url 'book_unarchive' book.pk %}" onclick="return confirm('Are you sure you want to un-archive “{{ book.title|escapejs }}?”')">Un-archive</button></div>
+        {% else %}
+          <div class="faux-form"><button class="svg archive" formaction="{% url 'book_archive' book.pk %}" onclick="return confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to talk to Trey.')">Archive</button></div>
+        {% endif %}
         <div class="faux-form"><button class="svg delete" onclick="return confirm('Are you sure you want to delete this book and all its associated information?')">Delete</button></div>
       </div>
     </form>
