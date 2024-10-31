@@ -45,9 +45,9 @@ repos:
         entry: npx stylelint "static_src/css/*.css"
         types: [css]
         pass_filenames: false
-      # - id: playwright
-      #   name: Run Playwright
-      #   language: system
-      #   entry: npx playwright test
-      #   files: \.(css|html|js)$
-      #   pass_filenames: false
+      - id: playwright
+        name: Run Playwright
+        language: system
+        entry: npx playwright test
+        files: \.(css|html|js)$
+        pass_filenames: false
