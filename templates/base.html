@@ -108,6 +108,11 @@
       {% if messages and 'status' not in request.path %}
         {% include "components/messages.html" %}
       {% endif %}
+      <div class="offline messages">
+        <ul>
+          <li class="error">You’re offline! Some things are not going to work, but you should still be able to browse your books.</li>
+        </ul>
+      </div>
     </header>
     <main class="container">
       {% block content %}

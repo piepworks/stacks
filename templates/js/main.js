@@ -67,3 +67,18 @@ window.onpageshow = (e) => {
     }
   }
 };
+
+// Offline notification
+window.addEventListener('load', () => {
+  function handleNetworkChange(event) {
+    if (navigator.onLine) {
+      document.body.classList.remove('offline');
+      console.log('You’re ONline!');
+    } else {
+      document.body.classList.add('offline');
+      console.log('You’re OFFline!');
+    }
+  }
+  window.addEventListener('online', handleNetworkChange);
+  window.addEventListener('offline', handleNetworkChange);
+});

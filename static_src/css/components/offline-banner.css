@@ -1,0 +1,9 @@
+.messages.offline {
+  display: none;
+}
+
+body.offline {
+  .messages.offline {
+    display: block;
+  }
+}
