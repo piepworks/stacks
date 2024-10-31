@@ -1,9 +1,9 @@
 /* {% load static %} */
 /* global importScripts, workbox */
-importScripts(`{% static 'js/vendor/workbox-v7.1.0/workbox-sw.js' %}`);
+importScripts(`{% static 'js/vendor/workbox-v7.3.0/workbox-sw.js' %}`);
 
 workbox.setConfig({
-  modulePathPrefix: '{% get_static_prefix %}js/vendor/workbox-v7.1.0',
+  modulePathPrefix: '{% get_static_prefix %}js/vendor/workbox-v7.3.0',
 });
 
 workbox.routing.registerRoute(

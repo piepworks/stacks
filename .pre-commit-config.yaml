@@ -10,6 +10,7 @@ repos:
         exclude: ^static/js/vendor/|^static/css/vendor/|^static_src/css/vendor/
       - id: trailing-whitespace
         args: [--markdown-linebreak-ext=md]
+        exclude: ^static/js/vendor/|^static/css/vendor/|^static_src/css/vendor/
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
