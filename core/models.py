@@ -297,14 +297,12 @@ class BookCover(OrderedModel):
         height_field="image_height",
         width_field="image_width",
         blank=True,
-        null=True,
     )
     image_width = models.PositiveSmallIntegerField(blank=True, null=True)
     image_height = models.PositiveSmallIntegerField(blank=True, null=True)
     thumbnail = models.ImageField(
         upload_to=rename_image,
         blank=True,
-        null=True,
         height_field="thumbnail_height",
         width_field="thumbnail_width",
     )
