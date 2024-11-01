@@ -170,7 +170,7 @@ class BookLocation(models.Model):
 class Book(models.Model):
     title = models.CharField(max_length=100)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
-    author = models.ManyToManyField(Author)
+    author = models.ManyToManyField(Author, blank=True)
     published_year = models.IntegerField(blank=True, null=True)
     status = models.CharField(
         max_length=20,
