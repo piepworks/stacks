@@ -447,7 +447,10 @@ def book_new(request):
         cover = request.GET.get("cover", "")
         authors = request.GET.get("authors", "").split(",")
         author_records = []
-        title = request.GET.get("title", "")
+        if request.GET.get("everything"):
+            title = request.GET.get("everything", "")
+        else:
+            title = request.GET.get("title", "")
         year = request.GET.get("year", "")
         # Set `type` to `textual` by default for new entries
         form = BookForm(user=request.user, initial={"type": 1})
@@ -630,58 +633,78 @@ def search(request):
 
 
 def open_library_search(request):
-    status = request.GET.get("status")
+    status = request.GET.get("status", "wishlist")
     form = OpenLibrarySearchForm(request.GET or None, autofocus=False)
+    query = ""
 
     if form.is_valid():
+        everything = form.cleaned_data.get("everything")
         title = form.cleaned_data.get("title")
         author = form.cleaned_data.get("author")
     else:
         messages.error(request, "Search for something")
-        # Get back to where you once belonged
         return redirect(request.META.get("HTTP_REFERER", "status"))
 
-    query = f"&title={title}"
-    if author:
-        query += f"&author={author}"
+    if everything:
+        query = f"&q={everything}"
+    elif title:
+        query = f"&title={title}"
+        if author:
+            query += f"&author={author}"
+    else:
+        # Nothing searched for, just go to the new book page.
+        messages.error(request, "Search for something")
+        if request.method == "POST":
+            return redirect(reverse("open_library_search") + f"?status={status}")
 
-    results = search_open_library(query)
+    if query != "":
+        results = search_open_library(query)
 
-    if "error" in results:
-        messages.error(request, results["error"])
-        return redirect(reverse("book_new") + f"?status={status}{query}")
+        if "error" in results:
+            messages.error(request, results["error"])
+            return redirect(reverse("book_new") + f"?status={status}{query}")
 
-    # If results is a dict, it means there was only one result
-    if isinstance(results, dict):
-        messages.info(request, "Open Library didn’t have a cover for this book")
-        return redirect(
-            reverse("book_new")
-            + f"?title={results['title']}&authors={','.join(results['authors'])}"
-            + f"&year={results['published']}&status={status}"
-            + f"&olid={results['olid']}"
-            + f"&pages={results['pages']}"
-        )
+        # If results is a dict, it means there was only one result
+        if isinstance(results, dict):
+            messages.info(request, "Open Library didn’t have a cover for this book")
+            return redirect(
+                reverse("book_new")
+                + f"?title={results['title']}&authors={','.join(results['authors'])}"
+                + f"&year={results['published']}&status={status}"
+                + f"&olid={results['olid']}"
+                + f"&pages={results['pages']}"
+            )
 
-    # Now we know there are multiple results with covers
+        # Now we know there are multiple results with covers
 
-    # Put all the authors in a comma separated string
-    for result in results:
-        result["authors_string"] = ",".join(result.get("authors", []))
+        # Put all the authors in a comma separated string
+        for result in results:
+            result["authors_string"] = ",".join(result.get("authors", []))
 
-    if not results:
-        messages.error(
-            request,
-            format_html(
-                "{} {}",
-                "No results from Open Library.",
-                mark_safe(
-                    '<a target="_blank" href="https://openlibrary.org/books/add">Please consider adding it!</a>'
+        if not results:
+            messages.error(
+                request,
+                format_html(
+                    "{} {}",
+                    "No results from Open Library.",
+                    mark_safe(
+                        '<a target="_blank" href="https://openlibrary.org/books/add">Please consider adding it!</a>'
+                    ),
                 ),
-            ),
-        )
-        return redirect(
-            reverse("book_new") + f"?status={status}&title={title}&authors={author}"
-        )
+            )
+
+            query_string = ""
+
+            if everything:
+                query_string = f"&everything={everything}"
+            elif title:
+                query_string = f"&title={title}"
+                if author:
+                    query_string += f"&author={author}"
+
+            return redirect(reverse("book_new") + f"?status={status}{query_string}")
+    else:
+        results = None
 
     return render(
         request,

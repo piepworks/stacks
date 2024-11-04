@@ -20,9 +20,9 @@ def search_open_library(query):
             )
         }
 
+    found = []
     if response.content and "application/json" in response.headers["Content-Type"]:
         data = response.json()
-        found = []
     else:
         print("Empty response received")
         data = None

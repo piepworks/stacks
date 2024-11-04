@@ -29,8 +29,9 @@ class ImportBooksForm(forms.Form):
 
 
 class OpenLibrarySearchForm(forms.Form):
-    title = forms.CharField(label="Title")
-    author = forms.CharField(label="Author (optional)", required=False)
+    everything = forms.CharField(label="Everything", required=False)
+    title = forms.CharField(label="Title", required=False)
+    author = forms.CharField(label="Author", required=False)
 
     def __init__(self, *args, autofocus=True, **kwargs):
         super().__init__(*args, **kwargs)
