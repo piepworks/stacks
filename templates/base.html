@@ -13,6 +13,7 @@
     <meta name="theme-color" media="(prefers-color-scheme: dark)" content="rgb(19, 23, 31)">
     {% url 'index' as index_url %}
     {% url 'book_new' as book_new_url %}
+    {% url 'open_library_search' as ol_url %}
     <title>{% block title %}{% endblock title %}{% if request.path != index_url %} / {% endif %}Book Stacks</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script defer src="{% static 'js/vendor/htmx.min.js' %}"></script>
@@ -118,7 +119,7 @@
       {% block content %}
       {% endblock content %}
 
-      {% if request.path != book_new_url and user.is_authenticated %}
+      {% if request.path != book_new_url and request.path != ol_url and user.is_authenticated %}
         <div class="persistent-add">
           <a class="svg add-item-solid" href="{% url 'book_new' %}" @click.prevent="$refs.addBook.showModal()">Add a book</a>
           {% include "components/add-book-modal.html" %}

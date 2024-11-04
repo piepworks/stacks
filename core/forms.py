@@ -29,7 +29,7 @@ class ImportBooksForm(forms.Form):
 
 
 class OpenLibrarySearchForm(forms.Form):
-    everything = forms.CharField(label="Everything", required=False)
+    everything = forms.CharField(label="All fields", required=False)
     title = forms.CharField(label="Title", required=False)
     author = forms.CharField(label="Author", required=False)
 

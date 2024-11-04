@@ -3,7 +3,21 @@
   id="openLibraryForm"
   x-data="{
     loading: false,
-    query: '{{ query }}'
+    query: '{{ query }}',
+    everything: false,
+    toggleEverything () {
+      this.everything = ! this.everything;
+
+      if (this.everything) {
+        this.$nextTick(() => {
+          document.getElementById('id_everything').focus();
+        });
+      } else {
+        this.$nextTick(() => {
+          document.getElementById('id_title').focus();
+        });
+      }
+    },
   }"
   x-init="
     $nextTick(() => {
@@ -15,8 +29,17 @@
   @submit="loading = true">
   <fieldset>
     {% for field in form %}
-      {{ field.as_field_group }}
+      <span
+        {% if field.html_name == 'everything' %}x-show="everything"{% endif %}
+        {% if field.html_name != 'everything' %}x-show="!everything"{% endif %}
+      >
+        {{ field.as_field_group }}
+      </span>
     {% endfor %}
+
+    <button x-cloak class="link toggle" @click="toggleEverything" type="button">
+      …or search <span x-show="!everything">all fields</span> <span x-show="everything">Title and Author</span>
+    </button>
 
     <label for="id_status">Status</label>
     <select name="status" id="id_status">

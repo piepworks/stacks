@@ -13,6 +13,11 @@ fieldset > .radio {
   margin-top: 1rem;
 }
 
+button.toggle {
+  display: block;
+  margin-bottom: var(--pico-spacing);
+}
+
 .search-form {
   display: flex;
   align-items: center;
