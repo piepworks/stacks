@@ -667,9 +667,18 @@ def open_library_search(request):
         # If results is a dict, it means there was only one result
         if isinstance(results, dict):
             messages.info(request, "Open Library didn’t have a cover for this book")
+            query_string = ""
+
+            if everything:
+                query_string = f"?everything={everything}"
+            elif title:
+                query_string = f"?title={title}"
+                if author:
+                    query_string += f"&authors={','.join(results['authors'])}"
+
             return redirect(
                 reverse("book_new")
-                + f"?title={results['title']}&authors={','.join(results['authors'])}"
+                + query_string
                 + f"&year={results['published']}&status={status}"
                 + f"&olid={results['olid']}"
                 + f"&pages={results['pages']}"
