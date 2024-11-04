@@ -61,7 +61,7 @@ window.bsResetFilters = (e) => {
 // On browser forward or back
 window.onpageshow = (e) => {
   if (e.persisted) {
-    let button = document.querySelector('#openLibraryForm button');
+    let button = document.querySelector('#openLibraryForm button[type=submit');
     if (button) {
       button.classList.toggle('loading');
     }
