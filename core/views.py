@@ -196,10 +196,7 @@ def status(request, status):
         )
 
     # Get the books and their forms for the page
-    forms = [
-        (book, BookStatusForm(prefix=f"b_{book.pk}", instance=book))
-        for book in page_obj
-    ]
+    forms = [(book, BookStatusForm(auto_id=False, instance=book)) for book in page_obj]
 
     status_counts = {
         status["status"]: status["count"]
