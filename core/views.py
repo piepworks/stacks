@@ -517,10 +517,12 @@ def book_detail(request, pk):
         "book_detail.html",
         {
             "book": book,
+            "statuses": Book._meta.get_field("status").choices,
             "status": {
                 "slug": book.status,
                 "name": book.get_status_display(),
             },
+            "form": BookStatusForm(auto_id=False, instance=book),
             "reading_form": BookReadingForm(instance=book),
             "note_form": BookNoteForm(instance=book),
             "readings": readings,
@@ -546,10 +548,16 @@ def book_update(request, pk):
                 )
                 return redirect("status", status=old_status)
 
-            messages.success(
-                request,
-                f"{book} updated",
-            )
+            if request.POST.get("status_change_from_detail"):
+                messages.success(
+                    request,
+                    f"{book} moved to {book.get_status_display()}",
+                )
+            else:
+                messages.success(
+                    request,
+                    f"{book} updated",
+                )
 
             return redirect(book.get_absolute_url())
     else:

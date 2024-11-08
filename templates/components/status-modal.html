@@ -1,3 +1,4 @@
+{% url 'book_detail' book.pk as book_detail_url %}
 <dialog @click="closeFromEvent(event)" x-ref="statusModal_{{ book.id }}">
   <article>
     <header>
@@ -8,7 +9,14 @@
     </header>
     <form method="post" action="{% url 'book_update' book.pk %}">
       {% csrf_token %}
-      <input type="hidden" name="status_change" value="true">
+      {% if request.path != book_detail_url %}
+        <input type="hidden" name="status_change" value="true">
+      {% else %}
+        {% comment %}
+          From book detail page, redirect back to the same page rather than a status page.
+        {% endcomment %}
+        <input type="hidden" name="status_change_from_detail" value="true">
+      {% endif %}
       <fieldset>
         <div class="grid">
           {% for status in statuses %}
@@ -26,9 +34,11 @@
       <button type="submit">Save</button>
     </form>
 
-    <form class="delete" action="{% url 'book_archive' book.pk %}" method="post" @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
-      {% csrf_token %}
-      <button class="svg archive" title="Archive this book">Archive</button>
-    </form>
+    {% if request.path != book_detail_url %}
+      <form class="delete" action="{% url 'book_archive' book.pk %}" method="post" @submit.prevent="if (confirm('Are you sure you want to archive “{{ book.title|escapejs }}?” If you want it back, you’ll need to go to the admin.')) { $el.submit() }">
+        {% csrf_token %}
+        <button class="svg archive" title="Archive this book">Archive</button>
+      </form>
+    {% endif %}
   </article>
 </dialog>

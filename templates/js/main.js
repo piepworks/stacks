@@ -82,3 +82,8 @@ window.addEventListener('load', () => {
   window.addEventListener('online', handleNetworkChange);
   window.addEventListener('offline', handleNetworkChange);
 });
+
+// Add `alpine` class to the <html> tag
+document.addEventListener('alpine:init', () => {
+  document.documentElement.classList.add('alpine');
+});

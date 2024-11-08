@@ -15,11 +15,3 @@
 {% block content %}
   {% include "components/book-list.html" %}
 {% endblock content %}
-
-{% block page_js %}
-<script>
-  document.addEventListener('alpine:init', () => {
-    document.documentElement.classList.add('alpine');
-  });
-</script>
-{% endblock page_js %}
