@@ -5,19 +5,19 @@
     loading: false,
     query: '{{ query }}',
     everything: {% if form.everything.value == None %}false{% else %}true{% endif %},
-    toggleEverything () {
-      this.everything = ! this.everything;
-
-      if (this.everything) {
-        this.$nextTick(() => {
-          document.getElementById('id_everything').focus();
-        });
-      } else {
-        this.$nextTick(() => {
-          document.getElementById('id_title').focus();
-        });
-      }
-    },
+    fieldEverything: document.getElementById('id_everything'),
+    fieldTitle: document.getElementById('id_title'),
+    toggleFields() {
+      this.everything = !this.everything;
+      this.$nextTick(() => {
+        const inputToFocus = (this.everything) ? this.fieldEverything : this.fieldTitle;
+        if (inputToFocus) {
+          setTimeout(() => {
+            inputToFocus.focus();
+          }, 25);
+        }
+      });
+    }
   }"
   x-init="
     $nextTick(() => {
@@ -37,7 +37,7 @@
       </span>
     {% endfor %}
 
-    <button x-cloak class="link toggle" @click="toggleEverything" type="button">
+    <button x-cloak class="link toggle" type="button" @click="toggleFields">
       …or search <span x-show="!everything">all fields</span> <span x-show="everything">Title and Author</span>
     </button>
 
