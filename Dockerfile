@@ -25,7 +25,7 @@ RUN wget https://github.com/benbjohnson/litestream/releases/download/v0.3.13/lit
 
 # Install cron and SQLite
 RUN apt-get install -y cron && \
-    apt-get install sqlite3
+    apt-get install -y sqlite3
 
 # Install AWS CLI
 RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
