@@ -1161,6 +1161,7 @@ dependencies = [
     { name = "pytz" },
     { name = "requests" },
     { name = "sentry-sdk" },
+    { name = "titlecase" },
     { name = "whitenoise" },
 ]
 
@@ -1201,6 +1202,7 @@ requires-dist = [
     { name = "pytz", specifier = ">=2024.2" },
     { name = "requests", specifier = ">=2.32.3" },
     { name = "sentry-sdk", specifier = ">=2.17.0" },
+    { name = "titlecase", specifier = ">=2.4.1" },
     { name = "whitenoise", specifier = ">=6.7.0" },
 ]
 
@@ -1215,6 +1217,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/1e/5a/576828164b5486f31
 wheels = [
     { url = "https://files.pythonhosted.org/packages/53/7b/5dba39bf0572f1f28e2844f08f74a73482a381de1d1feac3bbc6b808051e/tinycss2-1.1.1-py3-none-any.whl", hash = "sha256:fe794ceaadfe3cf3e686b22155d0da5780dd0e273471a51846d0a02bc204fec8", size = 21883 },
 ]
+
+[[package]]
+name = "titlecase"
+version = "2.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/63/17/04d2d3e30e2bc5a3eefa1060b08e3fb628510440f938eaecabbe08976a26/titlecase-2.4.1.tar.gz", hash = "sha256:7d83a277ccbbda11a2944e78a63e5ccaf3d32f828c594312e4862f9a07f635f5", size = 14434 }
 
 [[package]]
 name = "tqdm"

@@ -38,6 +38,7 @@ from django_registration.backends.activation.views import (
     RegistrationView as BaseRegistrationView,
 )
 from honeypot.decorators import check_honeypot
+from titlecase import titlecase
 from .forms import (
     ImportBooksForm,
     BookForm,
@@ -680,7 +681,7 @@ def open_library_search(request):
             if everything:
                 query_string = f"?everything={everything}"
             elif title:
-                query_string = f"?title={title}"
+                query_string = f"?title={titlecase(title)}"
                 if author:
                     query_string += f"&authors={','.join(results['authors'])}"
 

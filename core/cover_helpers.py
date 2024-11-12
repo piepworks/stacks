@@ -1,4 +1,5 @@
 import httpx
+from titlecase import titlecase
 
 
 def search_open_library(query):
@@ -39,7 +40,7 @@ def search_open_library(query):
             if cover_image:
                 found.append(
                     {
-                        "title": doc["title"],
+                        "title": titlecase(doc["title"]),
                         "authors": doc.get("author_name", []),
                         "published": (
                             doc["first_publish_year"]
@@ -74,7 +75,7 @@ def search_open_library(query):
         doc = data["docs"][0]
 
         found = {
-            "title": doc["title"],
+            "title": titlecase(doc["title"]),
             "authors": doc.get("author_name", []),
             "published": (
                 doc["first_publish_year"] if "first_publish_year" in doc else None
