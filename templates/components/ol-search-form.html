@@ -4,7 +4,7 @@
   x-data="{
     loading: false,
     query: '{{ query }}',
-    everything: {% if form.everything.value == None %}false{% else %}true{% endif %},
+    everything: {% if form.everything.value == None or form.everything.value == '' %}false{% else %}true{% endif %},
     fieldEverything: document.getElementById('id_everything'),
     fieldTitle: document.getElementById('id_title'),
     toggleFields() {
