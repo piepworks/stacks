@@ -10,7 +10,10 @@
   {% if entries %}
     {% for entry in entries %}
       <article>
-        <header>{{ entry.date }}</header>
+        <header title="{{ entry.date }}" x-data="{ timestamp: false }" @click="timestamp = !timestamp">
+          <span x-show="timestamp">{{ entry.date|timesince }} <span class="subdued">ago</span></span>
+          <span x-show="!timestamp" x-cloak>{{ entry.date|date:"l, F j, Y" }}</span>
+        </header>
         <div>{{ entry.summary }}</div>
         {% if entry.details_html %}
           <hr>
