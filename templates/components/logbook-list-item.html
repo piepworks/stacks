@@ -3,7 +3,7 @@
     {% if cover.thumbnail %}
       <img src="{{ cover.thumbnail.url }}" alt="{{ cover }}" height="{{ cover.thumbnail_height }}" width="{{ cover.thumbnail_width }}">
     {% else %}
-      {% include "components/no-cover.html" with class="incomplete" %}
+      {% include "components/no-cover.html" %}
     {% endif %}
   </div>
 {% endwith %}
