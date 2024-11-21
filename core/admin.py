@@ -4,7 +4,6 @@ from django.utils.translation import gettext_lazy as _
 from django.utils.html import format_html
 from django.urls import reverse
 from django.contrib.auth.models import Group
-from django.db.models import Count
 from ordered_model.admin import OrderedTabularInline, OrderedInlineModelAdminMixin
 from .models import (
     User,
@@ -54,40 +53,12 @@ class UserAdmin(DjangoUserAdmin):
     )
     list_display = (
         "email",
-        "book_count",
-        "author_count",
-        "series_count",
         "is_active",
         "last_login",
     )
     list_filter = ("is_active",)
     search_fields = ("email",)
     ordering = ("-last_login",)
-
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        qs = qs.annotate(
-            _book_count=Count("books", distinct=True),
-            _author_count=Count("authors", distinct=True),
-            _series_count=Count("series", distinct=True),
-        )
-        return qs
-
-    def book_count(self, obj):
-        return obj._book_count
-
-    def author_count(self, obj):
-        return obj._author_count
-
-    def series_count(self, obj):
-        return obj._series_count
-
-    book_count.admin_order_field = "_book_count"
-    author_count.admin_order_field = "_author_count"
-    series_count.admin_order_field = "_series_count"
-    book_count.short_description = "Books"
-    author_count.short_description = "Authors"
-    series_count.short_description = "Series"
 
 
 class BookCoverInline(OrderedTabularInline):
