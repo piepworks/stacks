@@ -540,7 +540,11 @@ def book_update(request, pk):
     if request.method == "POST":
         form = BookForm(request.POST, instance=book, user=request.user)
         if form.is_valid():
-            form.save()
+            try:
+                form.save()
+            except IntegrityError:
+                messages.error(request, "You already have a book with that title")
+                return redirect(book_update, book.pk)
 
             if request.POST.get("status_change"):
                 messages.success(

@@ -13,6 +13,8 @@ from django.urls import reverse
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from django.conf import settings
+from django.db.models import UniqueConstraint
+from django.db.models.functions import Lower
 from core.image_helpers import rename_image, resize_image
 from ordered_model.models import OrderedModel
 
@@ -216,7 +218,13 @@ class Book(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        unique_together = (("user", "title"),)
+        constraints = [
+            UniqueConstraint(
+                "user",
+                Lower("title"),
+                name="user_title_unique",
+            )
+        ]
 
     def __str__(self):
         if self.archived:
