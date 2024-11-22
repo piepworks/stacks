@@ -20,14 +20,12 @@
       }
     },
   }">
-    <h1>
-      {{ book }}
-    </h1>
+    <h1>{{ book }}</h1>
     <form action="{% url 'book_delete' book.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">
         {% if user.is_superuser %}
-          <div class="faux-form"><a class="svg search" href="https://books.treypiepmeier.com?q={{ book }} {{ book.author.first }}" title="Search for this book elsewhere">Search</a></div>
+          <div class="faux-form"><a class="svg search" href="https://books.treypiepmeier.com?q={{ book }}{% if book.author.first %} {{ book.author.first }}{% endif %}" title="Search for this book elsewhere">Search</a></div>
         {% endif %}
         <div class="faux-form"><a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a></div>
         <div class="faux-form" x-cloak>
