@@ -363,7 +363,7 @@ class BookReading(models.Model):
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
     finished = models.BooleanField(default=False)
-    rating = models.IntegerField(
+    rating = models.PositiveSmallIntegerField(
         null=True, blank=True, validators=[MinValueValidator(1), MaxValueValidator(5)]
     )
     review = models.TextField(blank=True)
