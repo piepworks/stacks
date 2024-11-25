@@ -546,6 +546,16 @@ def book_update(request, pk):
                 messages.error(request, "You already have a book with that title")
                 return redirect(book_update, book.pk)
 
+            if book.status != old_status and book.status == "finished":
+                messages.success(
+                    request, f"Congrats on finishing {book}! Review it now?"
+                )
+                reading = book.readings.first()
+                if not reading:
+                    book.readings.add()
+                    reading = book.readings.first()
+                return redirect("reading_update", pk=book.pk, reading_pk=reading.pk)
+
             if request.POST.get("status_change"):
                 messages.success(
                     request,

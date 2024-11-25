@@ -107,7 +107,7 @@
               </button>
             </div>
             {% if book.status|get_next_status != None %}
-              <form action="{% url 'book_update' book.pk %}" method="post" hx-post="{% url 'book_update' book.pk %}">
+              <form action="{% url 'book_update' book.pk %}" method="post"{% if book.status|get_next_status != 'finished' %} hx-post="{% url 'book_update' book.pk %}"{% endif %}>
                 {% csrf_token %}
                 <input type="hidden" name="status" value="{{ book.status|get_next_status }}">
                 <input type="hidden" name="status_change" value="true">
