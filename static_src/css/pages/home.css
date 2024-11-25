@@ -6,12 +6,7 @@ body.home {
       display: inline-block;
       margin-top: 2rem;
       padding: 3rem;
-      opacity: 0.75;
-      background: rgb(0 0 0 / 20%);
-
-      @media (prefers-color-scheme: dark) {
-        background: rgb(255 255 255 / 20%);
-      }
+      background-color: rgb(255, 191, 0); /* amber-200 */
     }
   }
 
