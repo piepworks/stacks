@@ -90,7 +90,9 @@ class BookReadingForm(forms.ModelForm):
     end_date = forms.DateField(
         widget=forms.DateInput(attrs={"type": "date"}), required=False
     )
-    rating = forms.IntegerField(min_value=1, max_value=5, required=False)
+    rating = forms.IntegerField(
+        min_value=1, max_value=5, required=False, help_text="1-5 stars"
+    )
 
     class Meta:
         model = BookReading
