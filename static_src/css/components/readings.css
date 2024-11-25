@@ -1,0 +1,15 @@
+.readings {
+  *:target td,
+  *:target + .review .content {
+    animation: highlight 1.5s;
+
+    > *,
+    a {
+      animation: black-text 1.5s;
+    }
+
+    .svg {
+      animation: highlight-svg-button 1.5s;
+    }
+  }
+}

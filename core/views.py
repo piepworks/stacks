@@ -900,7 +900,7 @@ def reading_new(request, pk):
             reading.book = book
             reading.save()
             messages.success(request, "Reading added")
-            return redirect(book.get_absolute_url())
+            return redirect(book.get_absolute_url() + f"#reading-{reading.pk}")
 
     else:
         form = BookReadingForm()
@@ -926,7 +926,7 @@ def reading_update(request, pk, reading_pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Reading updated")
-            return redirect(book.get_absolute_url())
+            return redirect(book.get_absolute_url() + f"#reading-{reading_pk}")
 
     else:
         form = BookReadingForm(instance=reading)

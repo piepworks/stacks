@@ -1,0 +1,20 @@
+@keyframes highlight {
+  50% {
+    background: goldenrod;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes black-text {
+  50% {
+    color: black;
+    text-decoration-color: black;
+    animation-timing-function: ease-in-out;
+  }
+}
+
+@keyframes highlight-svg-button {
+  50% {
+    background-color: black;
+  }
+}

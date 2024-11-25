@@ -2,6 +2,7 @@
 @import url('filters.css');
 @import url('navigation.css');
 @import url('notes.css');
+@import url('readings.css');
 @import url('stars.css');
 @import url('tom-select.css');
 @import url('copyright.css');
@@ -15,3 +16,4 @@
 @import url('articles.css');
 @import url('footer.css');
 @import url('offline-banner.css');
+@import url('animated-highlights.css');

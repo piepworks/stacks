@@ -12,11 +12,11 @@
 {% block content %}
   <header class="actions" x-data="{
     close() {
-      $refs.statusModal_{{ book.id }}.close();
+      $refs.statusModal_{{ book.pk }}.close();
     },
     closeFromEvent(event) {
       if (event.currentTarget === event.target) {
-        $refs.statusModal_{{ book.id }}.close();
+        $refs.statusModal_{{ book.pk }}.close();
       }
     },
   }">
@@ -29,7 +29,7 @@
         {% endif %}
         <div class="faux-form"><a class="svg edit" href="{% url 'book_update' book.pk %}">Edit</a></div>
         <div class="faux-form" x-cloak>
-          <button class="svg adjust-status" @click.prevent="$refs.statusModal_{{ book.id }}.showModal()" title="Adjust status">
+          <button class="svg adjust-status" @click.prevent="$refs.statusModal_{{ book.pk }}.showModal()" title="Adjust status">
             Adjust status
           </button>
         </div>
@@ -61,7 +61,7 @@
                 {% if forloop.first %}
                   <button class="svg cover-up" disabled>Up</button>
                 {% else %}
-                  <form action="{% url 'cover_order' book.pk cover.id 'up' %}" method="post">
+                  <form action="{% url 'cover_order' book.pk cover.pk 'up' %}" method="post">
                     {% csrf_token %}
                     <button class="svg cover-up" title="Move this cover up in the list">Up</button>
                   </form>
@@ -70,15 +70,15 @@
                 {% if forloop.last %}
                   <button class="svg cover-down" disabled>Down</button>
                 {% else %}
-                  <form action="{% url 'cover_order' book.pk cover.id 'down' %}" method="post">
+                  <form action="{% url 'cover_order' book.pk cover.pk 'down' %}" method="post">
                     {% csrf_token %}
                     <button class="svg cover-down" title="Move this cover down in the list">Down</button>
                   </form>
                 {% endif %}
               {% endif %}
 
-              <div class="faux-form"><a href="{% url 'cover_update' book.pk cover.id %}" class="svg edit">Edit</a></div>
-              <form action="{% url 'cover_delete' book.pk cover.id %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
+              <div class="faux-form"><a href="{% url 'cover_update' book.pk cover.pk %}" class="svg edit">Edit</a></div>
+              <form action="{% url 'cover_delete' book.pk cover.pk %}" method="post" onsubmit="return confirm('Are you sure you want to delete this cover?')">
                 {% csrf_token %}
                 <button class="svg delete">Delete</button>
               </form>
@@ -192,7 +192,7 @@
       <div class="faux-form"><a class="svg add-item" href="{% url 'reading_new' book.pk %}">Start a new reading</a></div>
     </div>
   </header>
-  <section class="overflow-auto">
+  <section class="readings overflow-auto">
     {% if readings %}
       <table>
         <thead>
@@ -206,10 +206,16 @@
         </thead>
         <tbody>
           {% for reading in readings %}
-            <tr>
-              <td>{{ reading.start_date|date:"F j, Y" }}</td>
-              <td>{{ reading.end_date|date:"F j, Y"|default:'None' }}{% if reading.duration %} <small>({{ reading.duration }} day{{ reading.duration|pluralize }})</small>{% endif %}</td>
-              <td>{{ reading.finished|yesno:"Yes,No" }}</td>
+            <tr id="reading-{{ reading.pk }}">
+              <td>
+                <span>{{ reading.start_date|date:"F j, Y" }}</span>
+              </td>
+              <td>
+                <span>{{ reading.end_date|date:"F j, Y"|default:'None' }}{% if reading.duration %} <small>({{ reading.duration }} day{{ reading.duration|pluralize }})</small>{% endif %}</span>
+              </td>
+              <td>
+                <span>{{ reading.finished|yesno:"Yes,No" }}</span>
+              </td>
               <td>
                 {% if reading.rating %}
                   <div class="rating">
@@ -225,11 +231,11 @@
                 {% endif %}
               </td>
               <td>
-                <div class="faux-form"><a class="svg edit" href="{% url 'reading_update' book.pk reading.id %}">Edit</a></div>
+                <div class="faux-form"><a class="svg edit" href="{% url 'reading_update' book.pk reading.pk %}">Edit</a></div>
               </td>
             </tr>
             {% if reading.review_html %}
-              <tr>
+              <tr class="review">
                 <td colspan="5" class="note">
                   <div class="content">{{ reading.review_html|safe }}</div>
                 </td>
@@ -256,10 +262,10 @@
     <div id="ajax-notes">
       {% if notes %}
           {% for note in notes %}
-            <div class="note" id="note-{{ note.id }}">
+            <div class="note" id="note-{{ note.pk }}">
               <div class="datetime">
                 <small>
-                  <a href="{% url 'note_update' book.pk note.id %}">
+                  <a href="{% url 'note_update' book.pk note.pk %}">
                     {{ note.created_at|date:"F j, Y" }}
                     at {{ note.created_at|date:"g:i A" }}
                   </a>
