@@ -14,7 +14,7 @@
     {% url 'index' as index_url %}
     {% url 'book_new' as book_new_url %}
     {% url 'open_library_search' as ol_url %}
-    <title>{% block title %}{% endblock title %}{% if request.path != index_url %} / {% endif %}Book Stacks</title>
+    <title>{% block title %}{% endblock title %}{% if request.path != index_url %} / {% endif %}Stacks.</title>
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <script defer src="{% static 'js/vendor/htmx.min.js' %}"></script>
     <script defer src="{% static 'js/vendor/htmx-alpine-morph.min.js' %}"></script>
@@ -130,18 +130,18 @@
       {% block footer %}
       {% endblock footer %}
 
-      <div class="support">
-        <div class="faux-form ko-fi" data-tooltip="Support Book Stacks on Ko-fi" data-placement="right">
-          <a class="svg heart-pulse" target="_blank" href="https://ko-fi.com/piepworks">💚</a>
-        </div>
-        {% if user.is_authenticated %}
+      {% if user.is_authenticated %}
+        <div class="support">
+          <div class="faux-form ko-fi" data-tooltip="Support Book Stacks on Ko-fi" data-placement="right">
+            <a class="svg heart-pulse" target="_blank" href="https://ko-fi.com/piepworks">💚</a>
+          </div>
           <div class="faux-form" data-tooltip="Give feedback" data-placement="right">
             <a class="svg megaphone" data-canny-link href="https://piepworks.canny.io/bookstacks" title="Give feedback">
               Give feedback
             </a>
           </div>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
       <div class="copyright">Copyright © {% now "Y" %} <a href="https://piep.works">Piepworks LLC</a>. All rights reserved.</div>
     </footer>

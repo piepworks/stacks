@@ -1,28 +1,40 @@
 body.home {
   header {
-    display: block;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    h1 {
+      margin: 0;
+      font-size: 3rem;
+      opacity: 0.9;
+    }
 
     .stack {
       display: inline-block;
-      margin-top: 2rem;
       padding: 3rem;
-      background-color: rgb(255, 191, 0); /* amber-200 */
+      background-color: rgb(255 191 0 / 100%); /* amber-200 */
     }
+  }
+
+  .screenshots {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
   }
 
   .intro {
     margin: 3rem 0;
-    padding: 2rem;
-    background: rgb(0 0 0 / 10%);
-    border-radius: var(--pico-border-radius);
 
     * + * {
       margin: 0;
       margin-top: 1rem;
     }
 
-    @media (prefers-color-scheme: dark) {
-      background: rgb(255 255 255 / 5%);
+    p {
+      font-style: italic;
+      opacity: 0.8;
     }
   }
 }

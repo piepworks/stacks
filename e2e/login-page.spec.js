@@ -7,7 +7,7 @@ test.use({ storageState: { cookies: [], origins: [] } });
 test('log in page', async ({ page }) => {
   await page.goto('./');
 
-  await expect(page).toHaveTitle('Book Stacks');
+  await expect(page).toHaveTitle('Stacks.');
   await page.getByRole('link', { name: 'Log in' }).click();
   await expect(page).toHaveURL('./accounts/login/');
 });

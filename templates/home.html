@@ -1,19 +1,26 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block body_tag %}class="home"{% endblock body_tag %}
 
 {% block content %}
   <header>
-    <h1>Book Stacks</h1>
-    <a class="svg stack" href="{% url 'index' %}">Book Stacks</a>
+    <div class="svg stack">Book Stacks icon</div>
+    <h1>Stacks.</h1>
   </header>
 
-  <div class="intro">
-    <p>Keep track of what you are reading, what you want to read, and what you've finished (or not!)</p>
-    <p>Not a social network. All your data is your own.</p>
+  <div>
+    <a href="{% url 'login' %}">Log in</a> or <a href="{% url 'django_registration_register' %}">create a free account</a>
   </div>
 
-  <div>
-    <a href="{% url 'login' %}">Log in</a> or <a href="{% url 'django_registration_register' %}">register</a>
+  <div class="intro">
+    <p>Keep track of what you are reading, what you want to read, and what you've finished.</p>
+    <p>Not a social network.</p>
   </div>
+
+  <div class="screenshots">
+    <img src="{% static 'img/mobile.png' %}" alt="Mobile screenshot" width="300" height="578.5">
+    <img src="{% static 'img/desktop.png' %}" alt="Desktop screenshot" width="600" height="445">
+  </div>
+
 {% endblock content %}
