@@ -239,13 +239,13 @@ class Book(models.Model):
             new_status = self.status
 
             if old_status != new_status:
-                # Add a BookReading with the current date as a start date
+                # Add a BookReading with the current date as a start date.
                 if new_status == "reading":
                     BookReading.objects.create(
                         book=self, start_date=datetime.date.today()
                     )
 
-                # Add the current date as an `end_date` to the most recent BookReading (if any) and mark it `finished`
+                # Add the current date as an `end_date` to the most recent BookReading (if any) and mark it `finished`.
                 elif new_status == "finished":
                     reading = (
                         BookReading.objects.filter(book=self, end_date=None)
@@ -257,7 +257,22 @@ class Book(models.Model):
                         reading.finished = True
                         reading.save()
 
-                # Add an `end_date` to the latest BookReading (if any) but don't mark it `finished`
+                # Add an `end_date` to the latest BookReading (if any), but don't mark it `finished`.
+                elif old_status == "reading" and (
+                    new_status == "to-read"
+                    or new_status == "backlog"
+                    or new_status == "wishlist"
+                ):
+                    reading = (
+                        BookReading.objects.filter(book=self, end_date=None)
+                        .order_by("-start_date")
+                        .first()
+                    )
+                    if reading:
+                        reading.end_date = datetime.date.today()
+                        reading.save()
+
+                # Add an `end_date` to the latest BookReading (if any), but don't mark it `finished`.
                 elif new_status == "dnf":
                     reading = (
                         BookReading.objects.filter(book=self, end_date=None)
