@@ -19,8 +19,10 @@
   </div>
 
   <div class="screenshots">
-    <img src="{% static 'img/mobile.png' %}" alt="Mobile screenshot" width="300" height="578.5">
-    <img src="{% static 'img/desktop.png' %}" alt="Desktop screenshot" width="600" height="445">
+    <img loading="lazy" class="dark" src="{% static 'img/mobile-dark.png' %}" alt="Mobile screenshot (dark)" width="300" height="578.5">
+    <img loading="lazy" class="light" src="{% static 'img/mobile-light.png' %}" alt="Mobile screenshot (light)" width="300" height="578.5">
+    <img loading="lazy" class="dark" src="{% static 'img/desktop-dark.png' %}" alt="Desktop screenshot (dark)" width="600" height="453.5">
+    <img loading="lazy" class="light" src="{% static 'img/desktop-light.png' %}" alt="Desktop screenshot (light)" width="600" height="453.5">
   </div>
 
 {% endblock content %}
