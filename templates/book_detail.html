@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markdown_extras ratings status_display %}
+{% load markdown_extras ratings status_display smartypants %}
 
 {% block title %}
   {{ book }}
@@ -20,7 +20,7 @@
       }
     },
   }">
-    <h1>{{ book }}</h1>
+    <h1>{{ book|smartypants }}</h1>
     <form action="{% url 'book_delete' book.pk %}" method="post">
       {% csrf_token %}
       <div class="inner">

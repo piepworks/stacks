@@ -1,3 +1,4 @@
+{% load smartypants %}
 <div class="cover">
   <a href="{{ book.get_absolute_url }}">
     {% if book.covers.all %}
@@ -18,4 +19,4 @@
   </a>
 </div>
 
-<div class="title" title="{{ book }}">{{ book }}</div>
+<div class="title" title="{{ book }}">{{ book|smartypants }}</div>
