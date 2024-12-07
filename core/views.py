@@ -659,6 +659,7 @@ def open_library_search(request):
     status = request.GET.get("status", "wishlist")
     form = OpenLibrarySearchForm(request.GET or None, autofocus=False)
     query = ""
+    local_results = None
 
     if form.is_valid():
         everything = form.cleaned_data.get("everything")
@@ -681,6 +682,22 @@ def open_library_search(request):
             return redirect(reverse("open_library_search") + f"?status={status}")
 
     if query != "":
+        # Search your collection as well
+
+        # Take all the keys and stuff out for the sake of our local search.
+        raw_query = " ".join(
+            pair.split("=")[1] for pair in query.lstrip("&").split("&")
+        )
+
+        local_results = (
+            Book.objects.filter(
+                title__icontains=raw_query,
+                user=request.user,
+            )
+            .exclude(archived=True)
+            .distinct()
+        )
+
         results = search_open_library(query)
 
         if "error" in results:
@@ -743,6 +760,7 @@ def open_library_search(request):
         "ol_search.html",
         {
             "form": form,
+            "local_results": local_results,
             "results": results,
             "status": status,
         },

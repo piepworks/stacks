@@ -5,7 +5,20 @@
 {% block body_tag %}class="ol-results"{% endblock body_tag %}
 
 {% block content %}
-  <h1>Search results</h1>
+  {% if local_results %}
+    <h1>It looks like you may already have this book:</h1>
+    <ul>
+      {% for book in local_results %}
+        <li class="book">
+          {% include "components/book-list-item.html" %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h2>No? Then check out these search results:</h2>
+  {% else %}
+    <h1>Search results</h1>
+  {% endif %}
 
   <h2>Choose a cover</h2>
 
