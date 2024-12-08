@@ -1,0 +1,9 @@
+body.changelog article {
+  header {
+    background: var(--pico-text-selection-color);
+  }
+
+  hr {
+    border-color: var(--pico-text-selection-color);
+  }
+}
