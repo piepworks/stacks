@@ -632,7 +632,7 @@ def search(request):
             .distinct()
         )
         # Get the books and their forms for these search results
-        forms = [(book, BookStatusForm(instance=book)) for book in books]
+        forms = [(book, BookStatusForm(auto_id=False, instance=book)) for book in books]
 
         authors = Author.objects.filter(
             name__icontains=query,
