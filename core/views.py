@@ -1233,7 +1233,9 @@ def account_verified(request, user_id):
 
 @method_decorator(login_not_required, name="dispatch")
 class ActivationView(BaseActivationView):
-    def get_success_url(self, user):
+    def get_success_url(self, user=None):
+        if not user:
+            return reverse("index")
         return reverse("account-verified", args=(user.id,))
 
 

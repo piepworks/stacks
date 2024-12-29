@@ -130,7 +130,7 @@ urlpatterns = [
         name="django_registration_register",
     ),
     path(
-        "accounts/activate/<str:activation_key>/",
+        "accounts/activate/",
         views.ActivationView.as_view(),
         name="django_registration_activate",
     ),

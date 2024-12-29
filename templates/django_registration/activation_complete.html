@@ -1,1 +1,8 @@
-Your account is now active: go <a href="{% url 'login' %}">log in</a>.
+{% extends "registration/base.html" %}
+
+{% block title %}Activation complete!{% endblock title %}
+
+{% block content %}
+  <h1>Activation complete!</h1>
+  <p>Your account is now active: go <a href="{% url 'login' %}">log in</a>.</p>
+{% endblock content %}
