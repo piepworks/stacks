@@ -1246,3 +1246,8 @@ class RegistrationView(BaseRegistrationView):
         if self.request.user.is_authenticated:
             return redirect("index")
         return super().get(request, *args, **kwargs)
+
+
+@login_not_required
+def registration_complete(request):
+    return render(request, "django_registration/registration_complete.html")

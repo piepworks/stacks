@@ -123,6 +123,11 @@ urlpatterns = [
         name="login",
     ),
     path(
+        "accounts/register/complete/",
+        views.registration_complete,
+        name="django_registration_complete",
+    ),
+    path(
         "accounts/register/",
         views.RegistrationView.as_view(
             form_class=RegisterForm,
