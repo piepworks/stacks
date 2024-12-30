@@ -7,13 +7,7 @@
 
   <form method="post">
     {% csrf_token %}
-    <fieldset>
-      {% for field in form %}
-        <div>
-          {{ field.as_field_group }}
-        </div>
-      {% endfor %}
-    </fieldset>
+    <input type="hidden" name="activation_key" value="{{ request.GET.activation_key }}">
     <button type="submit">Activate your account and log in</button>
   </form>
 {% endblock content %}
