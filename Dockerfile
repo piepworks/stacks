@@ -32,12 +32,13 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     unzip awscliv2.zip && \
     ./aws/install
 
-COPY pyproject.toml /tmp/pyproject.toml
+COPY pyproject.toml /pyproject.toml
+COPY uv.lock /uv.lock
 
 RUN set -ex && \
     pip install --upgrade pip && \
     pip install uv && \
-    uv pip install -r /tmp/pyproject.toml --system && \
+    UV_PROJECT_ENVIRONMENT=/usr/local/ uv sync --no-dev --locked && \
     rm -rf /root/.cache/
 
 COPY . /code/
